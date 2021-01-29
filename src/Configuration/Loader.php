@@ -14,9 +14,9 @@ final class Loader implements ConfigurationInterface
         $builder->getRootNode()
             ->children()
                 ->scalarNode('file_path')->isRequired()->end()
-                /*->arrayNode('sheets')
+                ->arrayNode('sheets')
                     ->scalarPrototype()->end()
-                ->end()*/
+                ->end()
                 ->scalarNode('delimiter')->defaultValue(',')->end()
                 ->scalarNode('enclosure')->defaultValue('"')->end()
                 ->scalarNode('escape')->defaultValue('\\')->end()
