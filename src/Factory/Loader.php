@@ -52,7 +52,7 @@ final class Loader implements Configurator\FactoryInterface
     {
         $builder = new Spreadsheet\Builder\Loader(
             new Node\Scalar\String_($config['file_path']),
-            //new Node\Expr\Array_($config['sheets']),
+            new Node\Expr\Array_($config['sheets']),
             new Node\Scalar\String_($config['delimiter']),
             new Node\Scalar\String_($config['enclosure']),
             new Node\Scalar\String_($config['escape'])

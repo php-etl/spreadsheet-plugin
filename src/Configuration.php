@@ -30,7 +30,7 @@ final class Configuration implements ConfigurationInterface
                 ->thenInvalid('Your configuration should either contain the "extractor" or the "loader" key, not both.')
             ->end()
             ->children()
-                //->append(node: $extractor->getConfigTreeBuilder()->getRootNode())
+                ->append(node: $extractor->getConfigTreeBuilder()->getRootNode())
                 ->append(node: $loader->getConfigTreeBuilder()->getRootNode())
                 ->append(node: $this->loggerConfiguration->getConfigTreeBuilder()->getRootNode()
                     ->setDeprecated('php-etl/spreadsheet-plugin', '0.1')
