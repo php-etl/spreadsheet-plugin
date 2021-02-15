@@ -1,10 +1,11 @@
 <?php
 
 
-namespace Kiboko\Plugin\Spreadsheet\Factory\Repository;
+namespace Kiboko\Plugin\Spreadsheet\Factory\Repository\ODS;
 
 use Kiboko\Contract\Configurator;
 use Kiboko\Plugin\Spreadsheet;
+use Kiboko\Plugin\Spreadsheet\Factory\Repository\RepositoryTrait;
 
 final class Loader implements Configurator\RepositoryInterface
 {
@@ -16,13 +17,13 @@ final class Loader implements Configurator\RepositoryInterface
     /** @var string[] */
     private array $packages;
 
-    public function __construct(private Spreadsheet\Builder\XLSX\Loader $builder)
+    public function __construct(private Spreadsheet\Builder\XLSX\ODS\Loader $builder)
     {
         $this->files = [];
         $this->packages = [];
     }
 
-    public function getBuilder(): Spreadsheet\Builder\XLSX\Loader
+    public function getBuilder(): Spreadsheet\Builder\XLSX\ODS\Loader
     {
         return $this->builder;
     }

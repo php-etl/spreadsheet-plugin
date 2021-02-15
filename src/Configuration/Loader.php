@@ -17,9 +17,7 @@ final class Loader implements ConfigurationInterface
                 ->arrayNode('sheets')
                     ->scalarPrototype()->end()
                 ->end()
-                ->scalarNode('delimiter')->defaultValue(',')->end()
-                ->scalarNode('enclosure')->defaultValue('"')->end()
-                ->scalarNode('escape')->defaultValue('\\')->end()
+                ->scalarNode('format')->isRequired()->end()
             ->end();
 
         return $builder;
