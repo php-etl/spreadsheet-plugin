@@ -10,13 +10,13 @@ class Extractor implements Configurator\RepositoryInterface
 {
     use RepositoryTrait;
 
-    public function __construct(private Spreadsheet\Builder\Extractor $builder)
+    public function __construct(private Spreadsheet\Builder\XLSX\Extractor $builder)
     {
         $this->files = [];
         $this->packages = [];
     }
 
-    public function getBuilder(): Spreadsheet\Builder\Extractor
+    public function getBuilder(): Spreadsheet\Builder\XLSX\Extractor
     {
         return $this->builder;
     }

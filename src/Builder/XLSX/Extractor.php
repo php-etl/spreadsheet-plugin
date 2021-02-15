@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Kiboko\Plugin\Spreadsheet\Builder;
+namespace Kiboko\Plugin\Spreadsheet\Builder\XLSX;
 
 use PhpParser\Builder;
 use PhpParser\Node;

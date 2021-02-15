@@ -50,9 +50,9 @@ final class Extractor implements Configurator\FactoryInterface
         return false;
     }
 
-    public function compile(array $config): Repository\Extractor
+    public function compile(array $config): Kiboko\Plugin\Spreadsheet\Factory\Repository\ODS\Extractor
     {
-        $builder = new Spreadsheet\Builder\Extractor(
+        $builder = new Spreadsheet\Builder\XLSX\XLSX\Extractor(
             new Node\Scalar\String_($config['file_path']),
             new Node\Scalar\String_($config['delimiter']),
             new Node\Scalar\String_($config['enclosure']),
@@ -60,7 +60,7 @@ final class Extractor implements Configurator\FactoryInterface
         );
 
         try {
-            return new Repository\Extractor($builder);
+            return new Kiboko\Plugin\Spreadsheet\Factory\Repository\ODS\Extractor($builder);
         } catch (Symfony\InvalidTypeException|Symfony\InvalidConfigurationException $exception) {
             throw new Configurator\InvalidConfigurationException(
                 message: $exception->getMessage(),

@@ -50,13 +50,19 @@ final class Loader implements Configurator\FactoryInterface
 
     public function compile(array $config): Repository\Loader
     {
-        $builder = new Spreadsheet\Builder\Loader(
-            new Node\Scalar\String_($config['file_path']),
-            new Node\Expr\Array_($config['sheets']),
-            new Node\Scalar\String_($config['delimiter']),
-            new Node\Scalar\String_($config['enclosure']),
-            new Node\Scalar\String_($config['escape'])
-        );
+        if ($config['format'] === 'xlsx') {
+            $builder = new Spreadsheet\Builder\XLSX\Loader(
+                new Node\Scalar\String_($config['file_path']),
+                new Node\Expr\Array_($config['sheets'])
+            );
+        }
+
+        if ($config['format'] === 'ods') {
+            $builder = new Spreadsheet\Builder\XLSX\ODS\Loader(
+                new Node\Scalar\String_($config['file_path']),
+                new Node\Expr\Array_($config['sheets'])
+            );
+        }
 
         return new Repository\Loader($builder);
     }
