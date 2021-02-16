@@ -50,17 +50,15 @@ final class Loader implements Configurator\FactoryInterface
 
     public function compile(array $config): Repository\Loader
     {
-        if ($config['format'] === 'xlsx') {
+        if (array_key_exists('excel', $config)) {
             $builder = new Spreadsheet\Builder\XLSX\Loader(
-                new Node\Scalar\String_($config['file_path']),
-                new Node\Expr\Array_($config['sheets'])
+                $config['file_path'],
+                $config['excel']['sheet'],
             );
-        }
-
-        if ($config['format'] === 'ods') {
-            $builder = new Spreadsheet\Builder\XLSX\ODS\Loader(
-                new Node\Scalar\String_($config['file_path']),
-                new Node\Expr\Array_($config['sheets'])
+        } else if (array_key_exists('open_document', $config)) {
+            $builder = new Spreadsheet\Builder\ODS\Loader(
+                $config['file_path'],
+                $config['open_document']['sheet'],
             );
         }
 
