@@ -6,7 +6,7 @@ namespace Kiboko\Plugin\Spreadsheet\Factory\Repository;
 use Kiboko\Contract\Configurator;
 use Kiboko\Plugin\Spreadsheet;
 
-final class Loader implements Configurator\RepositoryInterface
+class Loader implements Configurator\RepositoryInterface
 {
     use RepositoryTrait;
 
@@ -16,13 +16,13 @@ final class Loader implements Configurator\RepositoryInterface
     /** @var string[] */
     private array $packages;
 
-    public function __construct(private Spreadsheet\Builder\XLSX\Loader $builder)
+    public function __construct(private Spreadsheet\Builder\XLSX\Loader|Spreadsheet\Builder\ODS\Loader $builder)
     {
         $this->files = [];
         $this->packages = [];
     }
 
-    public function getBuilder(): Spreadsheet\Builder\XLSX\Loader
+    public function getBuilder(): Spreadsheet\Builder\XLSX\Loader|Spreadsheet\Builder\ODS\Loader
     {
         return $this->builder;
     }
