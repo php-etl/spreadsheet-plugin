@@ -14,11 +14,18 @@ final class Extractor implements ConfigurationInterface
         $builder->getRootNode()
             ->children()
                 ->scalarNode('file_path')->isRequired()->end()
-                ->scalarNode('sheet')->defaultValue(',')->end()
-                ->scalarNode('skip_lines')->defaultValue(',')->end()
-                ->scalarNode('delimiter')->defaultValue(',')->end()
-                ->scalarNode('enclosure')->defaultValue('"')->end()
-                ->scalarNode('escape')->defaultValue('\\')->end()
+                ->arrayNode('excel')
+                    ->children()
+                        ->scalarNode('sheet')->isRequired()->end()
+                        ->integerNode('skip_line')->defaultValue(0)->end()
+                    ->end()
+                ->end()
+                ->arrayNode('open_document')
+                    ->children()
+                        ->scalarNode('sheet')->isRequired()->end()
+                        ->integerNode('skip_line')->defaultValue(0)->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $builder;

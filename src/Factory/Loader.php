@@ -5,7 +5,6 @@ namespace Kiboko\Plugin\Spreadsheet\Factory;
 
 use Kiboko\Plugin\Spreadsheet;
 use Kiboko\Contract\Configurator;
-use PhpParser\Node;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception as Symfony;
 use Symfony\Component\Config\Definition\Processor;
