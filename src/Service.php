@@ -53,21 +53,29 @@ final class Service implements FactoryInterface
             if (array_key_exists('extractor', $config)) {
                 $extractorFactory = new Factory\Extractor();
 
-                /*$extractor = $extractorFactory->compile($config['extractor']);
-                $logger = $loggerFactory->compile($config['logger'] ?? []);
+                $extractor = $extractorFactory->compile($config['extractor']);
 
-                $extractor->withLogger($logger->getNode());
+                if (array_key_exists('logger', $config)) {
+                    $extractorBuilder = $extractor->getBuilder();
 
-                return $extractor;*/
+                    $logger = $loggerFactory->compile($config['logger'] ?? []);
+
+                    $extractorBuilder->withLogger($logger->getBuilder()->getNode());
+                }
+
+                return $extractor;
             } elseif (array_key_exists('loader', $config)) {
                 $loaderFactory = new Factory\Loader();
 
                 $loader = $loaderFactory->compile($config['loader']);
 
-                /*$logger = $loggerFactory->compile($config['logger'] ?? []);
+                if (array_key_exists('logger', $config)) {
+                    $loaderBuilder = $loader->getBuilder();
 
-                $loaderBuilder = $loader->getBuilder();
-                $loaderBuilder->withLogger($logger->getBuilder()->getNode());*/
+                    $logger = $loggerFactory->compile($config['logger'] ?? []);
+
+                    $loaderBuilder->withLogger($logger->getBuilder()->getNode());
+                }
 
                 return $loader;
             } else {

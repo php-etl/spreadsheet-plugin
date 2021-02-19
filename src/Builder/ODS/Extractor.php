@@ -1,7 +1,8 @@
 <?php
 
 
-namespace Kiboko\Plugin\Spreadsheet\Builder\XLSX;
+namespace Kiboko\Plugin\Spreadsheet\Builder\ODS;
+
 
 use PhpParser\Builder;
 use PhpParser\Node;
@@ -32,9 +33,9 @@ class Extractor implements Builder
                 new Node\Arg(
                     new Node\Expr\MethodCall(
                         var: new Node\Expr\StaticCall(
-                            class: new Node\Name\FullyQualified('Box\Spout\Reader\Common\Creator\ReaderEntityFactory'),
-                            name: 'createXLSXReader'
-                        ),
+                        class: new Node\Name\FullyQualified('Box\Spout\Reader\Common\Creator\ReaderEntityFactory'),
+                        name: 'createODSReader'
+                    ),
                         name: 'open',
                         args: [
                             new Node\Arg(
