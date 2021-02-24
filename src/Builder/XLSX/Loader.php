@@ -34,7 +34,7 @@ final class Loader implements Builder
     public function getNode(): Node
     {
         $instance = new Node\Expr\New_(
-            class: new Node\Name\FullyQualified('Kiboko\\Component\\Flow\\Spreadsheet\\Safe\\Loader'),
+            class: new Node\Name\FullyQualified('Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Loader'),
             args: [
                 new Node\Arg(
                     new Node\Expr\MethodCall(

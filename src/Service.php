@@ -31,7 +31,7 @@ final class Service implements FactoryInterface
     {
         try {
             return $this->processor->processConfiguration($this->configuration, $config);
-        } catch (Symfony\InvalidTypeException|Symfony\InvalidConfigurationException $exception) {
+        } catch (Symfony\InvalidTypeException | Symfony\InvalidConfigurationException $exception) {
             throw new InvalidConfigurationException($exception->getMessage(), 0, $exception);
         }
     }
@@ -55,13 +55,11 @@ final class Service implements FactoryInterface
 
                 $extractor = $extractorFactory->compile($config['extractor']);
 
-                if (array_key_exists('logger', $config)) {
-                    $extractorBuilder = $extractor->getBuilder();
+                $extractorBuilder = $extractor->getBuilder();
 
-                    $logger = $loggerFactory->compile($config['logger'] ?? []);
+                $logger = $loggerFactory->compile($config['logger'] ?? []);
 
-                    $extractorBuilder->withLogger($logger->getBuilder()->getNode());
-                }
+                $extractorBuilder->withLogger($logger->getBuilder()->getNode());
 
                 return $extractor;
             } elseif (array_key_exists('loader', $config)) {
@@ -69,13 +67,11 @@ final class Service implements FactoryInterface
 
                 $loader = $loaderFactory->compile($config['loader']);
 
-                if (array_key_exists('logger', $config)) {
-                    $loaderBuilder = $loader->getBuilder();
+                $loaderBuilder = $loader->getBuilder();
 
-                    $logger = $loggerFactory->compile($config['logger'] ?? []);
+                $logger = $loggerFactory->compile($config['logger'] ?? []);
 
-                    $loaderBuilder->withLogger($logger->getBuilder()->getNode());
-                }
+                $loaderBuilder->withLogger($logger->getBuilder()->getNode());
 
                 return $loader;
             } else {

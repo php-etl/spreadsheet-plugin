@@ -28,7 +28,7 @@ class Extractor implements Builder
     public function getNode(): Node
     {
         $instance = new Node\Expr\New_(
-            class: new Node\Name\FullyQualified('Kiboko\\Component\\Flow\\Spreadsheet\\Safe\\Extractor'),
+            class: new Node\Name\FullyQualified('Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Extractor'),
             args: [
                 new Node\Arg(
                     new Node\Expr\MethodCall(
