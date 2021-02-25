@@ -31,17 +31,12 @@ class Extractor implements Builder
             class: new Node\Name\FullyQualified('Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Extractor'),
             args: [
                 new Node\Arg(
-                    new Node\Expr\MethodCall(
-                        var: new Node\Expr\StaticCall(
+                    new Node\Scalar\String_($this->filePath)
+                ),
+                new Node\Arg(
+                    new Node\Expr\StaticCall(
                         class: new Node\Name\FullyQualified('Box\Spout\Reader\Common\Creator\ReaderEntityFactory'),
                         name: 'createODSReader'
-                    ),
-                        name: 'open',
-                        args: [
-                            new Node\Arg(
-                                new Node\Scalar\String_($this->filePath)
-                            )
-                        ]
                     )
                 ),
                 new Node\Arg(

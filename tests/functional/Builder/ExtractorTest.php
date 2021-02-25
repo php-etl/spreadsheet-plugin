@@ -4,7 +4,6 @@ namespace Test\Kiboko\Plugin\Spreadsheet\functional\Builder;
 
 use Kiboko\Plugin\Spreadsheet\Builder;
 use Kiboko\Plugin\Log;
-use PhpParser\Node;
 
 class ExtractorTest extends BuilderTestCase
 {
@@ -54,8 +53,8 @@ class ExtractorTest extends BuilderTestCase
 
         $this->assertExtractorIteratesAs(
             [
-                ['name' => 'pierre', 'last name' => 'dupont'],
-                ['name' => 'john', 'last name' => 'doe']
+                ['first name' => 'john', 'last name' => 'doe'],
+                ['first name' => 'jean', 'last name' => 'dupont']
             ],
             $extract
         );

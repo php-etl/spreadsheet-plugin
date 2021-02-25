@@ -5,7 +5,6 @@ namespace Test\Kiboko\Plugin\Spreadsheet\functional\Builder;
 
 use Kiboko\Plugin\Spreadsheet\Builder;
 use Kiboko\Plugin\Log;
-use PhpParser\Node;
 
 class LoaderTest extends BuilderTestCase
 {
@@ -13,7 +12,7 @@ class LoaderTest extends BuilderTestCase
     {
         $load = new Builder\XLSX\Loader(
             filePath: 'vfs://destination.xlsx',
-            sheet: 'Sheet1'
+            sheetName: 'Sheet1'
         );
 
         $this->assertBuilderProducesAnInstanceOf(
@@ -30,14 +29,13 @@ class LoaderTest extends BuilderTestCase
                 ['first name' => 'jean', 'last name' => 'dupont'],
             ]
         );
-
     }
 
     public function testWithFilePathAndLogger(): void
     {
         $load = new Builder\XLSX\Loader(
             filePath: 'vfs://destination.xlsx',
-            sheet: 'Sheet1'
+            sheetName: 'Sheet1'
         );
 
         $load->withLogger(

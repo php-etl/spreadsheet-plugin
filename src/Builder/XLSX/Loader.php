@@ -12,8 +12,9 @@ final class Loader implements Builder
 
     public function __construct(
         private string $filePath,
-        private string $sheet
-    ) {
+        private string $sheetName
+    )
+    {
         $this->logger = null;
     }
 
@@ -38,28 +39,20 @@ final class Loader implements Builder
             args: [
                 new Node\Arg(
                     new Node\Expr\MethodCall(
-                        new Node\Expr\MethodCall(
-                            new Node\Expr\MethodCall(
-                                new Node\Expr\StaticCall(
-                                    class: new Node\Name\FullyQualified('Box\Spout\Writer\Common\Creator\WriterEntityFactory'),
-                                    name: 'createXLSXWriter'
-                                ),
-                                name: 'open',
-                                args: [
-                                    new Node\Arg(
-                                        new Node\Scalar\String_($this->filePath)
-                                    )
-                                ]
-                            ),
-                            name: 'getCurrentSheet',
+                        new Node\Expr\StaticCall(
+                            class: new Node\Name\FullyQualified('Box\Spout\Writer\Common\Creator\WriterEntityFactory'),
+                            name: 'createXLSXWriter'
                         ),
-                        name: 'setName',
+                        name: 'openToFile',
                         args: [
                             new Node\Arg(
-                                new Node\Scalar\String_($this->sheet)
+                                new Node\Scalar\String_($this->filePath)
                             )
                         ]
-                    )
+                    ),
+                ),
+                new Node\Arg(
+                    new Node\Scalar\String_($this->sheetName)
                 )
             ]
         );

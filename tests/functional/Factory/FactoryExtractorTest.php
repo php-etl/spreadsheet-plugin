@@ -64,10 +64,4 @@ class FactoryExtractorTest extends TestCase
         $factory = new Spreadsheet\Factory\Extractor();
         $factory->normalize($wrongConfig);
     }
-
-    public function testFailToValidate(): void
-    {
-        $factory = new Spreadsheet\Factory\Extractor();
-        $this->assertFalse($factory->validate([]));
-    }
 }

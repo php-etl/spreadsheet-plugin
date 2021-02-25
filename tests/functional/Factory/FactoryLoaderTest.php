@@ -65,10 +65,4 @@ class FactoryLoaderTest extends TestCase
         $factory = new Spreadsheet\Factory\Loader();
         $factory->normalize($wrongConfig);
     }
-
-    public function testFailToValidate(): void
-    {
-        $factory = new Spreadsheet\Factory\Loader();
-        $this->assertFalse($factory->validate([]));
-    }
 }
