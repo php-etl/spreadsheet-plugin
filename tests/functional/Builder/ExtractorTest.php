@@ -1,11 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace Test\Kiboko\Plugin\Spreadsheet\functional\Builder;
+namespace functional\Kiboko\Plugin\Spreadsheet\Builder;
 
 use Kiboko\Plugin\Spreadsheet\Builder;
 use Kiboko\Plugin\Log;
 
-class ExtractorTest extends BuilderTestCase
+final class ExtractorTest extends BuilderTestCase
 {
     public function testWithFilePath(): void
     {

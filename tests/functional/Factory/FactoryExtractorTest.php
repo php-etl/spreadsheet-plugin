@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 
-namespace Test\Kiboko\Plugin\Spreadsheet\functional\Factory;
+namespace functional\Kiboko\Plugin\Spreadsheet\Factory;
 
 use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Plugin\Spreadsheet;
 use PHPUnit\Framework\TestCase;
 
-class FactoryExtractorTest extends TestCase
+final class FactoryExtractorTest extends TestCase
 {
     public function configProvider()
     {

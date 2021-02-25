@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
 
-namespace Test\Kiboko\Plugin\Spreadsheet\functional;
+namespace functional\Kiboko\Plugin\Spreadsheet;
 
 use PhpParser\Builder;
 use PhpParser\Node;
@@ -11,7 +11,7 @@ use PHPUnit\Framework\Constraint\Constraint;
 use ReflectionClass;
 use ReflectionException;
 
-class BuilderProducesAnInstanceOf extends Constraint
+final class BuilderProducesAnInstanceOf extends Constraint
 {
     private string $className;
 
