@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
 
-namespace Test\Kiboko\Plugin\Spreadsheet\functional;
+namespace functional\Kiboko\Plugin\Spreadsheet;
 
 use PhpParser\Builder;
 use PhpParser\Node;
@@ -9,7 +9,7 @@ use PhpParser\PrettyPrinter;
 use PHPUnit\Framework\Constraint\Constraint;
 use function sprintf;
 
-class ExtractorIteratesAs extends Constraint
+final class ExtractorIteratesAs extends Constraint
 {
     private array $lines;
 

@@ -1,12 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace Test\Kiboko\Plugin\Spreadsheet\functional\Configuration;
+namespace functional\Kiboko\Plugin\Spreadsheet\Configuration;
 
 use Kiboko\Plugin\Spreadsheet\Configuration;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config;
 
-class ConfigurationTest extends TestCase
+final class ConfigurationTest extends TestCase
 {
     private ?Config\Definition\Processor $processor = null;
 

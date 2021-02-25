@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
 
-namespace Test\Kiboko\Plugin\Spreadsheet\functional;
+namespace functional\Kiboko\Plugin\Spreadsheet;
 
 use Kiboko\Component\Pipeline\Pipeline;
 use Kiboko\Component\Pipeline\PipelineRunner;
@@ -11,7 +11,7 @@ use PhpParser\PrettyPrinter;
 use PHPUnit\Framework\Constraint\Constraint;
 use function sprintf;
 
-class LoaderProducesFile extends Constraint
+final class LoaderProducesFile extends Constraint
 {
     public function __construct(
         private string $expectedFile,

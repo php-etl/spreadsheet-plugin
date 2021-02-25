@@ -1,15 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 
 
-namespace Test\Kiboko\Plugin\Spreadsheet\functional\Builder;
+namespace functional\Kiboko\Plugin\Spreadsheet\Builder;
 
-use Test\Kiboko\Plugin\Spreadsheet\functional as Spreadsheet;
+use functional\Kiboko\Plugin\Spreadsheet;
 use PhpParser\Builder as DefaultBuilder;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\TestCase;
 use Vfs\FileSystem;
 
-class BuilderTestCase extends TestCase
+abstract class BuilderTestCase extends TestCase
 {
     private ?FileSystem $fs = null;
 

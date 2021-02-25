@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Test\Kiboko\Plugin\Spreadsheet\functional\Factory;
+namespace functional\Kiboko\Plugin\Spreadsheet\Factory;
 
 use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Plugin\Spreadsheet;

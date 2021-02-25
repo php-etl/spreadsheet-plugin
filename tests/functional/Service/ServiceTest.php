@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 
-namespace Test\Kiboko\Plugin\Spreadsheet\functional\Service;
+namespace functional\Kiboko\Plugin\Spreadsheet\Service;
 
 use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Plugin\Spreadsheet;
 use PHPUnit\Framework\TestCase;
 
-class ServiceTest extends TestCase
+final class ServiceTest extends TestCase
 {
     public function configProvider()
     {
