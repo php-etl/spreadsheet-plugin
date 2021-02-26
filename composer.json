@@ -19,7 +19,8 @@
         "php-etl/pipeline-contracts": "dev-master",
         "php-etl/spreadsheet-flow": "dev-master",
         "symfony/console": "5.x-dev",
-        "php-etl/log-plugin": "0.1.x-dev"
+        "php-etl/log-plugin": "0.1.x-dev",
+        "php-etl/phpunit-extension": "dev-master"
     },
     "require-dev": {
         "symfony/yaml": "5.x-dev",
