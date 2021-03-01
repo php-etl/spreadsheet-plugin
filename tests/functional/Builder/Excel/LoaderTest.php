@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 
-
-namespace functional\Kiboko\Plugin\Spreadsheet\Builder;
+namespace functional\Kiboko\Plugin\Spreadsheet\Builder\Excel;
 
 use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
 use Kiboko\Plugin\Spreadsheet\Builder;
@@ -29,7 +28,7 @@ final class LoaderTest extends TestCase
 
     public function testWithFilePath(): void
     {
-        $load = new Builder\XLSX\Loader(
+        $load = new Builder\Excel\Loader(
             filePath: 'vfs://destination.xlsx',
             sheetName: 'Sheet1'
         );
@@ -52,7 +51,7 @@ final class LoaderTest extends TestCase
 
     public function testWithFilePathAndLogger(): void
     {
-        $load = new Builder\XLSX\Loader(
+        $load = new Builder\Excel\Loader(
             filePath: 'vfs://destination.xlsx',
             sheetName: 'Sheet1'
         );
