@@ -764,18 +764,23 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-etl/spreadsheet-flow.git",
-                "reference": "256c2c4402e02516d0433e6317ad0260c06ab06e"
+                "reference": "5d58463ae6966bbd9a16de32d3ec4d5f74d6e1c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-etl/spreadsheet-flow/zipball/256c2c4402e02516d0433e6317ad0260c06ab06e",
-                "reference": "256c2c4402e02516d0433e6317ad0260c06ab06e",
+                "url": "https://api.github.com/repos/php-etl/spreadsheet-flow/zipball/5d58463ae6966bbd9a16de32d3ec4d5f74d6e1c5",
+                "reference": "5d58463ae6966bbd9a16de32d3ec4d5f74d6e1c5",
                 "shasum": ""
             },
             "require": {
                 "box/spout": "^3.1@dev",
+                "ext-dom": "*",
+                "ext-simplexml": "*",
+                "ext-xmlreader": "*",
+                "ext-zip": "*",
                 "php": "^8.0",
                 "php-etl/bucket": "0.1.x-dev",
+                "php-etl/phpunit-extension": "dev-master",
                 "php-etl/pipeline": "0.2.x-dev",
                 "psr/log": "^1.1@dev"
             },
@@ -815,7 +820,7 @@
                 "issues": "https://github.com/php-etl/spreadsheet-flow/issues",
                 "source": "https://github.com/php-etl/spreadsheet-flow/tree/master"
             },
-            "time": "2021-02-17T09:27:22+00:00"
+            "time": "2021-03-01T22:05:23+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -3571,12 +3576,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozarts/assert.git",
-                "reference": "9c89b265ccc4092d58e66d72af5d343ee77a41ae"
+                "reference": "4631e2c7d2d7132adac9fd84d4c1a98c10a6e049"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozarts/assert/zipball/9c89b265ccc4092d58e66d72af5d343ee77a41ae",
-                "reference": "9c89b265ccc4092d58e66d72af5d343ee77a41ae",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/4631e2c7d2d7132adac9fd84d4c1a98c10a6e049",
+                "reference": "4631e2c7d2d7132adac9fd84d4c1a98c10a6e049",
                 "shasum": ""
             },
             "require": {
@@ -3622,7 +3627,7 @@
                 "issues": "https://github.com/webmozarts/assert/issues",
                 "source": "https://github.com/webmozarts/assert/tree/master"
             },
-            "time": "2021-01-18T12:52:36+00:00"
+            "time": "2021-02-28T20:01:57+00:00"
         }
     ],
     "packages-dev": [

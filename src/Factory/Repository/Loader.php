@@ -16,13 +16,13 @@ class Loader implements Configurator\RepositoryInterface
     /** @var string[] */
     private array $packages;
 
-    public function __construct(private Spreadsheet\Builder\XLSX\Loader|Spreadsheet\Builder\ODS\Loader $builder)
+    public function __construct(private Spreadsheet\Builder\Excel\Loader|Spreadsheet\Builder\OpenDocument\Loader $builder)
     {
         $this->files = [];
         $this->packages = [];
     }
 
-    public function getBuilder(): Spreadsheet\Builder\XLSX\Loader|Spreadsheet\Builder\ODS\Loader
+    public function getBuilder(): Spreadsheet\Builder\Excel\Loader|Spreadsheet\Builder\OpenDocument\Loader
     {
         return $this->builder;
     }
