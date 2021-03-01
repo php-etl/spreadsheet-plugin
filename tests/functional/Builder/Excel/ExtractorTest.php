@@ -29,7 +29,7 @@ final class ExtractorTest extends TestCase
     public function testWithFilePath(): void
     {
         $extractor = new Builder\Excel\Extractor(
-            filePath: __DIR__.'/../../files/source-to-extract.xlsx',
+            filePath: 'tests/functional/files/source-to-extract.xlsx',
             sheet: 'Sheet1',
             skipLine: 0
         );
@@ -51,13 +51,18 @@ final class ExtractorTest extends TestCase
     public function testWithFilePathAndLogger(): void
     {
         $extract = new Builder\Excel\Extractor(
-            filePath: __DIR__.'/../../files/source-to-extract.xlsx',
+            filePath: 'tests/functional/files/source-to-extract.xlsx',
             sheet: 'Sheet1',
             skipLine: 0
         );
 
         $extract->withLogger(
             (new Log\Builder\Logger())->getNode()
+        );
+
+        $this->assertBuilderHasLogger(
+            '\\Psr\\Log\\NullLogger',
+            $extract
         );
 
         $this->assertBuilderProducesAnInstanceOf(

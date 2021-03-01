@@ -33,18 +33,19 @@ final class LoaderTest extends TestCase
             sheetName: 'Sheet1'
         );
 
-        $this->assertBuilderProducesInstanceOf(
+        $this->assertBuilderProducesAnInstanceOf(
             'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Loader',
             $load
         );
 
-        $this->assertBuilderProducesLoaderWritingFile(
-            __DIR__.'/../../files/expected-to-load.xlsx',
+        $this->assertLoaderProducesFile(
+            'tests/functional/files/expected-to-load.xlsx',
+            'vfs://destination.xlsx',
+            $load,
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont'],
-            ],
-            $load,
+            ]
         );
     }
 
@@ -59,18 +60,24 @@ final class LoaderTest extends TestCase
             (new Log\Builder\Logger())->getNode()
         );
 
-        $this->assertBuilderProducesInstanceOf(
+        $this->assertBuilderHasLogger(
+            '\\Psr\\Log\\NullLogger',
+            $load
+        );
+
+        $this->assertBuilderProducesAnInstanceOf(
             'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Loader',
             $load
         );
 
-        $this->assertBuilderProducesLoaderWritingFile(
-            __DIR__.'/../../files/expected-to-load.xlsx',
+        $this->assertLoaderProducesFile(
+            'tests/functional/files/expected-to-load.xslx',
+            'vfs://destination.xlsx',
+            $load,
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont'],
-            ],
-            $load,
+            ]
         );
     }
 }

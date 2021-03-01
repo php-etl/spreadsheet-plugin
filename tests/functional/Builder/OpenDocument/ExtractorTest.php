@@ -29,17 +29,17 @@ final class ExtractorTest extends TestCase
     public function testWithFilePath(): void
     {
         $extractor = new Builder\OpenDocument\Extractor(
-            filePath: __DIR__.'/../../files/source-to-extract.ods',
+            filePath: 'tests/functional/files/source-to-extract.ods',
             sheet: 'Sheet1',
             skipLine: 0
         );
 
-        $this->assertBuilderProducesInstanceOf(
+        $this->assertBuilderProducesAnInstanceOf(
             'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Extractor',
             $extractor
         );
 
-        $this->assertBuilderProducesExtractorIteratesAs(
+        $this->assertExtractorIteratesAs(
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont'],
@@ -51,7 +51,7 @@ final class ExtractorTest extends TestCase
     public function testWithFilePathAndLogger(): void
     {
         $extract = new Builder\OpenDocument\Extractor(
-            filePath: __DIR__.'/../../files/source-to-extract.ods',
+            filePath: 'tests/functional/files/source-to-extract.ods',
             sheet: 'Sheet1',
             skipLine: 0
         );
@@ -60,12 +60,17 @@ final class ExtractorTest extends TestCase
             (new Log\Builder\Logger())->getNode()
         );
 
-        $this->assertBuilderProducesInstanceOf(
+        $this->assertBuilderHasLogger(
+            '\\Psr\\Log\\NullLogger',
+            $extract
+        );
+
+        $this->assertBuilderProducesAnInstanceOf(
             'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Extractor',
             $extract
         );
 
-        $this->assertBuilderProducesExtractorIteratesAs(
+        $this->assertExtractorIteratesAs(
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont']
