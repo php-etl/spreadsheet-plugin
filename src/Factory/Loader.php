@@ -50,12 +50,12 @@ final class Loader implements Configurator\FactoryInterface
     public function compile(array $config): Repository\Loader
     {
         if (array_key_exists('excel', $config)) {
-            $builder = new Spreadsheet\Builder\XLSX\Loader(
+            $builder = new Spreadsheet\Builder\Excel\Loader(
                 $config['file_path'],
                 $config['excel']['sheet'],
             );
         } else if (array_key_exists('open_document', $config)) {
-            $builder = new Spreadsheet\Builder\ODS\Loader(
+            $builder = new Spreadsheet\Builder\OpenDocument\Loader(
                 $config['file_path'],
                 $config['open_document']['sheet'],
             );

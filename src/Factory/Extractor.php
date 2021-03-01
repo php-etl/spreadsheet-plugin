@@ -52,13 +52,13 @@ final class Extractor implements Configurator\FactoryInterface
     public function compile(array $config): Repository\Extractor
     {
         if (array_key_exists('excel', $config)) {
-            $builder = new Spreadsheet\Builder\XLSX\Extractor(
+            $builder = new Spreadsheet\Builder\Excel\Extractor(
                 $config['file_path'],
                 $config['excel']['sheet'],
                 $config['excel']['skip_line'],
             );
         } else if (array_key_exists('open_document', $config)) {
-            $builder = new Spreadsheet\Builder\ODS\Extractor(
+            $builder = new Spreadsheet\Builder\OpenDocument\Extractor(
                 $config['file_path'],
                 $config['open_document']['sheet'],
                 $config['open_document']['skip_line'],

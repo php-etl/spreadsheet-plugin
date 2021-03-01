@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Kiboko\Plugin\Spreadsheet\Builder\ODS;
+namespace Kiboko\Plugin\Spreadsheet\Builder\Excel;
 
 use PhpParser\Builder;
 use PhpParser\Node;
@@ -41,7 +41,7 @@ final class Loader implements Builder
                     new Node\Expr\MethodCall(
                         new Node\Expr\StaticCall(
                             class: new Node\Name\FullyQualified('Box\Spout\Writer\Common\Creator\WriterEntityFactory'),
-                            name: 'createODSWriter'
+                            name: 'createXLSXWriter'
                         ),
                         name: 'openToFile',
                         args: [

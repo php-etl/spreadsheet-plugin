@@ -28,7 +28,7 @@ final class ExtractorTest extends TestCase
 
     public function testWithFilePath(): void
     {
-        $extract = new Builder\XLSX\Extractor(
+        $extractor = new Builder\XLSX\Extractor(
             filePath: 'tests/functional/files/source-to-extract.xlsx',
             sheet: 'Sheet1',
             skipLine: 0
@@ -36,7 +36,7 @@ final class ExtractorTest extends TestCase
 
         $this->assertBuilderProducesAnInstanceOf(
             'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Extractor',
-            $extract
+            $extractor
         );
 
         $this->assertExtractorIteratesAs(
@@ -44,7 +44,7 @@ final class ExtractorTest extends TestCase
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont'],
             ],
-            $extract
+            $extractor
         );
     }
 
