@@ -34,39 +34,39 @@ final class Loader implements Builder
 
     public function getNode(): Node
     {
-        $instance = new Node\Expr\New_(
-            class: new Node\Name\FullyQualified('Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Loader'),
-            args: [
-                new Node\Arg(
-                    new Node\Expr\MethodCall(
-                        new Node\Expr\StaticCall(
-                            class: new Node\Name\FullyQualified('Box\Spout\Writer\Common\Creator\WriterEntityFactory'),
-                            name: 'createODSWriter'
-                        ),
-                        name: 'openToFile',
-                        args: [
-                            new Node\Arg(
-                                new Node\Scalar\String_($this->filePath)
-                            )
-                        ]
+        $arguments = [
+            new Node\Arg(
+                new Node\Expr\MethodCall(
+                    new Node\Expr\StaticCall(
+                        class: new Node\Name\FullyQualified('Box\Spout\Writer\Common\Creator\WriterEntityFactory'),
+                        name: 'createODSWriter'
                     ),
+                    name: 'openToFile',
+                    args: [
+                        new Node\Arg(
+                            new Node\Scalar\String_($this->filePath)
+                        )
+                    ]
                 ),
-                new Node\Arg(
-                    new Node\Scalar\String_($this->sheetName)
-                )
-            ]
-        );
+            ),
+            new Node\Arg(
+                new Node\Scalar\String_($this->sheetName)
+            )
+        ];
 
         if ($this->logger !== null) {
-            return new Node\Expr\MethodCall(
-                var: $instance,
-                name: 'setLogger',
-                args: [
-                    new Node\Arg($this->logger),
-                ]
+            array_push(
+                $arguments,
+                new Node\Arg(
+                    value: $this->logger,
+                    name: new Node\Identifier('logger'),
+                ),
             );
         }
 
-        return $instance;
+        return new Node\Expr\New_(
+            class: new Node\Name\FullyQualified('Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Loader'),
+            args: $arguments
+        );
     }
 }
