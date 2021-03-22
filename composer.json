@@ -13,21 +13,21 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
-        "php-etl/configurator-contracts": "dev-master",
-        "nikic/php-parser": "dev-master",
+        "php-etl/configurator-contracts": "^0.1",
+        "nikic/php-parser": "^4.10",
         "symfony/config": "^4.0 || ^5.0",
-        "php-etl/pipeline-contracts": "dev-master",
-        "php-etl/spreadsheet-flow": "dev-master",
+        "php-etl/pipeline-contracts": "^0.1",
+        "php-etl/spreadsheet-flow": "^0.1",
         "symfony/console": "5.x-dev",
-        "php-etl/log-plugin": "0.1.x-dev",
-        "php-etl/phpunit-extension": "dev-master"
+        "php-etl/log-plugin": "^0.1",
+        "php-etl/phpunit-extension": "^0.1"
     },
     "require-dev": {
         "symfony/yaml": "5.x-dev",
         "php-etl/bucket-contracts": "^0.1.0@dev",
         "php-etl/pipeline": "^0.2.0@dev",
         "adlawson/vfs": "dev-develop",
-        "phpunit/phpunit": "^9.0"
+        "phpunit/phpunit": "^9"
     },
     "autoload": {
         "psr-4": {
