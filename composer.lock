@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e303ce0bd99ce3af379638cbe497bb59",
+    "content-hash": "49afafc1b32d5910560711bd1238588f",
     "packages": [
         {
             "name": "box/spout",
@@ -596,10 +596,16 @@
         {
             "name": "php-etl/phpunit-extension",
             "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "/Users/sparrat/PhpstormProjects/phpunit-extension",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-etl/phpunit-extension.git",
                 "reference": "f26a35b5974e9f00cc1af34a9b4384026b777f98"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-etl/phpunit-extension/zipball/f26a35b5974e9f00cc1af34a9b4384026b777f98",
+                "reference": "f26a35b5974e9f00cc1af34a9b4384026b777f98",
+                "shasum": ""
             },
             "require": {
                 "nikic/php-parser": "^4.10",
@@ -607,6 +613,7 @@
                 "php-etl/pipeline": "0.2.x-dev",
                 "phpunit/phpunit": "^9"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -618,6 +625,7 @@
                     "Kiboko\\Component\\PHPUnitExtension\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -628,9 +636,11 @@
                 }
             ],
             "description": "Extension for testing FastMap and ETL components with PHPUnit testing framework",
-            "transport-options": {
-                "relative": false
-            }
+            "support": {
+                "issues": "https://github.com/php-etl/phpunit-extension/issues",
+                "source": "https://github.com/php-etl/phpunit-extension/tree/master"
+            },
+            "time": "2021-03-10T20:45:44+00:00"
         },
         {
             "name": "php-etl/pipeline",
@@ -748,11 +758,17 @@
         },
         {
             "name": "php-etl/spreadsheet-flow",
-            "version": "dev-master",
+            "version": "dev-feature/extractor",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-etl/spreadsheet-flow.git",
+                "reference": "9ed336757317f8cff89c6086555ead859e78635c"
+            },
             "dist": {
-                "type": "path",
-                "url": "/Users/sparrat/PhpstormProjects/spreadsheet-flow",
-                "reference": "aa327b0c7f47f5f529b20ffb1708fed9f82087e6"
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-etl/spreadsheet-flow/zipball/9ed336757317f8cff89c6086555ead859e78635c",
+                "reference": "9ed336757317f8cff89c6086555ead859e78635c",
+                "shasum": ""
             },
             "require": {
                 "box/spout": "^3.1@dev",
@@ -761,9 +777,9 @@
                 "ext-xmlreader": "*",
                 "ext-zip": "*",
                 "php": "^8.0",
-                "php-etl/bucket": "0.1.x-dev",
-                "php-etl/phpunit-extension": "dev-master",
-                "php-etl/pipeline": "0.2.x-dev",
+                "php-etl/bucket": "^0.1",
+                "php-etl/phpunit-extension": "^0.1",
+                "php-etl/pipeline": "^0.2",
                 "psr/log": "^1.1@dev"
             },
             "require-dev": {
@@ -774,7 +790,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "0.1.x-dev"
                 }
             },
             "autoload": {
@@ -782,11 +798,7 @@
                     "Kiboko\\Component\\Flow\\Spreadsheet\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "functional\\Kiboko\\Component\\Flow\\Spreadsheet\\": "tests/functional/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -801,9 +813,11 @@
                 }
             ],
             "description": "This library implements the Extract-Transform-Load pattern asynchronously in PHP with the help of iterators and generators",
-            "transport-options": {
-                "relative": false
-            }
+            "support": {
+                "issues": "https://github.com/php-etl/spreadsheet-flow/issues",
+                "source": "https://github.com/php-etl/spreadsheet-flow/tree/feature/extractor"
+            },
+            "time": "2021-03-22T15:34:56+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -1361,12 +1375,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "aad51c0706d4feaf8baead8154c7e7ed8c53931d"
+                "reference": "c73c6737305e779771147af66c96ca6a7ed8a741"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/aad51c0706d4feaf8baead8154c7e7ed8c53931d",
-                "reference": "aad51c0706d4feaf8baead8154c7e7ed8c53931d",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c73c6737305e779771147af66c96ca6a7ed8a741",
+                "reference": "c73c6737305e779771147af66c96ca6a7ed8a741",
                 "shasum": ""
             },
             "require": {
@@ -1456,7 +1470,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-03-17T07:49:55+00:00"
+            "time": "2021-03-23T07:16:29+00:00"
         },
         {
             "name": "psr/container",
@@ -3750,12 +3764,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "php-etl/configurator-contracts": 20,
-        "php-etl/pipeline-contracts": 20,
         "php-etl/spreadsheet-flow": 20,
         "symfony/console": 20,
-        "php-etl/log-plugin": 20,
-        "php-etl/phpunit-extension": 20,
         "symfony/yaml": 20,
         "php-etl/bucket-contracts": 20,
         "php-etl/pipeline": 20,
