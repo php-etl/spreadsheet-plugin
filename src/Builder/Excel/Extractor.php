@@ -27,7 +27,7 @@ class Extractor implements Builder
     {
         $arguments = [
             new Node\Arg(
-                new Node\Expr\FuncCall(
+                value : new Node\Expr\FuncCall(
                     new Node\Expr\Closure(
                         subNodes: [
                         'stmts' => [
@@ -46,7 +46,7 @@ class Extractor implements Builder
                                     name: new Node\Identifier('open'),
                                     args: [
                                         new Node\Arg(
-                                            new Node\Scalar\String_($this->filePath)
+                                            value: new Node\Scalar\String_($this->filePath)
                                         ),
                                     ]
                                 )
@@ -58,6 +58,7 @@ class Extractor implements Builder
                     ],
                     ),
                 ),
+                name: new Node\Identifier('reader'),
             ),
             new Node\Arg(
                 value: new Node\Scalar\String_($this->sheet),
@@ -65,7 +66,7 @@ class Extractor implements Builder
             ),
             new Node\Arg(
                 value: new Node\Scalar\LNumber($this->skipLine),
-                name: new Node\Identifier('skipLine'),
+                name: new Node\Identifier('skipLines'),
             ),
         ];
 

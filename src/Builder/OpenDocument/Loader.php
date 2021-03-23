@@ -36,7 +36,7 @@ final class Loader implements Builder
     {
         $arguments = [
             new Node\Arg(
-                new Node\Expr\MethodCall(
+                value: new Node\Expr\MethodCall(
                     new Node\Expr\StaticCall(
                         class: new Node\Name\FullyQualified('Box\Spout\Writer\Common\Creator\WriterEntityFactory'),
                         name: 'createODSWriter'
@@ -48,6 +48,7 @@ final class Loader implements Builder
                         )
                     ]
                 ),
+                name: new Node\Identifier('writer'),
             ),
             new Node\Arg(
                 value: new Node\Scalar\String_($this->sheetName),
