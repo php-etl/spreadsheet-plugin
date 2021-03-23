@@ -39,7 +39,7 @@ final class LoaderTest extends TestCase
         );
 
         $this->assertLoaderProducesFile(
-            'tests/functional/files/expected-to-load.ods',
+            __DIR__.'/../../files/expected-to-load.ods',
             'vfs://destination.ods',
             $load,
             [
@@ -60,18 +60,13 @@ final class LoaderTest extends TestCase
             (new Log\Builder\Logger())->getNode()
         );
 
-        $this->assertBuilderHasLogger(
-            '\\Psr\\Log\\NullLogger',
-            $load
-        );
-
         $this->assertBuilderProducesAnInstanceOf(
             'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Loader',
             $load
         );
 
         $this->assertLoaderProducesFile(
-            'tests/functional/files/expected-to-load.xslx',
+            __DIR__.'/../../files/expected-to-load.ods',
             'vfs://destination.ods',
             $load,
             [
