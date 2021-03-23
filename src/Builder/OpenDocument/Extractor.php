@@ -1,11 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Kiboko\Plugin\Spreadsheet\Builder\OpenDocument;
 
 use PhpParser\Builder;
 use PhpParser\Node;
 
-class Extractor implements Builder
+final class Extractor implements Builder
 {
     private ?Node\Expr $logger = null;
 
