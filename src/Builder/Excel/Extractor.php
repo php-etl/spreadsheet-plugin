@@ -60,10 +60,12 @@ class Extractor implements Builder
                 ),
             ),
             new Node\Arg(
-                new Node\Scalar\String_($this->sheet)
+                value: new Node\Scalar\String_($this->sheet),
+                name: new Node\Identifier('sheetName'),
             ),
             new Node\Arg(
-                new Node\Scalar\LNumber($this->skipLine)
+                value: new Node\Scalar\LNumber($this->skipLine),
+                name: new Node\Identifier('skipLine'),
             ),
         ];
 
