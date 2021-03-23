@@ -50,7 +50,8 @@ final class Loader implements Builder
                 ),
             ),
             new Node\Arg(
-                new Node\Scalar\String_($this->sheetName)
+                value: new Node\Scalar\String_($this->sheetName),
+                name: new Node\Identifier('sheetName'),
             )
         ];
 
