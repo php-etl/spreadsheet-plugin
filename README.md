@@ -1,4 +1,4 @@
-# Spreadshit Plugin
+# Spreadsheet Plugin
 This package aims at integrating the Spreadsheet or the Opendocument reader and writer into the
 [Pipeline](https://github.com/php-etl/pipeline) stack.
 
