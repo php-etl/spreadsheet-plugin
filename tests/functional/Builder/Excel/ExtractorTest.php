@@ -2,6 +2,7 @@
 
 namespace functional\Kiboko\Plugin\Spreadsheet\Builder\Excel;
 
+
 use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
 use Kiboko\Plugin\Spreadsheet\Builder;
 use Kiboko\Plugin\Log;
@@ -39,10 +40,10 @@ final class ExtractorTest extends TestCase
             $extractor
         );
 
-        $this->assertExtractorIteratesAs(
+        $this->assertBuilderProducesAnExtractorThatIteratesLike(
             [
                 ['first name' => 'john', 'last name' => 'doe'],
-                ['first name' => 'jean', 'last name' => 'dupont'],
+                ['first name' => 'jean', 'last name' => 'dupont']
             ],
             $extractor
         );
@@ -65,7 +66,7 @@ final class ExtractorTest extends TestCase
             $extract
         );
 
-        $this->assertExtractorIteratesAs(
+        $this->assertBuilderProducesAnExtractorThatIteratesLike(
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont']

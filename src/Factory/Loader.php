@@ -54,10 +54,16 @@ final class Loader implements Configurator\FactoryInterface
                 $config['file_path'],
                 $config['excel']['sheet'],
             );
-        } else if (array_key_exists('open_document', $config)) {
+        } elseif (array_key_exists('open_document', $config)) {
             $builder = new Spreadsheet\Builder\OpenDocument\Loader(
                 $config['file_path'],
                 $config['open_document']['sheet'],
+            );
+        } elseif (array_key_exists('csv', $config)) {
+            $builder = new Spreadsheet\Builder\CSV\Loader(
+                $config['file_path'],
+                $config['csv']['delimiter'],
+                $config['csv']['enclosure'],
             );
         }
 

@@ -13,8 +13,7 @@ final class Loader implements Builder
     public function __construct(
         private string $filePath,
         private string $sheetName
-    )
-    {
+    ) {
         $this->logger = null;
     }
 

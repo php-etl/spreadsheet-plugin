@@ -57,11 +57,19 @@ final class Extractor implements Configurator\FactoryInterface
                 $config['excel']['sheet'],
                 $config['excel']['skip_line'],
             );
-        } else if (array_key_exists('open_document', $config)) {
+        } elseif (array_key_exists('open_document', $config)) {
             $builder = new Spreadsheet\Builder\OpenDocument\Extractor(
                 $config['file_path'],
                 $config['open_document']['sheet'],
                 $config['open_document']['skip_line'],
+            );
+        } elseif (array_key_exists('csv', $config)) {
+            $builder = new Spreadsheet\Builder\CSV\Extractor(
+                $config['file_path'],
+                $config['csv']['skip_line'],
+                $config['csv']['delimiter'],
+                $config['csv']['enclosure'],
+                $config['csv']['encoding'],
             );
         }
 

@@ -38,14 +38,16 @@ final class LoaderTest extends TestCase
             $load
         );
 
-        $this->assertLoaderProducesFile(
-            __DIR__.'/../../files/expected-to-load.xlsx',
-            'vfs://destination.xlsx',
-            $load,
+        $this->assertBuilderProducesAPipelineLoadingLike(
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont'],
-            ]
+            ],
+            [
+                ['first name' => 'john', 'last name' => 'doe'],
+                ['first name' => 'jean', 'last name' => 'dupont'],
+            ],
+            $load
         );
     }
 
@@ -65,14 +67,16 @@ final class LoaderTest extends TestCase
             $load
         );
 
-        $this->assertLoaderProducesFile(
-            __DIR__.'/../../files/expected-to-load.xlsx',
-            'vfs://destination.xlsx',
-            $load,
+        $this->assertBuilderProducesAPipelineLoadingLike(
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont'],
-            ]
+            ],
+            [
+                ['first name' => 'john', 'last name' => 'doe'],
+                ['first name' => 'jean', 'last name' => 'dupont'],
+            ],
+            $load
         );
     }
 }

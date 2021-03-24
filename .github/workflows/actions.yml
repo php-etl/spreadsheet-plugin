@@ -14,28 +14,30 @@ jobs:
     phpunit:
         runs-on: ubuntu-latest
         steps:
-            -   uses: actions/checkout@v2
-            -   uses: actions/cache@v2
-                with:
-                    path: '**/vendor'
-                    key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-                    restore-keys: |
-                        ${{ runner.os }}-composer-
-            -   uses: php-actions/composer@v5
-                with:
-                    args: --prefer-dist
-                    php_version: 8.0
-                    php_extensions: xdebug zip
-            -   name: Run tests & generate Coverage
-                uses: php-actions/phpunit@v2
-                with:
-                    php_version: 8.0
-                    php_extensions: xdebug zip
-                    coverage: pcov
-            -   name: Store coverage files
-                uses: actions/upload-artifact@v2
-                with:
-                    path: var/coverage
+            - uses: actions/checkout@v2
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.0'
+                  tools: composer:v2
+                  coverage: pcov
+            - uses: actions/cache@v2
+              with:
+                  path: '**/vendor'
+                  key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-composer-
+            - uses: php-actions/composer@v5
+              with:
+                  args: --prefer-dist
+                  php_version: 8.0
+
+            - name: Run tests & generate Coverage
+              run: bin/phpunit tests --coverage-html var/coverage --whitelist=src
+
+            - name: Store coverage files
+              uses: actions/upload-artifact@v2
+              with:
+                  path: var/coverage
 
     phpstan:
         runs-on: ubuntu-latest

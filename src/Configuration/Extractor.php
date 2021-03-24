@@ -26,6 +26,14 @@ final class Extractor implements ConfigurationInterface
                         ->integerNode('skip_line')->defaultValue(0)->end()
                     ->end()
                 ->end()
+                ->arrayNode('csv')
+                    ->children()
+                        ->integerNode('skip_line')->defaultValue(0)->end()
+                        ->scalarNode('delimiter')->end()
+                        ->scalarNode('enclosure')->end()
+                        ->scalarNode('encoding')->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $builder;

@@ -65,7 +65,7 @@ final class ExtractorTest extends TestCase
             $extract
         );
 
-        $this->assertExtractorIteratesAs(
+        $this->assertBuilderProducesAnExtractorThatIteratesLike(
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont']
