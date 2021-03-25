@@ -29,8 +29,9 @@ class Loader implements Builder
         $arguments = [
             new Node\Arg(
                 value: new Node\Expr\MethodCall(
-                    new Node\Expr\New_(
-                    class: new Node\Name('Box\Spout\Writer\CSV\Writer'),
+                    new Node\Expr\StaticCall(
+                    class: new Node\Name\FullyQualified('Box\Spout\Writer\Common\Creator\WriterEntityFactory'),
+                    name: 'createCSVWriter'
                 ),
                     name: 'openToFile',
                     args: [

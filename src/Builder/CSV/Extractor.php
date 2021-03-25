@@ -32,13 +32,14 @@ class Extractor implements Builder
             new Node\Arg(
                 value : new Node\Expr\FuncCall(
                     new Node\Expr\Closure(
-                    subNodes: [
+                        subNodes: [
                     'stmts' => [
                         new Node\Stmt\Expression(
                             new Node\Expr\Assign(
                                 new Node\Expr\Variable('reader'),
-                                new Node\Expr\New_(
-                                    class: new Node\Name('Box\Spout\Reader\CSV\Reader')
+                                new Node\Expr\StaticCall(
+                                    class: new Node\Name\FullyQualified('Box\Spout\Reader\Common\Creator\ReaderEntityFactory'),
+                                    name: 'createCSVReader'
                                 ),
                             ),
                         ),
@@ -58,7 +59,7 @@ class Extractor implements Builder
                         ),
                     ],
                 ],
-                ),
+                    ),
                 ),
                 name: new Node\Identifier('reader'),
             ),
