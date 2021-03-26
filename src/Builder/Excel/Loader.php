@@ -26,7 +26,7 @@ final class Loader implements Builder
 
     public function withSheet(string $sheet): self
     {
-        $this->sheet = $sheet;
+        $this->sheetName = $sheet;
 
         return $this;
     }

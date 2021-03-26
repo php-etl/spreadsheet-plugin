@@ -65,6 +65,8 @@ final class Loader implements Configurator\FactoryInterface
                 $config['csv']['delimiter'],
                 $config['csv']['enclosure'],
             );
+        } else {
+            $builder = null;
         }
 
         return new Repository\Loader($builder);

@@ -5,6 +5,8 @@ namespace Kiboko\Plugin\Spreadsheet\Factory;
 
 use Kiboko\Plugin\Spreadsheet;
 use Kiboko\Contract\Configurator;
+use phpDocumentor\Reflection\Types\Null_;
+use PhpParser\BuilderFactory;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception as Symfony;
 use Symfony\Component\Config\Definition\Processor;
@@ -32,7 +34,7 @@ final class Extractor implements Configurator\FactoryInterface
     {
         try {
             return $this->processor->processConfiguration($this->configuration, $config);
-        } catch (Symfony\InvalidTypeException|Symfony\InvalidConfigurationException $exception) {
+        } catch (Symfony\InvalidTypeException | Symfony\InvalidConfigurationException $exception) {
             throw new Configurator\InvalidConfigurationException($exception->getMessage(), 0, $exception);
         }
     }
@@ -71,15 +73,10 @@ final class Extractor implements Configurator\FactoryInterface
                 $config['csv']['enclosure'],
                 $config['csv']['encoding'],
             );
+        } else {
+            $builder = null;
         }
 
-        try {
-            return new Repository\Extractor($builder);
-        } catch (Symfony\InvalidTypeException|Symfony\InvalidConfigurationException $exception) {
-            throw new Configurator\InvalidConfigurationException(
-                message: $exception->getMessage(),
-                previous: $exception
-            );
-        }
+        return new Repository\Extractor($builder);
     }
 }

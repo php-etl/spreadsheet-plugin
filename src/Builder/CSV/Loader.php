@@ -30,9 +30,9 @@ class Loader implements Builder
             new Node\Arg(
                 value: new Node\Expr\MethodCall(
                     new Node\Expr\StaticCall(
-                    class: new Node\Name\FullyQualified('Box\Spout\Writer\Common\Creator\WriterEntityFactory'),
-                    name: 'createCSVWriter'
-                ),
+                        class: new Node\Name\FullyQualified('Box\Spout\Writer\Common\Creator\WriterEntityFactory'),
+                        name: 'createCSVWriter'
+                    ),
                     name: 'openToFile',
                     args: [
                     new Node\Arg(
