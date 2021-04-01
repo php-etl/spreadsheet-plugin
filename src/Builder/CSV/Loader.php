@@ -12,8 +12,8 @@ class Loader implements Builder
 
     public function __construct(
         private string $filePath,
-        private string $delimiter,
-        private string $enclosure
+        private string $delimiter = ',',
+        private string $enclosure = '"'
     ) {
     }
 
@@ -28,28 +28,61 @@ class Loader implements Builder
     {
         $arguments = [
             new Node\Arg(
-                value: new Node\Expr\MethodCall(
-                    new Node\Expr\StaticCall(
-                        class: new Node\Name\FullyQualified('Box\Spout\Writer\Common\Creator\WriterEntityFactory'),
-                        name: 'createCSVWriter'
+                value : new Node\Expr\FuncCall(
+                    new Node\Expr\Closure(
+                        subNodes: [
+                    'stmts' => [
+                        new Node\Stmt\Expression(
+                            new Node\Expr\Assign(
+                                new Node\Expr\Variable('writer'),
+                                new Node\Expr\StaticCall(
+                                    class: new Node\Name\FullyQualified('Box\Spout\Writer\Common\Creator\WriterEntityFactory'),
+                                    name: 'createCSVWriter'
+                                ),
+                            ),
+                        ),
+                        new Node\Stmt\Expression(
+                            new Node\Expr\MethodCall(
+                                var: new Node\Expr\Variable('writer'),
+                                name: new Node\Identifier('setFieldDelimiter'),
+                                args: [
+                                    new Node\Arg(
+                                        value: new Node\Scalar\String_($this->delimiter)
+                                    ),
+                                ]
+                            )
+                        ),
+                        new Node\Stmt\Expression(
+                            new Node\Expr\MethodCall(
+                                var: new Node\Expr\Variable('writer'),
+                                name: new Node\Identifier('setFieldEnclosure'),
+                                args: [
+                                    new Node\Arg(
+                                        value: new Node\Scalar\String_($this->enclosure)
+                                    ),
+                                ]
+                            )
+                        ),
+                        new Node\Stmt\Expression(
+                            new Node\Expr\MethodCall(
+                                var: new Node\Expr\Variable('writer'),
+                                name: new Node\Identifier('openToFile'),
+                                args: [
+                                    new Node\Arg(
+                                        value: new Node\Scalar\String_($this->filePath)
+                                    ),
+                                ]
+                            )
+                        ),
+                        new Node\Stmt\Return_(
+                            new Node\Expr\Variable('writer')
+                        ),
+                    ],
+                ],
                     ),
-                    name: 'openToFile',
-                    args: [
-                    new Node\Arg(
-                        new Node\Scalar\String_($this->filePath)
-                    )
-                ]
                 ),
                 name: new Node\Identifier('writer'),
-            ),
-            new Node\Arg(
-                value: new Node\Scalar\String_($this->delimiter),
-                name: new Node\Identifier('delimiter'),
-            ),
-            new Node\Arg(
-                value: new Node\Scalar\String_($this->enclosure),
-                name: new Node\Identifier('enclosure'),
-            ),
+            )
         ];
 
         if ($this->logger !== null) {

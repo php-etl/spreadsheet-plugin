@@ -3,6 +3,7 @@
 
 namespace Kiboko\Plugin\Spreadsheet\Factory;
 
+use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Plugin\Spreadsheet;
 use Kiboko\Contract\Configurator;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -66,7 +67,9 @@ final class Loader implements Configurator\FactoryInterface
                 $config['csv']['enclosure'],
             );
         } else {
-            $builder = null;
+            throw new InvalidConfigurationException(
+                'Could not determine if the factory should build an excel, an open_document or a csv loader.'
+            );
         }
 
         return new Repository\Loader($builder);

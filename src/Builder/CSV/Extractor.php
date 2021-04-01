@@ -46,6 +46,39 @@ class Extractor implements Builder
                         new Node\Stmt\Expression(
                             new Node\Expr\MethodCall(
                                 var: new Node\Expr\Variable('reader'),
+                                name: new Node\Identifier('setFieldDelimiter'),
+                                args: [
+                                    new Node\Arg(
+                                        value: new Node\Scalar\String_($this->delimiter)
+                                    ),
+                                ]
+                            )
+                        ),
+                        new Node\Stmt\Expression(
+                            new Node\Expr\MethodCall(
+                                var: new Node\Expr\Variable('reader'),
+                                name: new Node\Identifier('setFieldEnclosure'),
+                                args: [
+                                    new Node\Arg(
+                                        value: new Node\Scalar\String_($this->enclosure)
+                                    ),
+                                ]
+                            )
+                        ),
+                        new Node\Stmt\Expression(
+                            new Node\Expr\MethodCall(
+                                var: new Node\Expr\Variable('reader'),
+                                name: new Node\Identifier('setEncoding'),
+                                args: [
+                                    new Node\Arg(
+                                        value: new Node\Scalar\String_($this->encoding)
+                                    ),
+                                ]
+                            )
+                        ),
+                        new Node\Stmt\Expression(
+                            new Node\Expr\MethodCall(
+                                var: new Node\Expr\Variable('reader'),
                                 name: new Node\Identifier('open'),
                                 args: [
                                     new Node\Arg(
@@ -66,19 +99,7 @@ class Extractor implements Builder
             new Node\Arg(
                 value: new Node\Scalar\LNumber($this->skipLine),
                 name: new Node\Identifier('skipLines'),
-            ),
-            new Node\Arg(
-                value: new Node\Scalar\String_($this->delimiter),
-                name: new Node\Identifier('delimiter'),
-            ),
-            new Node\Arg(
-                value: new Node\Scalar\String_($this->enclosure),
-                name: new Node\Identifier('enclosure'),
-            ),
-            new Node\Arg(
-                value: new Node\Scalar\String_($this->encoding),
-                name: new Node\Identifier('encoding'),
-            ),
+            )
         ];
 
         if ($this->logger !== null) {

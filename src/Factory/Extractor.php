@@ -3,10 +3,9 @@
 
 namespace Kiboko\Plugin\Spreadsheet\Factory;
 
+use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Plugin\Spreadsheet;
 use Kiboko\Contract\Configurator;
-use phpDocumentor\Reflection\Types\Null_;
-use PhpParser\BuilderFactory;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception as Symfony;
 use Symfony\Component\Config\Definition\Processor;
@@ -74,7 +73,9 @@ final class Extractor implements Configurator\FactoryInterface
                 $config['csv']['encoding'],
             );
         } else {
-            $builder = null;
+            throw new InvalidConfigurationException(
+                'Could not determine if the factory should build an excel, an open_document or a csv extractor.'
+            );
         }
 
         return new Repository\Extractor($builder);
