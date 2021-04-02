@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 
 namespace functional\Kiboko\Plugin\Spreadsheet\Factory;
@@ -7,7 +7,7 @@ use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Plugin\Spreadsheet;
 use PHPUnit\Framework\TestCase;
 
-class FactoryLoaderTest extends TestCase
+final class FactoryLoaderTest extends TestCase
 {
     public function configProvider()
     {

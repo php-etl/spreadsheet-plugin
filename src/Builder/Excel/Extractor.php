@@ -12,7 +12,7 @@ final class Extractor implements Builder
     public function __construct(
         private string $filePath,
         private string $sheet,
-        private int $skipLine
+        private int $skipLines
     ) {
     }
 
@@ -65,7 +65,7 @@ final class Extractor implements Builder
                 name: new Node\Identifier('sheetName'),
             ),
             new Node\Arg(
-                value: new Node\Scalar\LNumber($this->skipLine),
+                value: new Node\Scalar\LNumber($this->skipLines),
                 name: new Node\Identifier('skipLines'),
             ),
         ];

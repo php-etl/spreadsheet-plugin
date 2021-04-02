@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 
 namespace functional\Builder\CSV;
@@ -31,7 +31,7 @@ class ExtractorTest extends TestCase
     {
         $extractor = new Builder\CSV\Extractor(
             filePath: __DIR__.'/../../files/source-to-extract.csv',
-            skipLine: 0,
+            skipLines: 0,
             delimiter: ',',
             enclosure: '"',
             encoding: 'UTF-8'
@@ -50,7 +50,7 @@ class ExtractorTest extends TestCase
     {
         $extractor = new Builder\CSV\Extractor(
             filePath: __DIR__.'/../../files/source-to-extract.csv',
-            skipLine: 0,
+            skipLines: 0,
             delimiter: ',',
             enclosure: '"',
             encoding: 'UTF-8'

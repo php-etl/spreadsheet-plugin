@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 
 namespace functional\Builder\CSV;
@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Vfs\FileSystem;
 use Kiboko\Plugin\Log;
 
-class LoaderTest extends TestCase
+final class LoaderTest extends TestCase
 {
     use BuilderAssertTrait;
 

@@ -2,7 +2,6 @@
 
 namespace functional\Kiboko\Plugin\Spreadsheet\Builder\Excel;
 
-
 use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
 use Kiboko\Plugin\Spreadsheet\Builder;
 use Kiboko\Plugin\Log;
@@ -32,7 +31,7 @@ final class ExtractorTest extends TestCase
         $extractor = new Builder\Excel\Extractor(
             filePath: __DIR__.'/../../files/source-to-extract.xlsx',
             sheet: 'Sheet1',
-            skipLine: 0
+            skipLines: 0
         );
 
         $this->assertBuilderProducesInstanceOf(
@@ -54,7 +53,7 @@ final class ExtractorTest extends TestCase
         $extract = new Builder\Excel\Extractor(
             filePath: __DIR__.'/../../files/source-to-extract.xlsx',
             sheet: 'Sheet1',
-            skipLine: 0
+            skipLines: 0
         );
 
         $extract->withLogger(

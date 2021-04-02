@@ -69,7 +69,8 @@ final class LoaderTest extends TestCase
         );
     }
 
-    public function testWithoutOption(): void {
+    public function testWithoutOption(): void
+    {
         $load = new Builder\OpenDocument\Loader(
             filePath: 'vfs://destination.ods',
             sheetName: 'Sheet1'

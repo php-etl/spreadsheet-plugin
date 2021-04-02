@@ -56,18 +56,18 @@ final class Extractor implements Configurator\FactoryInterface
             $builder = new Spreadsheet\Builder\Excel\Extractor(
                 $config['file_path'],
                 $config['excel']['sheet'],
-                $config['excel']['skip_line'],
+                $config['excel']['skip_lines'],
             );
         } elseif (array_key_exists('open_document', $config)) {
             $builder = new Spreadsheet\Builder\OpenDocument\Extractor(
                 $config['file_path'],
                 $config['open_document']['sheet'],
-                $config['open_document']['skip_line'],
+                $config['open_document']['skip_lines'],
             );
         } elseif (array_key_exists('csv', $config)) {
             $builder = new Spreadsheet\Builder\CSV\Extractor(
                 $config['file_path'],
-                $config['csv']['skip_line'],
+                $config['csv']['skip_lines'],
                 $config['csv']['delimiter'],
                 $config['csv']['enclosure'],
                 $config['csv']['encoding'],

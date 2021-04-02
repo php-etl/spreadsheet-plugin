@@ -15,7 +15,8 @@ final class ConfigurationTest extends TestCase
         $this->processor = new Config\Definition\Processor();
     }
 
-    public function validConfigProvider() {
+    public function validConfigProvider()
+    {
         /* Minimal config */
         yield [
             'expected' => [
@@ -23,7 +24,7 @@ final class ConfigurationTest extends TestCase
                     'file_path' => 'path/to/file',
                     'excel' => [
                         'sheet' => 'Sheet1',
-                        'skip_line' => 0
+                        'skip_lines' => 0
                     ]
                 ]
             ],
@@ -44,7 +45,7 @@ final class ConfigurationTest extends TestCase
                     'file_path' => 'path/to/file',
                     'excel' => [
                         'sheet' => 'Sheet1',
-                        'skip_line' => 2
+                        'skip_lines' => 2
                     ]
                 ]
             ],
@@ -53,7 +54,7 @@ final class ConfigurationTest extends TestCase
                     'file_path' => 'path/to/file',
                     'excel' => [
                         'sheet' => 'Sheet1',
-                         'skip_line' => 2
+                         'skip_lines' => 2
                     ]
                 ]
             ]
@@ -70,7 +71,7 @@ final class ConfigurationTest extends TestCase
                     'file_path' => 'path/to/file',
                     'excel' => [
                         'sheet' => 'Sheet1',
-                        'skip_line' => 0
+                        'skip_lines' => 0
                     ]
                 ]
             ],
@@ -119,7 +120,7 @@ final class ConfigurationTest extends TestCase
                     'extractor' => [
                         'excel' => [
                             'sheet' => 'Sheet1',
-                            'skip_line' => 0
+                            'skip_lines' => 0
                         ]
                     ]
                 ]

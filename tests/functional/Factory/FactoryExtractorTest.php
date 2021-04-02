@@ -16,7 +16,7 @@ final class FactoryExtractorTest extends TestCase
                 'file_path' => 'input.xlsx',
                 'excel' => [
                     'sheet' => 'Sheet1',
-                    'skip_line' => 0
+                    'skip_lines' => 0
                 ]
             ],
             'actual' => [

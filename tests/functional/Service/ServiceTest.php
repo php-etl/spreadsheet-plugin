@@ -17,7 +17,7 @@ final class ServiceTest extends TestCase
                     'file_path' => 'path/to/file',
                     'excel' => [
                         'sheet' => 'Sheet1',
-                        'skip_line' => 0
+                        'skip_lines' => 0
                     ]
                 ],
                 'logger' => [

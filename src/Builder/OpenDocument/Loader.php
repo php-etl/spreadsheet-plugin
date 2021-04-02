@@ -8,13 +8,12 @@ use PhpParser\Node;
 
 final class Loader implements Builder
 {
-    private ?Node\Expr $logger;
+    private ?Node\Expr $logger = null;
 
     public function __construct(
         private string $filePath,
         private string $sheetName
     ) {
-        $this->logger = null;
     }
 
     public function withLogger(?Node\Expr $logger): self

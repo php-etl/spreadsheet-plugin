@@ -14,15 +14,12 @@ final class Loader implements ConfigurationInterface
         $builder->getRootNode()
             ->validate()
                 ->ifTrue(function (array $value) {
-                    return array_key_exists('excel', $value) && array_key_exists('open_document', $value);
+                    return array_key_exists('excel', $value) && array_key_exists('open_document', $value) && array_key_exists('csv', $value)
+                        || array_key_exists('excel', $value) && array_key_exists('open_document', $value)
+                        || array_key_exists('excel', $value) && array_key_exists('csv', $value)
+                        || array_key_exists('open_document', $value) && array_key_exists('csv', $value);
                 })
-                ->thenInvalid('Your configuration should either contain the "excel" or the "open_document" key, not both.')
-            ->end()
-            ->validate()
-                ->ifTrue(function (array $value) {
-                    return !array_key_exists('excel', $value) && !array_key_exists('open_document', $value) && !array_key_exists('csv', $value);
-                })
-                ->thenInvalid('Your configuration should at least contain the "excel" or the "open_document" key or the "csv" key.')
+                ->thenInvalid('Your configuration should either contain the "excel", the "open_document" key or the "csv" key, not many.')
             ->end()
             ->children()
                 ->scalarNode('file_path')->isRequired()->end()
