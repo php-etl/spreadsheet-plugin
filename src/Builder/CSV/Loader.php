@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 
 namespace Kiboko\Plugin\Spreadsheet\Builder\CSV;
@@ -6,7 +6,7 @@ namespace Kiboko\Plugin\Spreadsheet\Builder\CSV;
 use PhpParser\Builder;
 use PhpParser\Node;
 
-class Loader implements Builder
+final class Loader implements Builder
 {
     private ?Node\Expr $logger = null;
 
