@@ -13,13 +13,7 @@ final class Extractor implements ConfigurationInterface
 
         $builder->getRootNode()
             ->validate()
-                ->ifTrue(function (array $value) {
-                    return array_key_exists('excel', $value) && array_key_exists('open_document', $value) && array_key_exists('csv', $value)
-                        || array_key_exists('excel', $value) && array_key_exists('open_document', $value)
-                        || array_key_exists('excel', $value) && array_key_exists('csv', $value)
-                        || array_key_exists('open_document', $value) && array_key_exists('csv', $value);
-                })
-                ->thenInvalid('Your configuration should either contain the "excel", the "open_document" key or the "csv" key, not many.')
+                ->always($this->mutuallyExclusiveFields('excel', 'open_document', 'csv'))
             ->end()
             ->children()
                 ->scalarNode('file_path')->isRequired()->end()
@@ -46,5 +40,26 @@ final class Extractor implements ConfigurationInterface
             ->end();
 
         return $builder;
+    }
+
+    private function mutuallyExclusiveFields(string $field, string ...$exclusions): \Closure
+    {
+        return function (array $value) use ($field, $exclusions) {
+            if (!array_key_exists($field, $value)) {
+                return $value;
+            }
+
+            foreach ($exclusions as $exclusion) {
+                if (array_key_exists($exclusion, $value)) {
+                    throw new \InvalidArgumentException(sprintf(
+                        'Your configuration should either contain the "%s" or the "%s" field, not both.',
+                        $field,
+                        $exclusion,
+                    ));
+                }
+            }
+
+            return $value;
+        };
     }
 }
