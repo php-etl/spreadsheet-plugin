@@ -34,12 +34,12 @@ final class ExtractorTest extends TestCase
             skipLine: 0
         );
 
-        $this->assertBuilderProducesAnInstanceOf(
+        $this->assertBuilderProducesInstanceOf(
             'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Extractor',
             $extractor
         );
 
-        $this->assertExtractorIteratesAs(
+        $this->assertBuilderProducesExtractorIteratesAs(
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont'],
@@ -60,12 +60,12 @@ final class ExtractorTest extends TestCase
             (new Log\Builder\Logger())->getNode()
         );
 
-        $this->assertBuilderProducesAnInstanceOf(
+        $this->assertBuilderProducesInstanceOf(
             'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Extractor',
             $extract
         );
 
-        $this->assertExtractorIteratesAs(
+        $this->assertBuilderProducesExtractorIteratesAs(
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont']

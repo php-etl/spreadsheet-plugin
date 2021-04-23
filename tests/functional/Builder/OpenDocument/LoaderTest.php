@@ -33,19 +33,18 @@ final class LoaderTest extends TestCase
             sheetName: 'Sheet1'
         );
 
-        $this->assertBuilderProducesAnInstanceOf(
+        $this->assertBuilderProducesInstanceOf(
             'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Loader',
             $load
         );
 
-        $this->assertLoaderProducesFile(
+        $this->assertBuilderProducesLoaderWritingFile(
             __DIR__.'/../../files/expected-to-load.ods',
-            'vfs://destination.ods',
-            $load,
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont'],
-            ]
+            ],
+            $load,
         );
     }
 
@@ -60,19 +59,18 @@ final class LoaderTest extends TestCase
             (new Log\Builder\Logger())->getNode()
         );
 
-        $this->assertBuilderProducesAnInstanceOf(
+        $this->assertBuilderProducesInstanceOf(
             'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Loader',
             $load
         );
 
-        $this->assertLoaderProducesFile(
+        $this->assertBuilderProducesLoaderWritingFile(
             __DIR__.'/../../files/expected-to-load.ods',
-            'vfs://destination.ods',
-            $load,
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont'],
-            ]
+            ],
+            $load,
         );
     }
 }

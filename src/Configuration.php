@@ -32,7 +32,9 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->append(node: $extractor->getConfigTreeBuilder()->getRootNode())
                 ->append(node: $loader->getConfigTreeBuilder()->getRootNode())
-                ->append(node: $this->loggerConfiguration->getConfigTreeBuilder()->getRootNode())
+                ->append(node: $this->loggerConfiguration->getConfigTreeBuilder()->getRootNode()
+                    ->setDeprecated('php-etl/csv-plugin', '0.1')
+                )
             ->end();
 
         return $builder;
