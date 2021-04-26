@@ -17,7 +17,6 @@
         "nikic/php-parser": "^4.10",
         "symfony/config": "^4.0 || ^5.0",
         "php-etl/pipeline-contracts": "^0.1",
-        "php-etl/spreadsheet-flow": "^0.1",
         "symfony/console": "5.x-dev",
         "php-etl/log-plugin": "^0.1"
     },
@@ -27,7 +26,8 @@
         "php-etl/pipeline": "^0.2.0@dev",
         "adlawson/vfs": "dev-develop",
         "phpunit/phpunit": "^9.0",
-        "php-etl/phpunit-extension": "^0.1"
+        "php-etl/phpunit-extension": "^0.1",
+        "php-etl/spreadsheet-flow": "0.1.x-dev"
     },
     "autoload": {
         "psr-4": {
