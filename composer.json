@@ -38,5 +38,10 @@
         "psr-4": {
             "functional\\Kiboko\\Plugin\\Spreadsheet\\": "tests/functional/"
         }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
     }
 }
