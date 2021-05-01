@@ -6,7 +6,7 @@ namespace Kiboko\Plugin\Spreadsheet\Factory\Repository;
 use Kiboko\Contract\Configurator;
 use Kiboko\Plugin\Spreadsheet;
 
-final class Loader implements Configurator\RepositoryInterface
+final class Loader implements Configurator\StepRepositoryInterface
 {
     use RepositoryTrait;
 

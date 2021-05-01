@@ -1,22 +1,26 @@
 <?php declare(strict_types=1);
 
-
 namespace Kiboko\Plugin\Spreadsheet\Builder\CSV;
 
-use PhpParser\Builder;
+use Kiboko\Contract\Configurator\StepBuilderInterface;
 use PhpParser\Node;
 
-final class Extractor implements Builder
+final class Extractor implements StepBuilderInterface
 {
-    private ?Node\Expr $logger = null;
+    private ?Node\Expr $logger;
+    private ?Node\Expr $rejection;
+    private ?Node\Expr $state;
 
     public function __construct(
         private string $filePath,
         private int $skipLines,
         private string $delimiter,
         private string $enclosure,
-        private string $encoding
+        private string $encoding,
     ) {
+        $this->logger = null;
+        $this->rejection = null;
+        $this->state = null;
     }
 
     public function withLogger(Node\Expr $logger): self
@@ -26,11 +30,25 @@ final class Extractor implements Builder
         return $this;
     }
 
+    public function withRejection(Node\Expr $rejection): self
+    {
+        $this->rejection = $rejection;
+
+        return $this;
+    }
+
+    public function withState(Node\Expr $state): self
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
     public function getNode(): Node
     {
         $arguments = [
             new Node\Arg(
-                value : new Node\Expr\FuncCall(
+                value: new Node\Expr\FuncCall(
                     new Node\Expr\Closure(
                         subNodes: [
                     'stmts' => [
@@ -99,7 +117,7 @@ final class Extractor implements Builder
             new Node\Arg(
                 value: new Node\Scalar\LNumber($this->skipLines),
                 name: new Node\Identifier('skipLines'),
-            )
+            ),
         ];
 
         if ($this->logger !== null) {

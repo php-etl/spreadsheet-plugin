@@ -6,7 +6,7 @@ namespace Kiboko\Plugin\Spreadsheet\Factory\Repository;
 use Kiboko\Contract\Configurator;
 use Kiboko\Plugin\Spreadsheet;
 
-final class Extractor implements Configurator\RepositoryInterface
+final class Extractor implements Configurator\StepRepositoryInterface
 {
     use RepositoryTrait;
 
