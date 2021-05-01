@@ -6,23 +6,17 @@ namespace Kiboko\Plugin\Spreadsheet\Factory\Repository;
 use Kiboko\Contract\Configurator;
 use Kiboko\Plugin\Spreadsheet;
 
-final class Loader implements Configurator\StepRepositoryInterface
+final class Extractor implements Configurator\StepRepositoryInterface
 {
     use RepositoryTrait;
 
-    /** @var Configurator\FileInterface[] */
-    private array $files;
-
-    /** @var string[] */
-    private array $packages;
-
-    public function __construct(private Spreadsheet\Builder\Excel\Loader|Spreadsheet\Builder\OpenDocument\Loader|Spreadsheet\Builder\CSV\Loader $builder)
+    public function __construct(private Spreadsheet\Builder\Excel\Extractor|Spreadsheet\Builder\OpenDocument\Extractor|Spreadsheet\Builder\CSV\Extractor $builder)
     {
         $this->files = [];
         $this->packages = [];
     }
 
-    public function getBuilder(): Spreadsheet\Builder\Excel\Loader|Spreadsheet\Builder\OpenDocument\Loader|Spreadsheet\Builder\CSV\Loader
+    public function getBuilder(): Spreadsheet\Builder\Excel\Extractor|Spreadsheet\Builder\OpenDocument\Extractor|Spreadsheet\Builder\CSV\Extractor
     {
         return $this->builder;
     }

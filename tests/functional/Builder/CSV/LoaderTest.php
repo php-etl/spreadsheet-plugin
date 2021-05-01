@@ -1,12 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace functional\Kiboko\Plugin\Spreadsheet\Builder\Excel;
 
-use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
+namespace functional\Builder\CSV;
+
 use Kiboko\Plugin\Spreadsheet\Builder;
-use Kiboko\Plugin\Log;
+use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
 use PHPUnit\Framework\TestCase;
 use Vfs\FileSystem;
+use Kiboko\Plugin\Log;
 
 final class LoaderTest extends TestCase
 {
@@ -28,14 +29,10 @@ final class LoaderTest extends TestCase
 
     public function testWithFilePath(): void
     {
-        $load = new Builder\Excel\Loader(
-            filePath: 'vfs://destination.xlsx',
-            sheetName: 'Sheet1'
-        );
-
-        $this->assertBuilderProducesInstanceOf(
-            'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Loader',
-            $load
+        $load = new Builder\CSV\Loader(
+            filePath: 'vfs://destination.csv',
+            delimiter: ',',
+            enclosure: '"'
         );
 
         $this->assertBuilderProducesPipelineLoadingLike(
@@ -51,20 +48,16 @@ final class LoaderTest extends TestCase
         );
     }
 
-    public function testWithFilePathAndLogger(): void
+    public function testWithLogger(): void
     {
-        $load = new Builder\Excel\Loader(
-            filePath: 'vfs://destination.xlsx',
-            sheetName: 'Sheet1'
+        $load = new Builder\CSV\Loader(
+            filePath: 'vfs://destination.csv',
+            delimiter: ',',
+            enclosure: '"'
         );
 
         $load->withLogger(
             (new Log\Builder\Logger())->getNode()
-        );
-
-        $this->assertBuilderProducesInstanceOf(
-            'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Loader',
-            $load
         );
 
         $this->assertBuilderProducesPipelineLoadingLike(

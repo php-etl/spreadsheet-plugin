@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 
 namespace Kiboko\Plugin\Spreadsheet;
@@ -31,7 +31,7 @@ final class Service implements FactoryInterface
     {
         try {
             return $this->processor->processConfiguration($this->configuration, $config);
-        } catch (Symfony\InvalidTypeException|Symfony\InvalidConfigurationException $exception) {
+        } catch (Symfony\InvalidTypeException | Symfony\InvalidConfigurationException $exception) {
             throw new InvalidConfigurationException($exception->getMessage(), 0, $exception);
         }
     }
@@ -53,21 +53,25 @@ final class Service implements FactoryInterface
             if (array_key_exists('extractor', $config)) {
                 $extractorFactory = new Factory\Extractor();
 
-                /*$extractor = $extractorFactory->compile($config['extractor']);
+                $extractor = $extractorFactory->compile($config['extractor']);
+
+                $extractorBuilder = $extractor->getBuilder();
+
                 $logger = $loggerFactory->compile($config['logger'] ?? []);
 
-                $extractor->withLogger($logger->getNode());
+                $extractorBuilder->withLogger($logger->getBuilder()->getNode());
 
-                return $extractor;*/
+                return $extractor;
             } elseif (array_key_exists('loader', $config)) {
                 $loaderFactory = new Factory\Loader();
 
                 $loader = $loaderFactory->compile($config['loader']);
 
-                /*$logger = $loggerFactory->compile($config['logger'] ?? []);
-
                 $loaderBuilder = $loader->getBuilder();
-                $loaderBuilder->withLogger($logger->getBuilder()->getNode());*/
+
+                $logger = $loggerFactory->compile($config['logger'] ?? []);
+
+                $loaderBuilder->withLogger($logger->getBuilder()->getNode());
 
                 return $loader;
             } else {

@@ -1,11 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 
 namespace Kiboko\Plugin\Spreadsheet\Factory;
 
+use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Plugin\Spreadsheet;
 use Kiboko\Contract\Configurator;
-use PhpParser\Node;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception as Symfony;
 use Symfony\Component\Config\Definition\Processor;
@@ -50,13 +50,27 @@ final class Loader implements Configurator\FactoryInterface
 
     public function compile(array $config): Repository\Loader
     {
-        $builder = new Spreadsheet\Builder\Loader(
-            new Node\Scalar\String_($config['file_path']),
-            //new Node\Expr\Array_($config['sheets']),
-            new Node\Scalar\String_($config['delimiter']),
-            new Node\Scalar\String_($config['enclosure']),
-            new Node\Scalar\String_($config['escape'])
-        );
+        if (array_key_exists('excel', $config)) {
+            $builder = new Spreadsheet\Builder\Excel\Loader(
+                $config['file_path'],
+                $config['excel']['sheet'],
+            );
+        } elseif (array_key_exists('open_document', $config)) {
+            $builder = new Spreadsheet\Builder\OpenDocument\Loader(
+                $config['file_path'],
+                $config['open_document']['sheet'],
+            );
+        } elseif (array_key_exists('csv', $config)) {
+            $builder = new Spreadsheet\Builder\CSV\Loader(
+                $config['file_path'],
+                $config['csv']['delimiter'],
+                $config['csv']['enclosure'],
+            );
+        } else {
+            throw new InvalidConfigurationException(
+                'Could not determine if the factory should build an excel, an open_document or a csv loader.'
+            );
+        }
 
         return new Repository\Loader($builder);
     }

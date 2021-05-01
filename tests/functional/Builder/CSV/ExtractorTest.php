@@ -1,14 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace functional\Kiboko\Plugin\Spreadsheet\Builder\Excel;
 
-use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
+namespace functional\Builder\CSV;
+
 use Kiboko\Plugin\Spreadsheet\Builder;
-use Kiboko\Plugin\Log;
+use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
 use PHPUnit\Framework\TestCase;
 use Vfs\FileSystem;
+use Kiboko\Plugin\Log;
 
-final class ExtractorTest extends TestCase
+class ExtractorTest extends TestCase
 {
     use BuilderAssertTrait;
 
@@ -28,15 +29,12 @@ final class ExtractorTest extends TestCase
 
     public function testWithoutOption(): void
     {
-        $extractor = new Builder\Excel\Extractor(
-            filePath: __DIR__.'/../../files/source-to-extract.xlsx',
-            sheet: 'Sheet1',
-            skipLines: 0
-        );
-
-        $this->assertBuilderProducesInstanceOf(
-            'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Extractor',
-            $extractor
+        $extractor = new Builder\CSV\Extractor(
+            filePath: __DIR__.'/../../files/source-to-extract.csv',
+            skipLines: 0,
+            delimiter: ',',
+            enclosure: '"',
+            encoding: 'UTF-8'
         );
 
         $this->assertBuilderProducesExtractorIteratesAs(
@@ -50,19 +48,16 @@ final class ExtractorTest extends TestCase
 
     public function testWithLogger(): void
     {
-        $extract = new Builder\Excel\Extractor(
-            filePath: __DIR__.'/../../files/source-to-extract.xlsx',
-            sheet: 'Sheet1',
-            skipLines: 0
+        $extractor = new Builder\CSV\Extractor(
+            filePath: __DIR__.'/../../files/source-to-extract.csv',
+            skipLines: 0,
+            delimiter: ',',
+            enclosure: '"',
+            encoding: 'UTF-8'
         );
 
-        $extract->withLogger(
+        $extractor->withLogger(
             (new Log\Builder\Logger())->getNode()
-        );
-
-        $this->assertBuilderProducesInstanceOf(
-            'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Extractor',
-            $extract
         );
 
         $this->assertBuilderProducesExtractorIteratesAs(
@@ -70,7 +65,7 @@ final class ExtractorTest extends TestCase
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont']
             ],
-            $extract
+            $extractor
         );
     }
 }
