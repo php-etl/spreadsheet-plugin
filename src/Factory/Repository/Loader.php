@@ -10,12 +10,6 @@ final class Loader implements Configurator\StepRepositoryInterface
 {
     use RepositoryTrait;
 
-    /** @var Configurator\FileInterface[] */
-    private array $files;
-
-    /** @var string[] */
-    private array $packages;
-
     public function __construct(private Spreadsheet\Builder\Excel\Loader|Spreadsheet\Builder\OpenDocument\Loader|Spreadsheet\Builder\CSV\Loader $builder)
     {
         $this->files = [];
