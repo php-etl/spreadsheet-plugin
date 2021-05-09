@@ -1,7 +1,7 @@
 {
     "name": "php-etl/spreadsheet-plugin",
     "description": "Plugin for XLS Extractor and Loader",
-    "type": "library",
+    "type": "satellite-plugin",
     "license": "MIT",
     "authors": [
         {
