@@ -8,13 +8,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    private ConfigurationInterface $loggerConfiguration;
-
-    public function __construct(?ConfigurationInterface $loggerConfiguration = null)
-    {
-        $this->loggerConfiguration = $loggerConfiguration ?: new Log\Configuration();
-    }
-
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $extractor = new Configuration\Extractor();
@@ -30,11 +23,14 @@ final class Configuration implements ConfigurationInterface
                 ->thenInvalid('Your configuration should either contain the "extractor" or the "loader" key, not both.')
             ->end()
             ->children()
+                ->arrayNode('expression_language')
+                    ->scalarPrototype()->end()
+                ->end()
                 ->append(node: $extractor->getConfigTreeBuilder()->getRootNode())
                 ->append(node: $loader->getConfigTreeBuilder()->getRootNode())
-                ->append(node: $this->loggerConfiguration->getConfigTreeBuilder()->getRootNode()
+                ->variableNode('logger')
                     ->setDeprecated('php-etl/spreadsheet-plugin', '0.1')
-                )
+                ->end()
             ->end();
 
         return $builder;

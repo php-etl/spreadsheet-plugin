@@ -20,6 +20,7 @@ final class ConfigurationTest extends TestCase
         /* Minimal config */
         yield [
             'expected' => [
+                'expression_language' => [],
                 'extractor' => [
                     'file_path' => 'path/to/file',
                     'excel' => [
@@ -29,6 +30,7 @@ final class ConfigurationTest extends TestCase
                 ]
             ],
             'actual' => [
+                'expression_language' => [],
                 'extractor' => [
                     'file_path' => 'path/to/file',
                     'excel' => [
@@ -41,6 +43,7 @@ final class ConfigurationTest extends TestCase
         /* With skipline option */
         yield [
             'expected' => [
+                'expression_language' => [],
                 'extractor' => [
                     'file_path' => 'path/to/file',
                     'excel' => [
@@ -50,6 +53,7 @@ final class ConfigurationTest extends TestCase
                 ]
             ],
             'actual' => [
+                'expression_language' => [],
                 'extractor' => [
                     'file_path' => 'path/to/file',
                     'excel' => [
@@ -65,8 +69,8 @@ final class ConfigurationTest extends TestCase
             'expected' => [
                 'logger' => [
                     'type' => 'null',
-                    'destinations' => []
                 ],
+                'expression_language' => [],
                 'extractor' => [
                     'file_path' => 'path/to/file',
                     'excel' => [
@@ -79,6 +83,7 @@ final class ConfigurationTest extends TestCase
                 'logger' => [
                     'type' => 'null'
                 ],
+                'expression_language' => [],
                 'extractor' => [
                     'file_path' => 'path/to/file',
                     'excel' => [

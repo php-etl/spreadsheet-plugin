@@ -47,29 +47,4 @@ final class LoaderTest extends TestCase
             $load
         );
     }
-
-    public function testWithLogger(): void
-    {
-        $load = new Builder\CSV\Loader(
-            filePath: 'vfs://destination.csv',
-            delimiter: ',',
-            enclosure: '"'
-        );
-
-        $load->withLogger(
-            (new Log\Builder\Logger())->getNode()
-        );
-
-        $this->assertBuilderProducesPipelineLoadingLike(
-            [
-                ['first name' => 'john', 'last name' => 'doe'],
-                ['first name' => 'jean', 'last name' => 'dupont'],
-            ],
-            [
-                ['first name' => 'john', 'last name' => 'doe'],
-                ['first name' => 'jean', 'last name' => 'dupont'],
-            ],
-            $load
-        );
-    }
 }

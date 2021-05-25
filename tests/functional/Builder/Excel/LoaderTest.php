@@ -50,33 +50,4 @@ final class LoaderTest extends TestCase
             $load
         );
     }
-
-    public function testWithFilePathAndLogger(): void
-    {
-        $load = new Builder\Excel\Loader(
-            filePath: 'vfs://destination.xlsx',
-            sheetName: 'Sheet1'
-        );
-
-        $load->withLogger(
-            (new Log\Builder\Logger())->getNode()
-        );
-
-        $this->assertBuilderProducesInstanceOf(
-            'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Loader',
-            $load
-        );
-
-        $this->assertBuilderProducesPipelineLoadingLike(
-            [
-                ['first name' => 'john', 'last name' => 'doe'],
-                ['first name' => 'jean', 'last name' => 'dupont'],
-            ],
-            [
-                ['first name' => 'john', 'last name' => 'doe'],
-                ['first name' => 'jean', 'last name' => 'dupont'],
-            ],
-            $load
-        );
-    }
 }

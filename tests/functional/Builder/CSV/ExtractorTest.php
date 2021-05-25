@@ -45,27 +45,4 @@ class ExtractorTest extends TestCase
             $extractor
         );
     }
-
-    public function testWithLogger(): void
-    {
-        $extractor = new Builder\CSV\Extractor(
-            filePath: __DIR__.'/../../files/source-to-extract.csv',
-            skipLines: 0,
-            delimiter: ',',
-            enclosure: '"',
-            encoding: 'UTF-8'
-        );
-
-        $extractor->withLogger(
-            (new Log\Builder\Logger())->getNode()
-        );
-
-        $this->assertBuilderProducesExtractorIteratesAs(
-            [
-                ['first name' => 'john', 'last name' => 'doe'],
-                ['first name' => 'jean', 'last name' => 'dupont']
-            ],
-            $extractor
-        );
-    }
 }

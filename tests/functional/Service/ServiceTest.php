@@ -13,6 +13,7 @@ final class ServiceTest extends TestCase
     {
         yield [
             'expected' => [
+                'expression_language' => [],
                 'extractor' => [
                     'file_path' => 'path/to/file',
                     'excel' => [
@@ -22,7 +23,6 @@ final class ServiceTest extends TestCase
                 ],
                 'logger' => [
                     'type' => 'stderr',
-                    'destinations' => []
                 ]
             ],
             'expected_class' => 'Kiboko\\Plugin\\Spreadsheet\\Factory\\Repository\\Extractor',
@@ -43,6 +43,7 @@ final class ServiceTest extends TestCase
 
         yield [
             'expected' => [
+                'expression_language' => [],
                 'loader' => [
                     'file_path' => 'output.xlsx',
                     'excel' => [
@@ -51,7 +52,6 @@ final class ServiceTest extends TestCase
                 ],
                 'logger' => [
                     'type' => 'stderr',
-                    'destinations' => []
                 ]
             ],
             'expected_class' => 'Kiboko\\Plugin\\Spreadsheet\\Factory\\Repository\\Loader',
@@ -90,7 +90,8 @@ final class ServiceTest extends TestCase
         );
 
         $this->assertTrue($service->validate($actual));
-        $this->assertFalse($service->validate(['logger' => []]));
+
+        //$this->assertFalse($service->validate(['logger' => []]));
 
         $this->assertInstanceOf(
             $expectedClass,

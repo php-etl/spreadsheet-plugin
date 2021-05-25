@@ -1,0 +1,10 @@
+spreadsheet:
+  expression_language:
+    - 'functional\Kiboko\Plugin\Spreadsheet\ExpressionLanguage\Provider'
+  loader:
+    file_path: '@=env("SPREADSHEET_FILE")'
+    csv:
+      delimiter: '@=env("SPREADSHEET_DELIMITER")'
+      enclosure: '@=env("SPREADSHEET_ENCLOSURE")'
+  logger:
+    type: stderr

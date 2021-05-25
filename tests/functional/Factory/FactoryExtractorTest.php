@@ -6,6 +6,7 @@ namespace functional\Kiboko\Plugin\Spreadsheet\Factory;
 use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Plugin\Spreadsheet;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 final class FactoryExtractorTest extends TestCase
 {
@@ -35,7 +36,7 @@ final class FactoryExtractorTest extends TestCase
      */
     public function testWithConfiguration(array $expected, array $actual): void
     {
-        $factory = new Spreadsheet\Factory\Extractor();
+        $factory = new Spreadsheet\Factory\Extractor(new ExpressionLanguage());
         $normalizedConfig = $factory->normalize($actual);
 
         $this->assertEquals(
@@ -61,7 +62,7 @@ final class FactoryExtractorTest extends TestCase
             'extractor' => []
         ];
 
-        $factory = new Spreadsheet\Factory\Extractor();
+        $factory = new Spreadsheet\Factory\Extractor(new ExpressionLanguage());
         $factory->normalize($wrongConfig);
     }
 }

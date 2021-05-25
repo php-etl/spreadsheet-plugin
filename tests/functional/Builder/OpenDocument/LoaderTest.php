@@ -89,30 +89,6 @@ final class LoaderTest extends TestCase
         );
     }
 
-    public function testWithLogger(): void
-    {
-        $load = new Builder\OpenDocument\Loader(
-            filePath: 'vfs://destination.ods',
-            sheetName: 'Sheet1'
-        );
-
-        $load->withLogger(
-            (new Log\Builder\Logger())->getNode()
-        );
-
-        $this->assertBuilderProducesPipelineLoadingLike(
-            [
-                ['first name' => 'john', 'last name' => 'doe'],
-                ['first name' => 'jean', 'last name' => 'dupont'],
-            ],
-            [
-                ['first name' => 'john', 'last name' => 'doe'],
-                ['first name' => 'jean', 'last name' => 'dupont'],
-            ],
-            $load
-        );
-    }
-
     public function testWithSheet(): void
     {
         $load = new Builder\OpenDocument\Loader(

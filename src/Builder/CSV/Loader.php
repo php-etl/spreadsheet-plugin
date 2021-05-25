@@ -3,8 +3,12 @@
 
 namespace Kiboko\Plugin\Spreadsheet\Builder\CSV;
 
+use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Contract\Configurator\StepBuilderInterface;
 use PhpParser\Node;
+use PhpParser\ParserFactory;
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 final class Loader implements StepBuilderInterface
 {
@@ -13,9 +17,10 @@ final class Loader implements StepBuilderInterface
     private ?Node\Expr $state;
 
     public function __construct(
-        private string $filePath,
-        private string $delimiter = ',',
-        private string $enclosure = '"',
+        private string|Expression $filePath,
+        private string|Expression $delimiter,
+        private string|Expression $enclosure,
+        private ?ExpressionLanguage $interpreter = null
     ) {
         $this->logger = null;
         $this->rejection = null;
@@ -43,6 +48,21 @@ final class Loader implements StepBuilderInterface
         return $this;
     }
 
+    private function compileValue(string|Expression $value): Node\Expr
+    {
+        if (is_string($value)) {
+            return new Node\Scalar\String_(value: $value);
+        }
+        if ($value instanceof Expression) {
+            $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7, null);
+            return $parser->parse('<?php ' . $this->interpreter->compile($value, ['input']) . ';')[0]->expr;
+        }
+
+        throw new InvalidConfigurationException(
+            message: 'Could not determine the correct way to compile the provided filter.',
+        );
+    }
+
     public function getNode(): Node
     {
         $arguments = [
@@ -66,7 +86,7 @@ final class Loader implements StepBuilderInterface
                                         name: new Node\Identifier('setFieldDelimiter'),
                                         args: [
                                             new Node\Arg(
-                                                value: new Node\Scalar\String_($this->delimiter)
+                                                value: $this->compileValue($this->delimiter)
                                             ),
                                         ]
                                     )
@@ -77,7 +97,7 @@ final class Loader implements StepBuilderInterface
                                         name: new Node\Identifier('setFieldEnclosure'),
                                         args: [
                                             new Node\Arg(
-                                                value: new Node\Scalar\String_($this->enclosure)
+                                                value: $this->compileValue($this->enclosure)
                                             ),
                                         ]
                                     )
@@ -88,7 +108,7 @@ final class Loader implements StepBuilderInterface
                                         name: new Node\Identifier('openToFile'),
                                         args: [
                                             new Node\Arg(
-                                                value: new Node\Scalar\String_($this->filePath)
+                                                value: $this->compileValue($this->filePath)
                                             ),
                                         ]
                                     )
@@ -101,18 +121,12 @@ final class Loader implements StepBuilderInterface
                     ),
                 ),
                 name: new Node\Identifier('writer'),
-            )
+            ),
+            new Node\Arg(
+                value: $this->logger ?? new Node\Expr\New_(new Node\Name\FullyQualified('Psr\\Log\\NullLogger')),
+                name: new Node\Identifier('logger'),
+            ),
         ];
-
-        if ($this->logger !== null) {
-            array_push(
-                $arguments,
-                new Node\Arg(
-                    value: $this->logger,
-                    name: new Node\Identifier('logger'),
-                ),
-            );
-        }
 
         return new Node\Expr\New_(
             class: new Node\Name\FullyQualified('Kiboko\\Component\\Flow\\Spreadsheet\\CSV\\Safe\\Loader'),
