@@ -2,12 +2,8 @@
 
 namespace Kiboko\Plugin\Spreadsheet\Builder\CSV;
 
-use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Contract\Configurator\StepBuilderInterface;
 use PhpParser\Node;
-use PhpParser\ParserFactory;
-use Symfony\Component\ExpressionLanguage\Expression;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 final class Extractor implements StepBuilderInterface
 {
@@ -16,12 +12,11 @@ final class Extractor implements StepBuilderInterface
     private ?Node\Expr $state;
 
     public function __construct(
-        private string|Expression $filePath,
+        private Node\Expr $filePath,
         private int $skipLines,
-        private string|Expression $delimiter,
-        private string|Expression $enclosure,
-        private string|Expression $encoding,
-        private ?ExpressionLanguage $interpreter = null
+        private Node\Expr $delimiter,
+        private Node\Expr $enclosure,
+        private Node\Expr $encoding
     ) {
         $this->logger = null;
         $this->rejection = null;
@@ -49,21 +44,6 @@ final class Extractor implements StepBuilderInterface
         return $this;
     }
 
-    private function compileValue(string|Expression $value): Node\Expr
-    {
-        if (is_string($value)) {
-            return new Node\Scalar\String_(value: $value);
-        }
-        if ($value instanceof Expression) {
-            $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7, null);
-            return $parser->parse('<?php ' . $this->interpreter->compile($value, ['input']) . ';')[0]->expr;
-        }
-
-        throw new InvalidConfigurationException(
-            message: 'Could not determine the correct way to compile the provided filter.',
-        );
-    }
-
     public function getNode(): Node
     {
         $arguments = [
@@ -87,7 +67,7 @@ final class Extractor implements StepBuilderInterface
                                 name: new Node\Identifier('setFieldDelimiter'),
                                 args: [
                                     new Node\Arg(
-                                        value: $this->compileValue($this->delimiter)
+                                        value: $this->delimiter
                                     ),
                                 ]
                             )
@@ -98,7 +78,7 @@ final class Extractor implements StepBuilderInterface
                                 name: new Node\Identifier('setFieldEnclosure'),
                                 args: [
                                     new Node\Arg(
-                                        value: $this->compileValue($this->enclosure)
+                                        value: $this->enclosure
                                     ),
                                 ]
                             )
@@ -109,7 +89,7 @@ final class Extractor implements StepBuilderInterface
                                 name: new Node\Identifier('setEncoding'),
                                 args: [
                                     new Node\Arg(
-                                        value: $this->compileValue($this->encoding)
+                                        value: $this->encoding
                                     ),
                                 ]
                             )
@@ -120,7 +100,7 @@ final class Extractor implements StepBuilderInterface
                                 name: new Node\Identifier('open'),
                                 args: [
                                     new Node\Arg(
-                                        value: $this->compileValue($this->filePath)
+                                        value: $this->filePath
                                     ),
                                 ]
                             )

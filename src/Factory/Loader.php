@@ -6,10 +6,13 @@ namespace Kiboko\Plugin\Spreadsheet\Factory;
 use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Plugin\Spreadsheet;
 use Kiboko\Contract\Configurator;
+use PhpParser\ParserFactory;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception as Symfony;
 use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use PhpParser\Node;
 
 final class Loader implements Configurator\FactoryInterface
 {
@@ -49,26 +52,38 @@ final class Loader implements Configurator\FactoryInterface
         return false;
     }
 
+    private function compileValue(string|Expression $value): Node\Expr
+    {
+        if (is_string($value)) {
+            return new Node\Scalar\String_(value: $value);
+        }
+        if ($value instanceof Expression) {
+            $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7, null);
+            return $parser->parse('<?php ' . $this->interpreter->compile($value, ['input']) . ';')[0]->expr;
+        }
+
+        throw new InvalidConfigurationException(
+            message: 'Could not determine the correct way to compile the provided filter.',
+        );
+    }
+
     public function compile(array $config): Repository\Loader
     {
         if (array_key_exists('excel', $config)) {
             $builder = new Spreadsheet\Builder\Excel\Loader(
-                $config['file_path'],
-                $config['excel']['sheet'],
-                $this->interpreter
+                $this->compileValue($config['file_path']),
+                $this->compileValue($config['excel']['sheet'])
             );
         } elseif (array_key_exists('open_document', $config)) {
             $builder = new Spreadsheet\Builder\OpenDocument\Loader(
-                $config['file_path'],
-                $config['open_document']['sheet'],
-                $this->interpreter
+                $this->compileValue($config['file_path']),
+                $this->compileValue($config['open_document']['sheet'])
             );
         } elseif (array_key_exists('csv', $config)) {
             $builder = new Spreadsheet\Builder\CSV\Loader(
-                $config['file_path'],
-                $config['csv']['delimiter'],
-                $config['csv']['enclosure'],
-                $this->interpreter
+                $this->compileValue($config['file_path']),
+                $this->compileValue($config['csv']['delimiter']),
+                $this->compileValue($config['csv']['enclosure'])
             );
         } else {
             throw new InvalidConfigurationException(

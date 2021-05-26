@@ -4,9 +4,9 @@ namespace functional\Kiboko\Plugin\Spreadsheet\Builder\Excel;
 
 use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
 use Kiboko\Plugin\Spreadsheet\Builder;
-use Kiboko\Plugin\Log;
 use PHPUnit\Framework\TestCase;
 use Vfs\FileSystem;
+use PhpParser\Node;
 
 final class ExtractorTest extends TestCase
 {
@@ -29,8 +29,8 @@ final class ExtractorTest extends TestCase
     public function testWithoutOption(): void
     {
         $extractor = new Builder\Excel\Extractor(
-            filePath: __DIR__.'/../../files/source-to-extract.xlsx',
-            sheetName: 'Sheet1',
+            filePath: new Node\Scalar\String_(__DIR__.'/../../files/source-to-extract.xlsx'),
+            sheetName: new Node\Scalar\String_('Sheet1'),
             skipLines: 0
         );
 

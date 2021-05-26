@@ -2,12 +2,8 @@
 
 namespace Kiboko\Plugin\Spreadsheet\Builder\Excel;
 
-use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Contract\Configurator\StepBuilderInterface;
 use PhpParser\Node;
-use PhpParser\ParserFactory;
-use Symfony\Component\ExpressionLanguage\Expression;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 final class Extractor implements StepBuilderInterface
 {
@@ -16,10 +12,9 @@ final class Extractor implements StepBuilderInterface
     private ?Node\Expr $state;
 
     public function __construct(
-        private string|Expression $filePath,
-        private string|Expression $sheetName,
-        private int $skipLines,
-        private ?ExpressionLanguage $interpreter = null
+        private Node\Expr $filePath,
+        private Node\Expr $sheetName,
+        private int $skipLines
     ) {
         $this->logger = null;
         $this->rejection = null;
@@ -47,21 +42,6 @@ final class Extractor implements StepBuilderInterface
         return $this;
     }
 
-    private function compileValue(string|Expression $value): Node\Expr
-    {
-        if (is_string($value)) {
-            return new Node\Scalar\String_(value: $value);
-        }
-        if ($value instanceof Expression) {
-            $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7, null);
-            return $parser->parse('<?php ' . $this->interpreter->compile($value, ['input']) . ';')[0]->expr;
-        }
-
-        throw new InvalidConfigurationException(
-            message: 'Could not determine the correct way to compile the provided filter.',
-        );
-    }
-
     public function getNode(): Node
     {
         $arguments = [
@@ -85,7 +65,7 @@ final class Extractor implements StepBuilderInterface
                                     name: new Node\Identifier('open'),
                                     args: [
                                         new Node\Arg(
-                                            value: $this->compileValue($this->filePath),
+                                            value: $this->filePath,
                                         ),
                                     ]
                                 )
@@ -100,7 +80,7 @@ final class Extractor implements StepBuilderInterface
                 name: new Node\Identifier('reader'),
             ),
             new Node\Arg(
-                value: $this->compileValue($this->sheetName),
+                value: $this->sheetName,
                 name: new Node\Identifier('sheetName'),
             ),
             new Node\Arg(

@@ -3,12 +3,8 @@
 
 namespace Kiboko\Plugin\Spreadsheet\Builder\Excel;
 
-use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Contract\Configurator\StepBuilderInterface;
 use PhpParser\Node;
-use PhpParser\ParserFactory;
-use Symfony\Component\ExpressionLanguage\Expression;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 final class Loader implements StepBuilderInterface
 {
@@ -17,9 +13,8 @@ final class Loader implements StepBuilderInterface
     private ?Node\Expr $state;
 
     public function __construct(
-        private string|Expression $filePath,
-        private string|Expression $sheetName,
-        private ?ExpressionLanguage $interpreter = null
+        private Node\Expr $filePath,
+        private Node\Expr $sheetName
     ) {
         $this->logger = null;
         $this->rejection = null;
@@ -47,26 +42,11 @@ final class Loader implements StepBuilderInterface
         return $this;
     }
 
-    public function withSheet(string $sheet): self
+    public function withSheet(Node\Expr $sheet): self
     {
         $this->sheetName = $sheet;
 
         return $this;
-    }
-
-    private function compileValue(string|Expression $value): Node\Expr
-    {
-        if (is_string($value)) {
-            return new Node\Scalar\String_(value: $value);
-        }
-        if ($value instanceof Expression) {
-            $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7, null);
-            return $parser->parse('<?php ' . $this->interpreter->compile($value, ['input']) . ';')[0]->expr;
-        }
-
-        throw new InvalidConfigurationException(
-            message: 'Could not determine the correct way to compile the provided filter.',
-        );
     }
 
     public function getNode(): Node
@@ -81,14 +61,14 @@ final class Loader implements StepBuilderInterface
                     name: 'openToFile',
                     args: [
                         new Node\Arg(
-                            value: $this->compileValue($this->filePath),
+                            value: $this->filePath,
                         )
                     ]
                 ),
                 name: new Node\Identifier('writer'),
             ),
             new Node\Arg(
-                value: $this->compileValue($this->sheetName),
+                value: $this->sheetName,
                 name: new Node\Identifier('sheetName'),
             ),
             new Node\Arg(

@@ -7,7 +7,7 @@ use Kiboko\Plugin\Spreadsheet\Builder;
 use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
 use PHPUnit\Framework\TestCase;
 use Vfs\FileSystem;
-use Kiboko\Plugin\Log;
+use PhpParser\Node;
 
 class ExtractorTest extends TestCase
 {
@@ -30,11 +30,11 @@ class ExtractorTest extends TestCase
     public function testWithoutOption(): void
     {
         $extractor = new Builder\CSV\Extractor(
-            filePath: __DIR__.'/../../files/source-to-extract.csv',
+            filePath: new Node\Scalar\String_(__DIR__.'/../../files/source-to-extract.csv'),
             skipLines: 0,
-            delimiter: ',',
-            enclosure: '"',
-            encoding: 'UTF-8'
+            delimiter: new Node\Scalar\String_(','),
+            enclosure: new Node\Scalar\String_('"'),
+            encoding: new Node\Scalar\String_('UTF-8')
         );
 
         $this->assertBuilderProducesExtractorIteratesAs(
