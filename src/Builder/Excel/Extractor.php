@@ -14,7 +14,7 @@ final class Extractor implements StepBuilderInterface
     public function __construct(
         private Node\Expr $filePath,
         private Node\Expr $sheetName,
-        private int $skipLines
+        private Node\Expr $skipLines
     ) {
         $this->logger = null;
         $this->rejection = null;
@@ -84,7 +84,7 @@ final class Extractor implements StepBuilderInterface
                 name: new Node\Identifier('sheetName'),
             ),
             new Node\Arg(
-                value: new Node\Scalar\LNumber($this->skipLines),
+                value: $this->skipLines,
                 name: new Node\Identifier('skipLines'),
             ),
             new Node\Arg(

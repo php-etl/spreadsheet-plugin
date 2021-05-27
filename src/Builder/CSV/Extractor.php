@@ -13,7 +13,7 @@ final class Extractor implements StepBuilderInterface
 
     public function __construct(
         private Node\Expr $filePath,
-        private int $skipLines,
+        private Node\Expr $skipLines,
         private Node\Expr $delimiter,
         private Node\Expr $enclosure,
         private Node\Expr $encoding
@@ -115,7 +115,7 @@ final class Extractor implements StepBuilderInterface
                 name: new Node\Identifier('reader'),
             ),
             new Node\Arg(
-                value: new Node\Scalar\LNumber($this->skipLines),
+                value: $this->skipLines,
                 name: new Node\Identifier('skipLines'),
             ),
             new Node\Arg(
