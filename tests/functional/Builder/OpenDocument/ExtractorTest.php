@@ -31,7 +31,7 @@ final class ExtractorTest extends TestCase
         $extractor = new Builder\OpenDocument\Extractor(
             filePath: new Node\Scalar\String_(__DIR__.'/../../files/source-to-extract.ods'),
             sheetName: new Node\Scalar\String_('Sheet1'),
-            skipLines: 0
+            skipLines: new Node\Scalar\LNumber(0)
         );
 
         $this->assertBuilderProducesInstanceOf(

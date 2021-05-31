@@ -31,7 +31,7 @@ class ExtractorTest extends TestCase
     {
         $extractor = new Builder\CSV\Extractor(
             filePath: new Node\Scalar\String_(__DIR__.'/../../files/source-to-extract.csv'),
-            skipLines: 0,
+            skipLines: new Node\Scalar\LNumber(0),
             delimiter: new Node\Scalar\String_(','),
             enclosure: new Node\Scalar\String_('"'),
             encoding: new Node\Scalar\String_('UTF-8')
