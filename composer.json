@@ -18,7 +18,6 @@
         "php-etl/configurator-contracts": "^0.3.0",
         "php-etl/packaging-contracts": "^0.1.0",
         "php-etl/satellite-toolbox": "^0.1.0",
-        "php-etl/array-expression-language": "0.1.x-dev",
         "php-etl/bucket-contracts": "^0.1.0",
         "php-etl/pipeline": "^0.2.0",
         "php-etl/spreadsheet-flow": "^0.1.0",
