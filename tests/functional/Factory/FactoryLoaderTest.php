@@ -6,6 +6,7 @@ namespace functional\Kiboko\Plugin\Spreadsheet\Factory;
 use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Plugin\Spreadsheet;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 final class FactoryLoaderTest extends TestCase
 {
@@ -34,7 +35,7 @@ final class FactoryLoaderTest extends TestCase
      */
     public function testWithConfiguration(array $expected, array $actual): void
     {
-        $factory = new Spreadsheet\Factory\Loader();
+        $factory = new Spreadsheet\Factory\Loader(new ExpressionLanguage());
         $normalizedConfig = $factory->normalize($actual);
 
         $this->assertEquals(
@@ -62,7 +63,7 @@ final class FactoryLoaderTest extends TestCase
             'loader' => []
         ];
 
-        $factory = new Spreadsheet\Factory\Loader();
+        $factory = new Spreadsheet\Factory\Loader(new ExpressionLanguage());
         $factory->normalize($wrongConfig);
     }
 }

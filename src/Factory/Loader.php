@@ -9,13 +9,15 @@ use Kiboko\Contract\Configurator;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception as Symfony;
 use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use function Kiboko\Component\SatelliteToolbox\Configuration\compileValueWhenExpression;
 
 final class Loader implements Configurator\FactoryInterface
 {
     private Processor $processor;
     private ConfigurationInterface $configuration;
 
-    public function __construct()
+    public function __construct(private ExpressionLanguage $interpreter)
     {
         $this->processor = new Processor();
         $this->configuration = new Spreadsheet\Configuration\Loader();
@@ -52,19 +54,19 @@ final class Loader implements Configurator\FactoryInterface
     {
         if (array_key_exists('excel', $config)) {
             $builder = new Spreadsheet\Builder\Excel\Loader(
-                $config['file_path'],
-                $config['excel']['sheet'],
+                compileValueWhenExpression($this->interpreter, $config['file_path']),
+                compileValueWhenExpression($this->interpreter, $config['excel']['sheet'])
             );
         } elseif (array_key_exists('open_document', $config)) {
             $builder = new Spreadsheet\Builder\OpenDocument\Loader(
-                $config['file_path'],
-                $config['open_document']['sheet'],
+                compileValueWhenExpression($this->interpreter, $config['file_path']),
+                compileValueWhenExpression($this->interpreter, $config['open_document']['sheet'])
             );
         } elseif (array_key_exists('csv', $config)) {
             $builder = new Spreadsheet\Builder\CSV\Loader(
-                $config['file_path'],
-                $config['csv']['delimiter'],
-                $config['csv']['enclosure'],
+                compileValueWhenExpression($this->interpreter, $config['file_path']),
+                compileValueWhenExpression($this->interpreter, $config['csv']['delimiter']),
+                compileValueWhenExpression($this->interpreter, $config['csv']['enclosure'])
             );
         } else {
             throw new InvalidConfigurationException(

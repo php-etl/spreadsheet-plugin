@@ -4,9 +4,9 @@ namespace functional\Kiboko\Plugin\Spreadsheet\Builder\OpenDocument;
 
 use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
 use Kiboko\Plugin\Spreadsheet\Builder;
-use Kiboko\Plugin\Log;
 use PHPUnit\Framework\TestCase;
 use Vfs\FileSystem;
+use PhpParser\Node;
 
 final class LoaderTest extends TestCase
 {
@@ -29,8 +29,8 @@ final class LoaderTest extends TestCase
     public function testWritingFile(): void
     {
         $load = new Builder\OpenDocument\Loader(
-            filePath: 'vfs://destination.ods',
-            sheetName: 'Sheet1'
+            filePath: new Node\Scalar\String_('vfs://destination.ods'),
+            sheetName: new Node\Scalar\String_('Sheet1')
         );
 
         $this->assertBuilderProducesLoaderWritingFile(
@@ -46,8 +46,8 @@ final class LoaderTest extends TestCase
     public function testIfLoaderProducedIsRight(): void
     {
         $load = new Builder\OpenDocument\Loader(
-            filePath: 'vfs://destination.ods',
-            sheetName: 'Sheet1'
+            filePath: new Node\Scalar\String_('vfs://destination.ods'),
+            sheetName: new Node\Scalar\String_('Sheet1')
         );
 
         $this->assertBuilderProducesInstanceOf(
@@ -59,8 +59,8 @@ final class LoaderTest extends TestCase
     public function testIfLoaderIsNotAnExtractor(): void
     {
         $load = new Builder\OpenDocument\Loader(
-            filePath: 'vfs://destination.ods',
-            sheetName: 'Sheet1'
+            filePath: new Node\Scalar\String_('vfs://destination.ods'),
+            sheetName: new Node\Scalar\String_('Sheet1')
         );
 
         $this->assertBuilderProducesNotInstanceOf(
@@ -72,32 +72,8 @@ final class LoaderTest extends TestCase
     public function testWithoutOption(): void
     {
         $load = new Builder\OpenDocument\Loader(
-            filePath: 'vfs://destination.ods',
-            sheetName: 'Sheet1'
-        );
-
-        $this->assertBuilderProducesPipelineLoadingLike(
-            [
-                ['first name' => 'john', 'last name' => 'doe'],
-                ['first name' => 'jean', 'last name' => 'dupont'],
-            ],
-            [
-                ['first name' => 'john', 'last name' => 'doe'],
-                ['first name' => 'jean', 'last name' => 'dupont'],
-            ],
-            $load
-        );
-    }
-
-    public function testWithLogger(): void
-    {
-        $load = new Builder\OpenDocument\Loader(
-            filePath: 'vfs://destination.ods',
-            sheetName: 'Sheet1'
-        );
-
-        $load->withLogger(
-            (new Log\Builder\Logger())->getNode()
+            filePath: new Node\Scalar\String_('vfs://destination.ods'),
+            sheetName: new Node\Scalar\String_('Sheet1')
         );
 
         $this->assertBuilderProducesPipelineLoadingLike(
@@ -116,11 +92,11 @@ final class LoaderTest extends TestCase
     public function testWithSheet(): void
     {
         $load = new Builder\OpenDocument\Loader(
-            filePath: 'vfs://destination.ods',
-            sheetName: 'Sheet1'
+            filePath: new Node\Scalar\String_('vfs://destination.ods'),
+            sheetName: new Node\Scalar\String_('Sheet1')
         );
 
-        $load->withSheet('Sheet1');
+        $load->withSheet(new Node\Scalar\String_('Sheet1'));
 
         $this->assertBuilderProducesPipelineLoadingLike(
             [

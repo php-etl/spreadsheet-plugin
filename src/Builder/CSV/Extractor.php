@@ -12,11 +12,11 @@ final class Extractor implements StepBuilderInterface
     private ?Node\Expr $state;
 
     public function __construct(
-        private string $filePath,
-        private int $skipLines,
-        private string $delimiter,
-        private string $enclosure,
-        private string $encoding,
+        private Node\Expr $filePath,
+        private Node\Expr $skipLines,
+        private Node\Expr $delimiter,
+        private Node\Expr $enclosure,
+        private Node\Expr $encoding
     ) {
         $this->logger = null;
         $this->rejection = null;
@@ -67,7 +67,7 @@ final class Extractor implements StepBuilderInterface
                                 name: new Node\Identifier('setFieldDelimiter'),
                                 args: [
                                     new Node\Arg(
-                                        value: new Node\Scalar\String_($this->delimiter)
+                                        value: $this->delimiter
                                     ),
                                 ]
                             )
@@ -78,7 +78,7 @@ final class Extractor implements StepBuilderInterface
                                 name: new Node\Identifier('setFieldEnclosure'),
                                 args: [
                                     new Node\Arg(
-                                        value: new Node\Scalar\String_($this->enclosure)
+                                        value: $this->enclosure
                                     ),
                                 ]
                             )
@@ -89,7 +89,7 @@ final class Extractor implements StepBuilderInterface
                                 name: new Node\Identifier('setEncoding'),
                                 args: [
                                     new Node\Arg(
-                                        value: new Node\Scalar\String_($this->encoding)
+                                        value: $this->encoding
                                     ),
                                 ]
                             )
@@ -100,7 +100,7 @@ final class Extractor implements StepBuilderInterface
                                 name: new Node\Identifier('open'),
                                 args: [
                                     new Node\Arg(
-                                        value: new Node\Scalar\String_($this->filePath)
+                                        value: $this->filePath
                                     ),
                                 ]
                             )
@@ -115,20 +115,14 @@ final class Extractor implements StepBuilderInterface
                 name: new Node\Identifier('reader'),
             ),
             new Node\Arg(
-                value: new Node\Scalar\LNumber($this->skipLines),
+                value: $this->skipLines,
                 name: new Node\Identifier('skipLines'),
             ),
+            new Node\Arg(
+                value: $this->logger ?? new Node\Expr\New_(new Node\Name\FullyQualified('Psr\\Log\\NullLogger')),
+                name: new Node\Identifier('logger'),
+            ),
         ];
-
-        if ($this->logger !== null) {
-            array_push(
-                $arguments,
-                new Node\Arg(
-                    value: $this->logger,
-                    name: new Node\Identifier('logger'),
-                ),
-            );
-        }
 
         return new Node\Expr\New_(
             class: new Node\Name\FullyQualified('Kiboko\\Component\\Flow\\Spreadsheet\\CSV\\Safe\\Extractor'),

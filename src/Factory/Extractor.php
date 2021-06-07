@@ -9,13 +9,17 @@ use Kiboko\Contract\Configurator;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception as Symfony;
 use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use function Kiboko\Component\SatelliteToolbox\Configuration\compileValueWhenExpression;
+use function Kiboko\Component\SatelliteToolbox\Configuration\compileValue;
 
 final class Extractor implements Configurator\FactoryInterface
 {
     private Processor $processor;
     private ConfigurationInterface $configuration;
 
-    public function __construct()
+    public function __construct(private ExpressionLanguage $interpreter)
     {
         $this->processor = new Processor();
         $this->configuration = new Spreadsheet\Configuration\Extractor();
@@ -54,23 +58,23 @@ final class Extractor implements Configurator\FactoryInterface
     {
         if (array_key_exists('excel', $config)) {
             $builder = new Spreadsheet\Builder\Excel\Extractor(
-                $config['file_path'],
-                $config['excel']['sheet'],
-                $config['excel']['skip_lines'],
+                compileValueWhenExpression($this->interpreter, $config['file_path']),
+                compileValueWhenExpression($this->interpreter, $config['excel']['sheet']),
+                compileValueWhenExpression($this->interpreter, $config['excel']['skip_lines'])
             );
         } elseif (array_key_exists('open_document', $config)) {
             $builder = new Spreadsheet\Builder\OpenDocument\Extractor(
-                $config['file_path'],
-                $config['open_document']['sheet'],
-                $config['open_document']['skip_lines'],
+                compileValueWhenExpression($this->interpreter, $config['file_path']),
+                compileValueWhenExpression($this->interpreter, $config['open_document']['sheet']),
+                compileValueWhenExpression($this->interpreter, $config['open_document']['skip_lines'])
             );
         } elseif (array_key_exists('csv', $config)) {
             $builder = new Spreadsheet\Builder\CSV\Extractor(
-                $config['file_path'],
-                $config['csv']['skip_lines'],
-                $config['csv']['delimiter'],
-                $config['csv']['enclosure'],
-                $config['csv']['encoding'],
+                compileValueWhenExpression($this->interpreter, $config['file_path']),
+                compileValueWhenExpression($this->interpreter, $config['csv']['skip_lines']),
+                compileValueWhenExpression($this->interpreter, $config['csv']['delimiter']),
+                compileValueWhenExpression($this->interpreter, $config['csv']['enclosure']),
+                compileValueWhenExpression($this->interpreter, $config['csv']['encoding'])
             );
         } else {
             throw new InvalidConfigurationException(

@@ -9,17 +9,19 @@ use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Definition\Exception as Symfony;
-use Kiboko\Plugin\Log;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 final class Service implements FactoryInterface
 {
     private Processor $processor;
     private ConfigurationInterface $configuration;
+    private ExpressionLanguage $interpreter;
 
-    public function __construct()
+    public function __construct(?ExpressionLanguage $interpreter = null)
     {
         $this->processor = new Processor();
         $this->configuration = new Configuration();
+        $this->interpreter = $interpreter ?? new ExpressionLanguage();
     }
 
     public function configuration(): ConfigurationInterface
@@ -38,42 +40,35 @@ final class Service implements FactoryInterface
 
     public function validate(array $config): bool
     {
-        if ($this->processor->processConfiguration($this->configuration, $config)) {
-            return true;
-        }
+        try {
+            $this->processor->processConfiguration($this->configuration, $config);
 
-        return false;
+            return true;
+        } catch (Symfony\InvalidTypeException|Symfony\InvalidConfigurationException) {
+            return false;
+        }
     }
 
     public function compile(array $config): RepositoryInterface
     {
-        $loggerFactory = new Log\Service();
+        if (array_key_exists('expression_language', $config)
+            && is_array($config['expression_language'])
+            && count($config['expression_language'])
+        ) {
+            foreach ($config['expression_language'] as $provider) {
+                $this->interpreter->registerProvider(new $provider);
+            }
+        }
 
         try {
             if (array_key_exists('extractor', $config)) {
-                $extractorFactory = new Factory\Extractor();
+                $extractorFactory = new Factory\Extractor($this->interpreter);
 
-                $extractor = $extractorFactory->compile($config['extractor']);
-
-                $extractorBuilder = $extractor->getBuilder();
-
-                $logger = $loggerFactory->compile($config['logger'] ?? []);
-
-                $extractorBuilder->withLogger($logger->getBuilder()->getNode());
-
-                return $extractor;
+                return $extractorFactory->compile($config['extractor']);
             } elseif (array_key_exists('loader', $config)) {
-                $loaderFactory = new Factory\Loader();
+                $loaderFactory = new Factory\Loader($this->interpreter);
 
-                $loader = $loaderFactory->compile($config['loader']);
-
-                $loaderBuilder = $loader->getBuilder();
-
-                $logger = $loggerFactory->compile($config['logger'] ?? []);
-
-                $loaderBuilder->withLogger($logger->getBuilder()->getNode());
-
-                return $loader;
+                return $loaderFactory->compile($config['loader']);
             } else {
                 throw new InvalidConfigurationException(
                     'Could not determine if the factory should build an extractor or a loader.'

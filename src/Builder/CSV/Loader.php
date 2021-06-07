@@ -13,9 +13,9 @@ final class Loader implements StepBuilderInterface
     private ?Node\Expr $state;
 
     public function __construct(
-        private string $filePath,
-        private string $delimiter = ',',
-        private string $enclosure = '"',
+        private Node\Expr $filePath,
+        private Node\Expr $delimiter,
+        private Node\Expr $enclosure
     ) {
         $this->logger = null;
         $this->rejection = null;
@@ -66,7 +66,7 @@ final class Loader implements StepBuilderInterface
                                         name: new Node\Identifier('setFieldDelimiter'),
                                         args: [
                                             new Node\Arg(
-                                                value: new Node\Scalar\String_($this->delimiter)
+                                                value: $this->delimiter
                                             ),
                                         ]
                                     )
@@ -77,7 +77,7 @@ final class Loader implements StepBuilderInterface
                                         name: new Node\Identifier('setFieldEnclosure'),
                                         args: [
                                             new Node\Arg(
-                                                value: new Node\Scalar\String_($this->enclosure)
+                                                value: $this->enclosure
                                             ),
                                         ]
                                     )
@@ -88,7 +88,7 @@ final class Loader implements StepBuilderInterface
                                         name: new Node\Identifier('openToFile'),
                                         args: [
                                             new Node\Arg(
-                                                value: new Node\Scalar\String_($this->filePath)
+                                                value: $this->filePath
                                             ),
                                         ]
                                     )
@@ -101,18 +101,12 @@ final class Loader implements StepBuilderInterface
                     ),
                 ),
                 name: new Node\Identifier('writer'),
-            )
+            ),
+            new Node\Arg(
+                value: $this->logger ?? new Node\Expr\New_(new Node\Name\FullyQualified('Psr\\Log\\NullLogger')),
+                name: new Node\Identifier('logger'),
+            ),
         ];
-
-        if ($this->logger !== null) {
-            array_push(
-                $arguments,
-                new Node\Arg(
-                    value: $this->logger,
-                    name: new Node\Identifier('logger'),
-                ),
-            );
-        }
 
         return new Node\Expr\New_(
             class: new Node\Name\FullyQualified('Kiboko\\Component\\Flow\\Spreadsheet\\CSV\\Safe\\Loader'),

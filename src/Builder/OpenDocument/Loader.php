@@ -12,8 +12,8 @@ final class Loader implements StepBuilderInterface
     private ?Node\Expr $state;
 
     public function __construct(
-        private string $filePath,
-        private string $sheetName,
+        private Node\Expr $filePath,
+        private Node\Expr $sheetName
     ) {
         $this->logger = null;
         $this->rejection = null;
@@ -41,7 +41,7 @@ final class Loader implements StepBuilderInterface
         return $this;
     }
 
-    public function withSheet(string $sheet): self
+    public function withSheet(Node\Expr $sheet): self
     {
         $this->sheetName = $sheet;
 
@@ -60,27 +60,21 @@ final class Loader implements StepBuilderInterface
                     name: 'openToFile',
                     args: [
                         new Node\Arg(
-                            new Node\Scalar\String_($this->filePath)
+                            value: $this->filePath
                         )
                     ]
                 ),
                 name: new Node\Identifier('writer'),
             ),
             new Node\Arg(
-                value: new Node\Scalar\String_($this->sheetName),
+                value: $this->sheetName,
                 name: new Node\Identifier('sheetName'),
-            )
+            ),
+            new Node\Arg(
+                value: $this->logger ?? new Node\Expr\New_(new Node\Name\FullyQualified('Psr\\Log\\NullLogger')),
+                name: new Node\Identifier('logger'),
+            ),
         ];
-
-        if ($this->logger !== null) {
-            array_push(
-                $arguments,
-                new Node\Arg(
-                    value: $this->logger,
-                    name: new Node\Identifier('logger'),
-                ),
-            );
-        }
 
         return new Node\Expr\New_(
             class: new Node\Name\FullyQualified('Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Loader'),

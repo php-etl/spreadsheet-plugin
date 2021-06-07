@@ -1,0 +1,17 @@
+spreadsheet:
+  expression_language:
+    - 'functional\Kiboko\Plugin\Spreadsheet\ExpressionLanguage\Provider'
+  extractor:
+#    file_path: 'input.xlsx'
+    file_path: '@=env("SPREADSHEET_FILE")'
+    excel:
+#      sheet: 'sheetName'
+      sheet: '@=env("SPREADSHEET_SHEET")'
+      skip_lines: 1
+#    csv:
+#      delimiter: '@=env("SPREADSHEET_DELIMITER")'
+#      enclosure: '@=env("SPREADSHEET_ENCLOSURE")'
+#      encoding: '@=env("SPREADSHEET_ENCODING")'
+#      skip_lines: 1
+  logger:
+    type: stderr

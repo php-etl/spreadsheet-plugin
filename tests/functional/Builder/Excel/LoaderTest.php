@@ -4,9 +4,9 @@ namespace functional\Kiboko\Plugin\Spreadsheet\Builder\Excel;
 
 use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
 use Kiboko\Plugin\Spreadsheet\Builder;
-use Kiboko\Plugin\Log;
 use PHPUnit\Framework\TestCase;
 use Vfs\FileSystem;
+use PhpParser\Node;
 
 final class LoaderTest extends TestCase
 {
@@ -29,37 +29,8 @@ final class LoaderTest extends TestCase
     public function testWithFilePath(): void
     {
         $load = new Builder\Excel\Loader(
-            filePath: 'vfs://destination.xlsx',
-            sheetName: 'Sheet1'
-        );
-
-        $this->assertBuilderProducesInstanceOf(
-            'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Loader',
-            $load
-        );
-
-        $this->assertBuilderProducesPipelineLoadingLike(
-            [
-                ['first name' => 'john', 'last name' => 'doe'],
-                ['first name' => 'jean', 'last name' => 'dupont'],
-            ],
-            [
-                ['first name' => 'john', 'last name' => 'doe'],
-                ['first name' => 'jean', 'last name' => 'dupont'],
-            ],
-            $load
-        );
-    }
-
-    public function testWithFilePathAndLogger(): void
-    {
-        $load = new Builder\Excel\Loader(
-            filePath: 'vfs://destination.xlsx',
-            sheetName: 'Sheet1'
-        );
-
-        $load->withLogger(
-            (new Log\Builder\Logger())->getNode()
+            filePath: new Node\Scalar\String_('vfs://destination.xlsx'),
+            sheetName: new Node\Scalar\String_('Sheet1')
         );
 
         $this->assertBuilderProducesInstanceOf(
