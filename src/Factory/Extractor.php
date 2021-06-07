@@ -60,18 +60,18 @@ final class Extractor implements Configurator\FactoryInterface
             $builder = new Spreadsheet\Builder\Excel\Extractor(
                 compileValueWhenExpression($this->interpreter, $config['file_path']),
                 compileValueWhenExpression($this->interpreter, $config['excel']['sheet']),
-                $config['excel']['skip_lines'] instanceof Expression ? compileValueWhenExpression($this->interpreter, $config['excel']['skip_lines']) : compileValue($this->interpreter, $config['excel']['skip_lines'])
+                compileValueWhenExpression($this->interpreter, $config['excel']['skip_lines'])
             );
         } elseif (array_key_exists('open_document', $config)) {
             $builder = new Spreadsheet\Builder\OpenDocument\Extractor(
                 compileValueWhenExpression($this->interpreter, $config['file_path']),
                 compileValueWhenExpression($this->interpreter, $config['open_document']['sheet']),
-                $config['open_document']['skip_lines'] instanceof Expression ? compileValueWhenExpression($this->interpreter, $config['open_document']['skip_lines']) : compileValue($this->interpreter, $config['open_document']['skip_lines'])
+                compileValueWhenExpression($this->interpreter, $config['open_document']['skip_lines'])
             );
         } elseif (array_key_exists('csv', $config)) {
             $builder = new Spreadsheet\Builder\CSV\Extractor(
                 compileValueWhenExpression($this->interpreter, $config['file_path']),
-                $config['csv']['skip_lines'] instanceof Expression ? compileValueWhenExpression($this->interpreter, $config['csv']['skip_lines']) : compileValue($this->interpreter, $config['csv']['skip_lines']),
+                compileValueWhenExpression($this->interpreter, $config['csv']['skip_lines']),
                 compileValueWhenExpression($this->interpreter, $config['csv']['delimiter']),
                 compileValueWhenExpression($this->interpreter, $config['csv']['enclosure']),
                 compileValueWhenExpression($this->interpreter, $config['csv']['encoding'])
