@@ -53,15 +53,31 @@ final class Loader implements Configurator\FactoryInterface
     public function compile(array $config): Repository\Loader
     {
         if (array_key_exists('excel', $config)) {
-            $builder = new Spreadsheet\Builder\Excel\Loader(
-                compileValueWhenExpression($this->interpreter, $config['file_path']),
-                compileValueWhenExpression($this->interpreter, $config['excel']['sheet'])
-            );
+            if (array_key_exists('max_lines', $config["excel"])) {
+                $builder = new Spreadsheet\Builder\Excel\MultipleFileLoader(
+                    compileValueWhenExpression($this->interpreter, $config['file_path'], 'index'),
+                    compileValueWhenExpression($this->interpreter, $config['excel']['sheet']),
+                    compileValueWhenExpression($this->interpreter, $config['excel']['max_lines']),
+                );
+            } else {
+                $builder = new Spreadsheet\Builder\Excel\Loader(
+                    compileValueWhenExpression($this->interpreter, $config['file_path']),
+                    compileValueWhenExpression($this->interpreter, $config['excel']['sheet'])
+                );
+            }
         } elseif (array_key_exists('open_document', $config)) {
-            $builder = new Spreadsheet\Builder\OpenDocument\Loader(
-                compileValueWhenExpression($this->interpreter, $config['file_path']),
-                compileValueWhenExpression($this->interpreter, $config['open_document']['sheet'])
-            );
+            if (array_key_exists('max_lines', $config["open_document"])) {
+                $builder = new Spreadsheet\Builder\OpenDocument\MultipleFileLoader(
+                    compileValueWhenExpression($this->interpreter, $config['file_path'], 'index'),
+                    compileValueWhenExpression($this->interpreter, $config['open_document']['sheet']),
+                    compileValueWhenExpression($this->interpreter, $config['open_document']['max_lines']),
+                );
+            } else {
+                $builder = new Spreadsheet\Builder\OpenDocument\Loader(
+                    compileValueWhenExpression($this->interpreter, $config['file_path']),
+                    compileValueWhenExpression($this->interpreter, $config['open_document']['sheet'])
+                );
+            }
         } elseif (array_key_exists('csv', $config)) {
             $builder = new Spreadsheet\Builder\CSV\Loader(
                 compileValueWhenExpression($this->interpreter, $config['file_path']),
