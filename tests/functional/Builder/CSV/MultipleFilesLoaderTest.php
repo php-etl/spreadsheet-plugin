@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace functional\Kiboko\Plugin\Spreadsheet\Builder\Excel;
+namespace functional\Kiboko\Plugin\Spreadsheet\Builder\CSV;
 
 use functional\Kiboko\Plugin\Spreadsheet\ExpressionLanguage\ExpressionLanguage;
 use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
@@ -31,10 +31,11 @@ final class MultipleFilesLoaderTest extends TestCase
 
     public function testWithFilePath(): void
     {
-        $loader = new Builder\OpenDocument\MultipleFileLoader(
-            filePath: compileExpression(new ExpressionLanguage(), new Expression('format("vfs://SKU_%06d.xlsx", index)'), 'index'),
-            sheetName: new Node\Scalar\String_('MySheetName'),
-            maxLines: new Node\Scalar\LNumber(3)
+        $loader = new Builder\CSV\MultipleFileLoader(
+            filePath: compileExpression(new ExpressionLanguage(), new Expression('format("vfs://SKU_%06d.csv", index)'), 'index'),
+            maxLines: new Node\Scalar\LNumber(3),
+            delimiter: new Node\Scalar\String_(','),
+            enclosure: new Node\Scalar\String_('"')
         );
 
         $this->assertBuilderProducesPipelineLoadingLike(

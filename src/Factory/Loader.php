@@ -79,11 +79,20 @@ final class Loader implements Configurator\FactoryInterface
                 );
             }
         } elseif (array_key_exists('csv', $config)) {
-            $builder = new Spreadsheet\Builder\CSV\Loader(
-                compileValueWhenExpression($this->interpreter, $config['file_path']),
-                compileValueWhenExpression($this->interpreter, $config['csv']['delimiter']),
-                compileValueWhenExpression($this->interpreter, $config['csv']['enclosure'])
-            );
+            if (array_key_exists('max_lines', $config["csv"])) {
+                $builder = new Spreadsheet\Builder\CSV\MultipleFileLoader(
+                    compileValueWhenExpression($this->interpreter, $config['file_path'], 'index'),
+                    compileValueWhenExpression($this->interpreter, $config['csv']['max_lines']),
+                    compileValueWhenExpression($this->interpreter, $config['csv']['delimiter']),
+                    compileValueWhenExpression($this->interpreter, $config['csv']['enclosure'])
+                );
+            } else {
+                $builder = new Spreadsheet\Builder\CSV\Loader(
+                    compileValueWhenExpression($this->interpreter, $config['file_path'], 'index'),
+                    compileValueWhenExpression($this->interpreter, $config['csv']['delimiter']),
+                    compileValueWhenExpression($this->interpreter, $config['csv']['enclosure'])
+                );
+            }
         } else {
             throw new InvalidConfigurationException(
                 'Could not determine if the factory should build an excel, an open_document or a csv loader.'

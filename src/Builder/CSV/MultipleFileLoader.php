@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Kiboko\Plugin\Spreadsheet\Builder\Excel;
+namespace Kiboko\Plugin\Spreadsheet\Builder\CSV;
 
 use Kiboko\Contract\Configurator\StepBuilderInterface;
 use PhpParser\Node;
@@ -13,8 +13,9 @@ final class MultipleFileLoader implements StepBuilderInterface
 
     public function __construct(
         private Node\Expr $filePath,
-        private Node\Expr $sheetName,
         private Node\Expr $maxLines,
+        private Node\Expr $delimiter,
+        private Node\Expr $enclosure,
         private bool $safeMode = true
     ) {
         $this->logger = null;
@@ -43,13 +44,6 @@ final class MultipleFileLoader implements StepBuilderInterface
         return $this;
     }
 
-    public function withSheet(Node\Expr $sheet): self
-    {
-        $this->sheetName = $sheet;
-
-        return $this;
-    }
-
     public function withMaxLines(Node\Expr $maxLines): self
     {
         $this->maxLines = $maxLines;
@@ -68,28 +62,68 @@ final class MultipleFileLoader implements StepBuilderInterface
     {
         $arguments = [
             new Node\Arg(
-                value: new Node\Expr\MethodCall(
-                    new Node\Expr\StaticCall(
-                        class: new Node\Name\FullyQualified('Box\Spout\Writer\Common\Creator\WriterEntityFactory'),
-                        name: 'createXLSXWriter'
+                value: new Node\Expr\FuncCall(
+                    new Node\Expr\Closure(
+                        subNodes: [
+                            'uses' => [
+                                new Node\Expr\Variable('index')
+                            ],
+                            'stmts' => [
+                                new Node\Stmt\Expression(
+                                    new Node\Expr\Assign(
+                                        new Node\Expr\Variable('writer'),
+                                        new Node\Expr\StaticCall(
+                                            class: new Node\Name\FullyQualified('Box\Spout\Writer\Common\Creator\WriterEntityFactory'),
+                                            name: 'createCSVWriter'
+                                        ),
+                                    ),
+                                ),
+                                new Node\Stmt\Expression(
+                                    new Node\Expr\MethodCall(
+                                        var: new Node\Expr\Variable('writer'),
+                                        name: new Node\Identifier('setFieldDelimiter'),
+                                        args: [
+                                            new Node\Arg(
+                                                value: $this->delimiter
+                                            ),
+                                        ]
+                                    )
+                                ),
+                                new Node\Stmt\Expression(
+                                    new Node\Expr\MethodCall(
+                                        var: new Node\Expr\Variable('writer'),
+                                        name: new Node\Identifier('setFieldEnclosure'),
+                                        args: [
+                                            new Node\Arg(
+                                                value: $this->enclosure
+                                            ),
+                                        ]
+                                    )
+                                ),
+                                new Node\Stmt\Expression(
+                                    new Node\Expr\MethodCall(
+                                        var: new Node\Expr\Variable('writer'),
+                                        name: new Node\Identifier('openToFile'),
+                                        args: [
+                                            new Node\Arg(
+                                                value: $this->filePath
+                                            ),
+                                        ]
+                                    )
+                                ),
+                                new Node\Stmt\Return_(
+                                    new Node\Expr\Variable('writer')
+                                ),
+                            ],
+                        ],
                     ),
-                    name: 'openToFile',
-                    args: [
-                        new Node\Arg(
-                            value: $this->filePath
-                        )
-                    ]
                 ),
                 name: new Node\Identifier('writer'),
             ),
             new Node\Arg(
-                value: $this->sheetName,
-                name: new Node\Identifier('sheetName'),
-            ),
-            new Node\Arg(
                 value: $this->logger ?? new Node\Expr\New_(new Node\Name\FullyQualified('Psr\\Log\\NullLogger')),
                 name: new Node\Identifier('logger'),
-            )
+            ),
         ];
 
         return new Node\Expr\New_(
@@ -130,8 +164,8 @@ final class MultipleFileLoader implements StepBuilderInterface
                                             expr: new Node\Expr\New_(
                                                 class: new Node\Name\FullyQualified(
                                                     $this->safeMode
-                                                        ? 'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Loader'
-                                                        : 'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\FingersCrossed\\Loader',
+                                                        ? 'Kiboko\\Component\\Flow\\Spreadsheet\\CSV\\Safe\\Loader'
+                                                        : 'Kiboko\\Component\\Flow\\Spreadsheet\\CSV\\FingersCrossed\\Loader',
                                                 ),
                                                 args: $arguments
                                             ),
@@ -271,8 +305,8 @@ final class MultipleFileLoader implements StepBuilderInterface
                                             expr: new Node\Expr\New_(
                                                 class: new Node\Name\FullyQualified(
                                                     $this->safeMode
-                                                    ? 'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Loader'
-                                                    : 'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\FingersCrossed\\Loader',
+                                                    ? 'Kiboko\\Component\\Flow\\Spreadsheet\\CSV\\Safe\\Loader'
+                                                    : 'Kiboko\\Component\\Flow\\Spreadsheet\\CSV\\FingersCrossed\\Loader',
                                                 ),
                                                 args: $arguments
                                             ),

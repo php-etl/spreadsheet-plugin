@@ -101,10 +101,43 @@ final class MultipleFileLoader implements StepBuilderInterface
                         new Node\Name\FullyQualified('Kiboko\Contract\Pipeline\FlushableInterface'),
                     ],
                     'stmts' => [
+                        new Node\Stmt\Property(
+                            flags: 4,
+                            props: [
+                                new Node\Stmt\PropertyProperty(
+                                    name: new Node\Name('loader')
+                                )
+                            ],
+                            type: new Node\Name\FullyQualified('Kiboko\Contract\Pipeline\LoaderInterface')
+                        ),
                         new Node\Stmt\ClassMethod(
                             name: new Node\Identifier(name: '__construct'),
                             subNodes: [
-                                'flags' => Node\Stmt\Class_::MODIFIER_PUBLIC
+                                'flags' => Node\Stmt\Class_::MODIFIER_PUBLIC,
+                                'stmts' => [
+                                    new Node\Stmt\Expression(
+                                        expr: new Node\Expr\Assign(
+                                            var: new Node\Expr\Variable('index'),
+                                            expr: new Node\Scalar\LNumber(0)
+                                        )
+                                    ),
+                                    new Node\Stmt\Expression(
+                                        expr: new Node\Expr\Assign(
+                                            var: new Node\Expr\PropertyFetch(
+                                                var: new Node\Expr\Variable('this'),
+                                                name: new Node\Name('loader')
+                                            ),
+                                            expr: new Node\Expr\New_(
+                                                class: new Node\Name\FullyQualified(
+                                                    $this->safeMode
+                                                        ? 'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\Safe\\Loader'
+                                                        : 'Kiboko\\Component\\Flow\\Spreadsheet\\Sheet\\FingersCrossed\\Loader',
+                                                ),
+                                                args: $arguments
+                                            ),
+                                        )
+                                    )
+                                ]
                             ]
                         ),
                         new Node\Stmt\ClassMethod(
@@ -220,6 +253,15 @@ final class MultipleFileLoader implements StepBuilderInterface
                                     ),
                                 ],
                                 'stmts' => [
+                                    new Node\Stmt\Expression(
+                                        new Node\Expr\MethodCall(
+                                            var: new Node\Expr\PropertyFetch(
+                                                var: new Node\Expr\Variable('this'),
+                                                name: new Node\Identifier('loader')
+                                            ),
+                                            name: new Node\Identifier('flush')
+                                        ),
+                                    ),
                                     new Node\Stmt\Expression(
                                         new Node\Expr\Assign(
                                             var: new Node\Expr\PropertyFetch(
