@@ -10,13 +10,23 @@ final class Loader implements Configurator\StepRepositoryInterface
 {
     use RepositoryTrait;
 
-    public function __construct(private Spreadsheet\Builder\Excel\Loader|Spreadsheet\Builder\OpenDocument\Loader|Spreadsheet\Builder\CSV\Loader $builder)
+    public function __construct(private Spreadsheet\Builder\Excel\Loader
+                                        |Spreadsheet\Builder\Excel\MultipleFileLoader
+                                        |Spreadsheet\Builder\OpenDocument\Loader
+                                        |Spreadsheet\Builder\OpenDocument\MultipleFileLoader
+                                        |Spreadsheet\Builder\CSV\Loader
+                                        |Spreadsheet\Builder\CSV\MultipleFileLoader$builder)
     {
         $this->files = [];
         $this->packages = [];
     }
 
-    public function getBuilder(): Spreadsheet\Builder\Excel\Loader|Spreadsheet\Builder\OpenDocument\Loader|Spreadsheet\Builder\CSV\Loader
+    public function getBuilder(): Spreadsheet\Builder\Excel\Loader
+                                |Spreadsheet\Builder\Excel\MultipleFileLoader
+                                |Spreadsheet\Builder\OpenDocument\Loader
+                                |Spreadsheet\Builder\OpenDocument\MultipleFileLoader
+                                |Spreadsheet\Builder\CSV\Loader
+                                |Spreadsheet\Builder\CSV\MultipleFileLoader
     {
         return $this->builder;
     }

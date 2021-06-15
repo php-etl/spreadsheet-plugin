@@ -2,6 +2,7 @@
 
 namespace functional\Kiboko\Plugin\Spreadsheet\ExpressionLanguage;
 
+use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 
 final class Provider implements ExpressionFunctionProviderInterface
@@ -11,6 +12,7 @@ final class Provider implements ExpressionFunctionProviderInterface
         return [
             new Env('env'),
             new File('file'),
+            ExpressionFunction::fromPhp('sprintf', 'format')
         ];
     }
 }
