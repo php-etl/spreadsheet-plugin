@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace functional\Builder\CSV;
+namespace functional\Kiboko\Plugin\Spreadsheet\Builder\CSV;
 
 use Kiboko\Plugin\Spreadsheet\Builder;
 use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
