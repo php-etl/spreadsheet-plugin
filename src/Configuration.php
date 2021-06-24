@@ -2,7 +2,6 @@
 
 namespace Kiboko\Plugin\Spreadsheet;
 
-use Kiboko\Plugin\Log;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
