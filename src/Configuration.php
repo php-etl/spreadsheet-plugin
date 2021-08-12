@@ -2,17 +2,18 @@
 
 namespace Kiboko\Plugin\Spreadsheet;
 
+use Kiboko\Component\Satellite\NamedConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-final class Configuration implements ConfigurationInterface
+final class Configuration implements ConfigurationInterface, NamedConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $extractor = new Configuration\Extractor();
         $loader = new Configuration\Loader();
 
-        $builder = new TreeBuilder('spreadsheet');
+        $builder = new TreeBuilder($this->getName());
 
         $builder->getRootNode()
             ->validate()
@@ -33,5 +34,10 @@ final class Configuration implements ConfigurationInterface
             ->end();
 
         return $builder;
+    }
+
+    public function getName(): string
+    {
+        return 'spreadsheet';
     }
 }
