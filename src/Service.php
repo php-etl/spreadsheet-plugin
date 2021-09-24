@@ -3,15 +3,20 @@
 
 namespace Kiboko\Plugin\Spreadsheet;
 
-use Kiboko\Contract\Configurator\FactoryInterface;
-use Kiboko\Contract\Configurator\RepositoryInterface;
-use Kiboko\Contract\Configurator\InvalidConfigurationException;
+use Kiboko\Contract\Configurator;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Definition\Exception as Symfony;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
-final class Service implements FactoryInterface
+#[Configurator\Pipeline(
+    name: "spreadsheet",
+    steps: [
+        "extractor" => "extractor",
+        "loader" => "loader",
+    ],
+)]
+final class Service implements Configurator\FactoryInterface
 {
     private Processor $processor;
     private ConfigurationInterface $configuration;
@@ -49,7 +54,7 @@ final class Service implements FactoryInterface
         }
     }
 
-    public function compile(array $config): RepositoryInterface
+    public function compile(array $config): Factory\Repository\Extractor|Factory\Repository\Loader
     {
         if (array_key_exists('expression_language', $config)
             && is_array($config['expression_language'])
@@ -60,22 +65,18 @@ final class Service implements FactoryInterface
             }
         }
 
-        try {
-            if (array_key_exists('extractor', $config)) {
-                $extractorFactory = new Factory\Extractor($this->interpreter);
+        if (array_key_exists('extractor', $config)) {
+            $extractorFactory = new Factory\Extractor($this->interpreter);
 
-                return $extractorFactory->compile($config['extractor']);
-            } elseif (array_key_exists('loader', $config)) {
-                $loaderFactory = new Factory\Loader($this->interpreter);
+            return $extractorFactory->compile($config['extractor']);
+        } elseif (array_key_exists('loader', $config)) {
+            $loaderFactory = new Factory\Loader($this->interpreter);
 
-                return $loaderFactory->compile($config['loader']);
-            } else {
-                throw new InvalidConfigurationException(
-                    'Could not determine if the factory should build an extractor or a loader.'
-                );
-            }
-        } catch (InvalidConfigurationException $exception) {
-            throw new InvalidConfigurationException($exception->getMessage(), 0, $exception);
+            return $loaderFactory->compile($config['loader']);
+        } else {
+            throw new Configurator\InvalidConfigurationException(
+                'Could not determine if the factory should build an extractor or a loader.'
+            );
         }
     }
 }
