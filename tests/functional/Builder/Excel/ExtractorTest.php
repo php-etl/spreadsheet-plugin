@@ -2,7 +2,10 @@
 
 namespace functional\Kiboko\Plugin\Spreadsheet\Builder\Excel;
 
-use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
+use functional\Kiboko\Plugin\Spreadsheet\PipelineRunner;
+use Kiboko\Component\PHPUnitExtension\Assert\ExtractorBuilderAssertTrait;
+use Kiboko\Component\PHPUnitExtension\Assert\PipelineBuilderAssertTrait;
+use Kiboko\Contract\Pipeline\PipelineRunnerInterface;
 use Kiboko\Plugin\Spreadsheet\Builder;
 use PHPUnit\Framework\TestCase;
 use Vfs\FileSystem;
@@ -10,7 +13,8 @@ use PhpParser\Node;
 
 final class ExtractorTest extends TestCase
 {
-    use BuilderAssertTrait;
+    use ExtractorBuilderAssertTrait;
+    use PipelineBuilderAssertTrait;
 
     private ?FileSystem $fs = null;
 
@@ -39,12 +43,17 @@ final class ExtractorTest extends TestCase
             $extractor
         );
 
-        $this->assertBuilderProducesExtractorIteratesAs(
+        $this->assertBuildsExtractorExtractsLike(
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont']
             ],
             $extractor
         );
+    }
+
+    public function pipelineRunner(): PipelineRunnerInterface
+    {
+        return new PipelineRunner();
     }
 }

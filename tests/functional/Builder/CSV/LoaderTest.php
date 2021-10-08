@@ -1,17 +1,18 @@
 <?php declare(strict_types=1);
 
-
 namespace functional\Kiboko\Plugin\Spreadsheet\Builder\CSV;
 
+use functional\Kiboko\Plugin\Spreadsheet\PipelineRunner;
+use Kiboko\Component\PHPUnitExtension\Assert\LoaderBuilderAssertTrait;
+use Kiboko\Contract\Pipeline\PipelineRunnerInterface;
 use Kiboko\Plugin\Spreadsheet\Builder;
-use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
 use PHPUnit\Framework\TestCase;
 use Vfs\FileSystem;
 use PhpParser\Node;
 
 final class LoaderTest extends TestCase
 {
-    use BuilderAssertTrait;
+    use LoaderBuilderAssertTrait;
 
     private ?FileSystem $fs = null;
 
@@ -35,7 +36,7 @@ final class LoaderTest extends TestCase
             enclosure: new Node\Scalar\String_('"')
         );
 
-        $this->assertBuilderProducesPipelineLoadingLike(
+        $this->assertBuildsLoaderLoadsLike(
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont'],
@@ -46,5 +47,10 @@ final class LoaderTest extends TestCase
             ],
             $load
         );
+    }
+
+    public function pipelineRunner(): PipelineRunnerInterface
+    {
+        return new PipelineRunner();
     }
 }

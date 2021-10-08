@@ -2,7 +2,10 @@
 
 namespace functional\Kiboko\Plugin\Spreadsheet\Builder\OpenDocument;
 
-use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
+use functional\Kiboko\Plugin\Spreadsheet\PipelineRunner;
+use Kiboko\Component\PHPUnitExtension\Assert\LoaderBuilderAssertTrait;
+use Kiboko\Component\PHPUnitExtension\Assert\PipelineBuilderAssertTrait;
+use Kiboko\Contract\Pipeline\PipelineRunnerInterface;
 use Kiboko\Plugin\Spreadsheet\Builder;
 use PHPUnit\Framework\TestCase;
 use Vfs\FileSystem;
@@ -10,7 +13,8 @@ use PhpParser\Node;
 
 final class LoaderTest extends TestCase
 {
-    use BuilderAssertTrait;
+    use LoaderBuilderAssertTrait;
+    use PipelineBuilderAssertTrait;
 
     private ?FileSystem $fs = null;
 
@@ -33,7 +37,7 @@ final class LoaderTest extends TestCase
             sheetName: new Node\Scalar\String_('Sheet1')
         );
 
-        $this->assertBuilderProducesLoaderWritingFile(
+        $this->assertBuildsLoaderProducesFile(
             __DIR__.'/../../files/expected-to-load.ods',
             [
                 ['first name' => 'john', 'last name' => 'doe'],
@@ -76,7 +80,7 @@ final class LoaderTest extends TestCase
             sheetName: new Node\Scalar\String_('Sheet1')
         );
 
-        $this->assertBuilderProducesPipelineLoadingLike(
+        $this->assertBuildsLoaderLoadsLike(
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont'],
@@ -98,7 +102,7 @@ final class LoaderTest extends TestCase
 
         $load->withSheet(new Node\Scalar\String_('Sheet1'));
 
-        $this->assertBuilderProducesPipelineLoadingLike(
+        $this->assertBuildsLoaderLoadsLike(
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont'],
@@ -109,5 +113,10 @@ final class LoaderTest extends TestCase
             ],
             $load
         );
+    }
+
+    public function pipelineRunner(): PipelineRunnerInterface
+    {
+        return new PipelineRunner();
     }
 }
