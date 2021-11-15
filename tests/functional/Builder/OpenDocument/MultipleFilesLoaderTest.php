@@ -3,7 +3,9 @@
 namespace functional\Kiboko\Plugin\Spreadsheet\Builder\OpenDocument;
 
 use functional\Kiboko\Plugin\Spreadsheet\ExpressionLanguage\ExpressionLanguage;
-use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
+use functional\Kiboko\Plugin\Spreadsheet\PipelineRunner;
+use Kiboko\Component\PHPUnitExtension\Assert\LoaderBuilderAssertTrait;
+use Kiboko\Contract\Pipeline\PipelineRunnerInterface;
 use Kiboko\Plugin\Spreadsheet\Builder;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -13,7 +15,7 @@ use function Kiboko\Component\SatelliteToolbox\Configuration\compileExpression;
 
 final class MultipleFilesLoaderTest extends TestCase
 {
-    use BuilderAssertTrait;
+    use LoaderBuilderAssertTrait;
 
     private ?FileSystem $fs = null;
 
@@ -53,7 +55,7 @@ final class MultipleFilesLoaderTest extends TestCase
             maxLines: new Node\Scalar\LNumber(3)
         );
 
-        $this->assertBuilderProducesPipelineLoadingLike(
+        $this->assertBuildsLoaderLoadsLike(
             [
                 [
                     'firstname' => 'Pierre',
@@ -111,5 +113,10 @@ final class MultipleFilesLoaderTest extends TestCase
 
 //        $this->assertFileEquals('vfs://expected-1.ods', file_get_contents('vfs://SKU_000000.ods'));
 //        $this->assertFileEquals('vfs://expected-2.ods', 'vfs://SKU_000001.ods');
+    }
+
+    public function pipelineRunner(): PipelineRunnerInterface
+    {
+        return new PipelineRunner();
     }
 }

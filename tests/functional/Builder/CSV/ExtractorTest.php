@@ -1,17 +1,18 @@
 <?php declare(strict_types=1);
 
-
 namespace functional\Kiboko\Plugin\Spreadsheet\Builder\CSV;
 
+use functional\Kiboko\Plugin\Spreadsheet\PipelineRunner;
+use Kiboko\Component\PHPUnitExtension\Assert\ExtractorBuilderAssertTrait;
+use Kiboko\Contract\Pipeline\PipelineRunnerInterface;
 use Kiboko\Plugin\Spreadsheet\Builder;
-use Kiboko\Component\PHPUnitExtension\BuilderAssertTrait;
 use PHPUnit\Framework\TestCase;
 use Vfs\FileSystem;
 use PhpParser\Node;
 
 class ExtractorTest extends TestCase
 {
-    use BuilderAssertTrait;
+    use ExtractorBuilderAssertTrait;
 
     private ?FileSystem $fs = null;
 
@@ -37,12 +38,17 @@ class ExtractorTest extends TestCase
             encoding: new Node\Scalar\String_('UTF-8')
         );
 
-        $this->assertBuilderProducesExtractorIteratesAs(
+        $this->assertBuildsExtractorExtractsLike(
             [
                 ['first name' => 'john', 'last name' => 'doe'],
                 ['first name' => 'jean', 'last name' => 'dupont']
             ],
             $extractor
         );
+    }
+
+    public function pipelineRunner(): PipelineRunnerInterface
+    {
+        return new PipelineRunner();
     }
 }
