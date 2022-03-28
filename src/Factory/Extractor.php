@@ -23,6 +23,11 @@ final class Extractor implements Configurator\FactoryInterface
         $this->configuration = new Spreadsheet\Configuration\Extractor();
     }
 
+    public function interpreter(): ExpressionLanguage
+    {
+        return $this->interpreter;
+    }
+
     public function configuration(): ConfigurationInterface
     {
         return $this->configuration;

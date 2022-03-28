@@ -1,7 +1,7 @@
 {
     "name": "php-etl/spreadsheet-plugin",
     "description": "Plugin for XLS Extractor and Loader",
-    "type": "satellite-plugin",
+    "type": "gyroscops-plugin",
     "license": "MIT",
     "authors": [
         {
@@ -43,8 +43,8 @@
         "branch-alias": {
             "dev-master": "0.3.x-dev"
         },
-        "satellite": {
-            "class": "Kiboko\\Plugin\\Spreadsheet\\Service"
+        "gyroscops": {
+            "plugins": ["Kiboko\\Plugin\\Spreadsheet\\Service"]
         }
     },
     "config": {

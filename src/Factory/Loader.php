@@ -23,6 +23,11 @@ final class Loader implements Configurator\FactoryInterface
         $this->configuration = new Spreadsheet\Configuration\Loader();
     }
 
+    public function interpreter(): ExpressionLanguage
+    {
+        return $this->interpreter;
+    }
+
     public function configuration(): ConfigurationInterface
     {
         return $this->configuration;
