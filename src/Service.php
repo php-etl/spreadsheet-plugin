@@ -12,8 +12,8 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 #[Configurator\Pipeline(
     name: "spreadsheet",
     steps: [
-        "extractor" => "extractor",
-        "loader" => "loader",
+        new Configurator\Pipeline\StepExtractor(),
+        new Configurator\Pipeline\StepLoader(),
     ],
 )]
 final class Service implements Configurator\PipelinePluginInterface
