@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Vfs\FileSystem;
 use PhpParser\Node;
 
-class ExtractorTest extends TestCase
+abstract class ExtractorTest extends TestCase
 {
     use ExtractorBuilderAssertTrait;
 

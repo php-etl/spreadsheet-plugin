@@ -1,16 +1,17 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Spreadsheet\Factory;
 
+use function Kiboko\Component\SatelliteToolbox\Configuration\compileValueWhenExpression;
+use Kiboko\Contract\Configurator;
 use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Plugin\Spreadsheet;
-use Kiboko\Contract\Configurator;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception as Symfony;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
-use function Kiboko\Component\SatelliteToolbox\Configuration\compileValueWhenExpression;
 
 final class Loader implements Configurator\FactoryInterface
 {
@@ -57,8 +58,8 @@ final class Loader implements Configurator\FactoryInterface
 
     public function compile(array $config): Repository\Loader
     {
-        if (array_key_exists('excel', $config)) {
-            if (array_key_exists('max_lines', $config["excel"])) {
+        if (\array_key_exists('excel', $config)) {
+            if (\array_key_exists('max_lines', $config['excel'])) {
                 $builder = new Spreadsheet\Builder\Excel\MultipleFileLoader(
                     compileValueWhenExpression($this->interpreter, $config['file_path'], 'index'),
                     compileValueWhenExpression($this->interpreter, $config['excel']['sheet']),
@@ -70,8 +71,8 @@ final class Loader implements Configurator\FactoryInterface
                     compileValueWhenExpression($this->interpreter, $config['excel']['sheet'])
                 );
             }
-        } elseif (array_key_exists('open_document', $config)) {
-            if (array_key_exists('max_lines', $config["open_document"])) {
+        } elseif (\array_key_exists('open_document', $config)) {
+            if (\array_key_exists('max_lines', $config['open_document'])) {
                 $builder = new Spreadsheet\Builder\OpenDocument\MultipleFileLoader(
                     compileValueWhenExpression($this->interpreter, $config['file_path'], 'index'),
                     compileValueWhenExpression($this->interpreter, $config['open_document']['sheet']),
@@ -83,8 +84,8 @@ final class Loader implements Configurator\FactoryInterface
                     compileValueWhenExpression($this->interpreter, $config['open_document']['sheet'])
                 );
             }
-        } elseif (array_key_exists('csv', $config)) {
-            if (array_key_exists('max_lines', $config["csv"])) {
+        } elseif (\array_key_exists('csv', $config)) {
+            if (\array_key_exists('max_lines', $config['csv'])) {
                 $builder = new Spreadsheet\Builder\CSV\MultipleFileLoader(
                     compileValueWhenExpression($this->interpreter, $config['file_path'], 'index'),
                     compileValueWhenExpression($this->interpreter, $config['csv']['max_lines']),
@@ -99,9 +100,7 @@ final class Loader implements Configurator\FactoryInterface
                 );
             }
         } else {
-            throw new InvalidConfigurationException(
-                'Could not determine if the factory should build an excel, an open_document or a csv loader.'
-            );
+            throw new InvalidConfigurationException('Could not determine if the factory should build an excel, an open_document or a csv loader.');
         }
 
         return new Repository\Loader($builder);

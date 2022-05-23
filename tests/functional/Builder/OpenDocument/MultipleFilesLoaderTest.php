@@ -13,7 +13,7 @@ use Vfs\FileSystem;
 use PhpParser\Node;
 use function Kiboko\Component\SatelliteToolbox\Configuration\compileExpression;
 
-final class MultipleFilesLoaderTest extends TestCase
+abstract class MultipleFilesLoaderTest extends TestCase
 {
     use LoaderBuilderAssertTrait;
 

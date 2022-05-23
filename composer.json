@@ -12,7 +12,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "ext-json": "*",
         "nikic/php-parser": "^4.10",
         "symfony/config": "^5.2",
@@ -24,7 +24,7 @@
         "symfony/yaml": "^5.2",
         "adlawson/vfs": "dev-develop",
         "phpunit/phpunit": "^9.0",
-        "php-etl/phpunit-extension": "^0.2.0",
+        "php-etl/phpunit-extension": "^0.4.0",
         "php-etl/spreadsheet-flow": "^0.1.0",
         "php-etl/bucket-contracts": "^0.1.0",
         "php-etl/pipeline-contracts": "^0.3.0"

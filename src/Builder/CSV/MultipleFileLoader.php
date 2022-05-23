@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Spreadsheet\Builder\CSV;
 
@@ -8,8 +10,6 @@ use PhpParser\Node;
 final class MultipleFileLoader implements StepBuilderInterface
 {
     private ?Node\Expr $logger;
-    private ?Node\Expr $rejection;
-    private ?Node\Expr $state;
 
     public function __construct(
         private Node\Expr $filePath,
@@ -19,8 +19,6 @@ final class MultipleFileLoader implements StepBuilderInterface
         private bool $safeMode = true
     ) {
         $this->logger = null;
-        $this->rejection = null;
-        $this->state = null;
     }
 
     public function withLogger(?Node\Expr $logger): self
@@ -32,15 +30,11 @@ final class MultipleFileLoader implements StepBuilderInterface
 
     public function withRejection(Node\Expr $rejection): self
     {
-        $this->rejection = $rejection;
-
         return $this;
     }
 
     public function withState(Node\Expr $state): self
     {
-        $this->state = $state;
-
         return $this;
     }
 
@@ -66,7 +60,7 @@ final class MultipleFileLoader implements StepBuilderInterface
                     new Node\Expr\Closure(
                         subNodes: [
                             'uses' => [
-                                new Node\Expr\Variable('index')
+                                new Node\Expr\Variable('index'),
                             ],
                             'stmts' => [
                                 new Node\Stmt\Expression(
@@ -140,7 +134,7 @@ final class MultipleFileLoader implements StepBuilderInterface
                             props: [
                                 new Node\Stmt\PropertyProperty(
                                     name: new Node\Name('loader')
-                                )
+                                ),
                             ],
                             type: new Node\Name\FullyQualified('Kiboko\Contract\Pipeline\LoaderInterface')
                         ),
@@ -170,8 +164,8 @@ final class MultipleFileLoader implements StepBuilderInterface
                                                 args: $arguments
                                             ),
                                         )
-                                    )
-                                ]
+                                    ),
+                                ],
                             ]
                         ),
                         new Node\Stmt\ClassMethod(
