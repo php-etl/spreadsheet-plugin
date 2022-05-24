@@ -1,5 +1,6 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Spreadsheet\Factory\Repository;
 
@@ -15,7 +16,7 @@ final class Loader implements Configurator\StepRepositoryInterface
                                         |Spreadsheet\Builder\OpenDocument\Loader
                                         |Spreadsheet\Builder\OpenDocument\MultipleFileLoader
                                         |Spreadsheet\Builder\CSV\Loader
-                                        |Spreadsheet\Builder\CSV\MultipleFileLoader$builder)
+                                        |Spreadsheet\Builder\CSV\MultipleFileLoader $builder)
     {
         $this->files = [];
         $this->packages = [];

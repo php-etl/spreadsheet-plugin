@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Spreadsheet\Builder\Excel;
 
@@ -8,8 +10,6 @@ use PhpParser\Node;
 final class Extractor implements StepBuilderInterface
 {
     private ?Node\Expr $logger;
-    private ?Node\Expr $rejection;
-    private ?Node\Expr $state;
 
     public function __construct(
         private Node\Expr $filePath,
@@ -17,8 +17,6 @@ final class Extractor implements StepBuilderInterface
         private Node\Expr $skipLines
     ) {
         $this->logger = null;
-        $this->rejection = null;
-        $this->state = null;
     }
 
     public function withLogger(Node\Expr $logger): self
@@ -30,15 +28,11 @@ final class Extractor implements StepBuilderInterface
 
     public function withRejection(Node\Expr $rejection): self
     {
-        $this->rejection = $rejection;
-
         return $this;
     }
 
     public function withState(Node\Expr $state): self
     {
-        $this->state = $state;
-
         return $this;
     }
 
@@ -49,32 +43,32 @@ final class Extractor implements StepBuilderInterface
                 value: new Node\Expr\FuncCall(
                     new Node\Expr\Closure(
                         subNodes: [
-                        'stmts' => [
-                            new Node\Stmt\Expression(
-                                new Node\Expr\Assign(
-                                    new Node\Expr\Variable('reader'),
-                                    new Node\Expr\StaticCall(
-                                        class: new Node\Name\FullyQualified('Box\Spout\Reader\Common\Creator\ReaderEntityFactory'),
-                                        name: 'createXLSXReader'
+                            'stmts' => [
+                                new Node\Stmt\Expression(
+                                    new Node\Expr\Assign(
+                                        new Node\Expr\Variable('reader'),
+                                        new Node\Expr\StaticCall(
+                                            class: new Node\Name\FullyQualified('Box\Spout\Reader\Common\Creator\ReaderEntityFactory'),
+                                            name: 'createXLSXReader'
+                                        ),
                                     ),
                                 ),
-                            ),
-                            new Node\Stmt\Expression(
-                                new Node\Expr\MethodCall(
-                                    var: new Node\Expr\Variable('reader'),
-                                    name: new Node\Identifier('open'),
-                                    args: [
-                                        new Node\Arg(
-                                            value: $this->filePath,
-                                        ),
-                                    ]
-                                )
-                            ),
-                            new Node\Stmt\Return_(
-                                new Node\Expr\Variable('reader')
-                            ),
+                                new Node\Stmt\Expression(
+                                    new Node\Expr\MethodCall(
+                                        var: new Node\Expr\Variable('reader'),
+                                        name: new Node\Identifier('open'),
+                                        args: [
+                                            new Node\Arg(
+                                                value: $this->filePath,
+                                            ),
+                                        ]
+                                    )
+                                ),
+                                new Node\Stmt\Return_(
+                                    new Node\Expr\Variable('reader')
+                                ),
+                            ],
                         ],
-                    ],
                     ),
                 ),
                 name: new Node\Identifier('reader'),

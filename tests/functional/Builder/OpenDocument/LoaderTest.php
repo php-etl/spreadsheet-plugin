@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Vfs\FileSystem;
 use PhpParser\Node;
 
-final class LoaderTest extends TestCase
+abstract class LoaderTest extends TestCase
 {
     use LoaderBuilderAssertTrait;
     use PipelineBuilderAssertTrait;
