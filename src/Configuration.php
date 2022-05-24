@@ -30,7 +30,8 @@ final class Configuration implements PluginConfigurationInterface
                 ->variableNode('logger')
                     ->setDeprecated('php-etl/spreadsheet-plugin', '0.1')
                 ->end()
-            ->end();
+            ->end()
+        ;
 
         return $builder;
     }
