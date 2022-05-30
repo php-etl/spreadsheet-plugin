@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "07cef070e066f309b81e8caba3c09386",
+    "content-hash": "f3f729bdb3919c5258f3428f78a8eb74",
     "packages": [
         {
             "name": "nikic/php-parser",
@@ -64,28 +64,31 @@
         },
         {
             "name": "php-etl/configurator-contracts",
-            "version": "v0.4.1",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-etl/configurator-contracts.git",
-                "reference": "c98c11de81f004c6c96351d108b36de574d8c60d"
+                "reference": "5d4e2fe0ec058c548a465da28ba65e403fef03ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-etl/configurator-contracts/zipball/c98c11de81f004c6c96351d108b36de574d8c60d",
-                "reference": "c98c11de81f004c6c96351d108b36de574d8c60d",
+                "url": "https://api.github.com/repos/php-etl/configurator-contracts/zipball/5d4e2fe0ec058c548a465da28ba65e403fef03ad",
+                "reference": "5d4e2fe0ec058c548a465da28ba65e403fef03ad",
                 "shasum": ""
             },
             "require": {
                 "nikic/php-parser": "^4.10",
                 "php": "^8.0",
                 "php-etl/packaging-contracts": "^0.1.0",
-                "symfony/config": "^5.2"
+                "psr/log": "^1.0",
+                "symfony/config": "^5.2",
+                "symfony/expression-language": "^5.2"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.4.x-dev"
+                    "dev-main": "0.5.x-dev"
                 }
             },
             "autoload": {
@@ -110,9 +113,9 @@
             "description": "This library describes contracts for defining configuration formats and building optimized code from it",
             "support": {
                 "issues": "https://github.com/php-etl/configurator-contracts/issues",
-                "source": "https://github.com/php-etl/configurator-contracts/tree/v0.4.1"
+                "source": "https://github.com/php-etl/configurator-contracts/tree/main"
             },
-            "time": "2022-03-28T21:03:54+00:00"
+            "time": "2022-05-25T14:10:02+00:00"
         },
         {
             "name": "php-etl/packaging-contracts",
@@ -170,18 +173,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-etl/satellite-toolbox.git",
-                "reference": "0009fd2be16d07b860b45b46b4ab99329b597417"
+                "reference": "df511d63c05116c6b576e99d697941d8c6505841"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-etl/satellite-toolbox/zipball/0009fd2be16d07b860b45b46b4ab99329b597417",
-                "reference": "0009fd2be16d07b860b45b46b4ab99329b597417",
+                "url": "https://api.github.com/repos/php-etl/satellite-toolbox/zipball/df511d63c05116c6b576e99d697941d8c6505841",
+                "reference": "df511d63c05116c6b576e99d697941d8c6505841",
                 "shasum": ""
             },
             "require": {
                 "nikic/php-parser": "^4.10",
                 "php": "^8.0",
-                "php-etl/configurator-contracts": "^0.4.0@dev",
+                "php-etl/configurator-contracts": "^0.5.0",
                 "symfony/expression-language": "^5.2"
             },
             "require-dev": {
@@ -196,7 +199,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "0.2.x-dev"
+                    "dev-main": "0.3.x-dev"
                 }
             },
             "autoload": {
@@ -227,7 +230,7 @@
                 "issues": "https://github.com/php-etl/satellite-toolbox/issues",
                 "source": "https://github.com/php-etl/satellite-toolbox/tree/main"
             },
-            "time": "2022-05-18T15:53:16+00:00"
+            "time": "2022-05-27T07:12:54+00:00"
         },
         {
             "name": "psr/cache",
