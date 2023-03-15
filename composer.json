@@ -12,7 +12,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "ext-json": "*",
         "nikic/php-parser": "^4.10",
         "symfony/config": "^5.2",
@@ -28,7 +28,9 @@
         "php-etl/spreadsheet-flow": "^0.1.0",
         "php-etl/bucket-contracts": "^0.1.0",
         "php-etl/pipeline-contracts": "^0.3.0",
-        "friendsofphp/php-cs-fixer": "^3.0"
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpstan/phpstan": "^1.10",
+        "rector/rector": "^0.15"
     },
     "autoload": {
         "psr-4": {
@@ -42,13 +44,16 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "0.4.x-dev"
+            "dev-main": "0.5.x-dev"
         },
         "gyroscops": {
             "plugins": ["Kiboko\\Plugin\\Spreadsheet\\Service"]
         }
     },
     "config": {
-        "bin-dir": "bin"
+        "bin-dir": "bin",
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }

@@ -11,7 +11,7 @@ final class Extractor implements Configurator\StepRepositoryInterface
 {
     use RepositoryTrait;
 
-    public function __construct(private Spreadsheet\Builder\Excel\Extractor|Spreadsheet\Builder\OpenDocument\Extractor|Spreadsheet\Builder\CSV\Extractor $builder)
+    public function __construct(private readonly Spreadsheet\Builder\Excel\Extractor|Spreadsheet\Builder\OpenDocument\Extractor|Spreadsheet\Builder\CSV\Extractor $builder)
     {
         $this->files = [];
         $this->packages = [];
