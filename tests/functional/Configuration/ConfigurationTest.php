@@ -15,7 +15,7 @@ final class ConfigurationTest extends TestCase
         $this->processor = new Config\Definition\Processor();
     }
 
-    public function validConfigProvider()
+    public static function validConfigProvider()
     {
         /* Minimal config */
         yield [
@@ -94,9 +94,7 @@ final class ConfigurationTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider validConfigProvider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('validConfigProvider')]
     public function testValidConfig($expected, $actual)
     {
         $config = new Configuration();

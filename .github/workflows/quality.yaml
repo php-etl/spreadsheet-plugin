@@ -35,6 +35,7 @@ jobs:
                 with:
                     args: --prefer-dist
                     php_version: '8.2'
+                    php_extensions: zip
 
             -   name: Run tests & generate Coverage
                 run: bin/phpunit --configuration=phpunit.xml tests --coverage-html var/coverage

@@ -10,7 +10,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 final class FactoryLoaderTest extends TestCase
 {
-    public function configProvider()
+    public static function configProvider()
     {
         yield [
             'expected' => [
@@ -30,9 +30,7 @@ final class FactoryLoaderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider configProvider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('configProvider')]
     public function testWithConfiguration(array $expected, array $actual): void
     {
         $factory = new Spreadsheet\Factory\Loader(new ExpressionLanguage());
