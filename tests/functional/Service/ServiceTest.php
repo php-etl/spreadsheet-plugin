@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ServiceTest extends TestCase
 {
-    public function configProvider()
+    public static function configProvider()
     {
         yield [
             'expected' => [
@@ -25,7 +25,7 @@ final class ServiceTest extends TestCase
                     'type' => 'stderr',
                 ]
             ],
-            'expected_class' => 'Kiboko\\Plugin\\Spreadsheet\\Factory\\Repository\\Extractor',
+            'expected_class' => \Kiboko\Plugin\Spreadsheet\Factory\Repository\Extractor::class,
             'actual' => [
                 'spreadsheet' => [
                     'extractor' => [
@@ -54,7 +54,7 @@ final class ServiceTest extends TestCase
                     'type' => 'stderr',
                 ]
             ],
-            'expected_class' => 'Kiboko\\Plugin\\Spreadsheet\\Factory\\Repository\\Loader',
+            'expected_class' => \Kiboko\Plugin\Spreadsheet\Factory\Repository\Loader::class,
             'actual' => [
                 'spreadsheet' => [
                     'loader' => [
@@ -71,9 +71,7 @@ final class ServiceTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider configProvider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('configProvider')]
     public function testWithConfigurationAndProcessor(array $expected, string $expectedClass, array $actual): void
     {
         $service = new Spreadsheet\Service();

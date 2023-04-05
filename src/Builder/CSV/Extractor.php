@@ -9,16 +9,15 @@ use PhpParser\Node;
 
 final class Extractor implements StepBuilderInterface
 {
-    private ?Node\Expr $logger;
+    private ?Node\Expr $logger = null;
 
     public function __construct(
-        private Node\Expr $filePath,
-        private Node\Expr $skipLines,
-        private Node\Expr $delimiter,
-        private Node\Expr $enclosure,
-        private Node\Expr $encoding
+        private readonly Node\Expr $filePath,
+        private readonly Node\Expr $skipLines,
+        private readonly Node\Expr $delimiter,
+        private readonly Node\Expr $enclosure,
+        private readonly Node\Expr $encoding
     ) {
-        $this->logger = null;
     }
 
     public function withLogger(Node\Expr $logger): self
@@ -50,7 +49,7 @@ final class Extractor implements StepBuilderInterface
                                     new Node\Expr\Assign(
                                         new Node\Expr\Variable('reader'),
                                         new Node\Expr\StaticCall(
-                                            class: new Node\Name\FullyQualified('Box\Spout\Reader\Common\Creator\ReaderEntityFactory'),
+                                            class: new Node\Name\FullyQualified(\Box\Spout\Reader\Common\Creator\ReaderEntityFactory::class),
                                             name: 'createCSVReader'
                                         ),
                                     ),
@@ -113,13 +112,13 @@ final class Extractor implements StepBuilderInterface
                 name: new Node\Identifier('skipLines'),
             ),
             new Node\Arg(
-                value: $this->logger ?? new Node\Expr\New_(new Node\Name\FullyQualified('Psr\\Log\\NullLogger')),
+                value: $this->logger ?? new Node\Expr\New_(new Node\Name\FullyQualified(\Psr\Log\NullLogger::class)),
                 name: new Node\Identifier('logger'),
             ),
         ];
 
         return new Node\Expr\New_(
-            class: new Node\Name\FullyQualified('Kiboko\\Component\\Flow\\Spreadsheet\\CSV\\Safe\\Extractor'),
+            class: new Node\Name\FullyQualified(\Kiboko\Component\Flow\Spreadsheet\CSV\Safe\Extractor::class),
             args: $arguments
         );
     }

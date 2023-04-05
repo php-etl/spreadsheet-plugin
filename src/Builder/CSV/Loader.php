@@ -9,14 +9,13 @@ use PhpParser\Node;
 
 final class Loader implements StepBuilderInterface
 {
-    private ?Node\Expr $logger;
+    private ?Node\Expr $logger = null;
 
     public function __construct(
-        private Node\Expr $filePath,
-        private Node\Expr $delimiter,
-        private Node\Expr $enclosure
+        private readonly Node\Expr $filePath,
+        private readonly Node\Expr $delimiter,
+        private readonly Node\Expr $enclosure,
     ) {
-        $this->logger = null;
     }
 
     public function withLogger(?Node\Expr $logger): self
@@ -48,7 +47,7 @@ final class Loader implements StepBuilderInterface
                                     new Node\Expr\Assign(
                                         new Node\Expr\Variable('writer'),
                                         new Node\Expr\StaticCall(
-                                            class: new Node\Name\FullyQualified('Box\Spout\Writer\Common\Creator\WriterEntityFactory'),
+                                            class: new Node\Name\FullyQualified(\Box\Spout\Writer\Common\Creator\WriterEntityFactory::class),
                                             name: 'createCSVWriter'
                                         ),
                                     ),
@@ -96,13 +95,13 @@ final class Loader implements StepBuilderInterface
                 name: new Node\Identifier('writer'),
             ),
             new Node\Arg(
-                value: $this->logger ?? new Node\Expr\New_(new Node\Name\FullyQualified('Psr\\Log\\NullLogger')),
+                value: $this->logger ?? new Node\Expr\New_(new Node\Name\FullyQualified(\Psr\Log\NullLogger::class)),
                 name: new Node\Identifier('logger'),
             ),
         ];
 
         return new Node\Expr\New_(
-            class: new Node\Name\FullyQualified('Kiboko\\Component\\Flow\\Spreadsheet\\CSV\\Safe\\Loader'),
+            class: new Node\Name\FullyQualified(\Kiboko\Component\Flow\Spreadsheet\CSV\Safe\Loader::class),
             args: $arguments
         );
     }

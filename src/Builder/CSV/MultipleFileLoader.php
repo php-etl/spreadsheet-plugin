@@ -9,16 +9,15 @@ use PhpParser\Node;
 
 final class MultipleFileLoader implements StepBuilderInterface
 {
-    private ?Node\Expr $logger;
+    private ?Node\Expr $logger = null;
 
     public function __construct(
-        private Node\Expr $filePath,
+        private readonly Node\Expr $filePath,
         private Node\Expr $maxLines,
-        private Node\Expr $delimiter,
-        private Node\Expr $enclosure,
+        private readonly Node\Expr $delimiter,
+        private readonly Node\Expr $enclosure,
         private bool $safeMode = true
     ) {
-        $this->logger = null;
     }
 
     public function withLogger(?Node\Expr $logger): self
@@ -67,7 +66,7 @@ final class MultipleFileLoader implements StepBuilderInterface
                                     new Node\Expr\Assign(
                                         new Node\Expr\Variable('writer'),
                                         new Node\Expr\StaticCall(
-                                            class: new Node\Name\FullyQualified('Box\Spout\Writer\Common\Creator\WriterEntityFactory'),
+                                            class: new Node\Name\FullyQualified(\Box\Spout\Writer\Common\Creator\WriterEntityFactory::class),
                                             name: 'createCSVWriter'
                                         ),
                                     ),
@@ -115,7 +114,7 @@ final class MultipleFileLoader implements StepBuilderInterface
                 name: new Node\Identifier('writer'),
             ),
             new Node\Arg(
-                value: $this->logger ?? new Node\Expr\New_(new Node\Name\FullyQualified('Psr\\Log\\NullLogger')),
+                value: $this->logger ?? new Node\Expr\New_(new Node\Name\FullyQualified(\Psr\Log\NullLogger::class)),
                 name: new Node\Identifier('logger'),
             ),
         ];
@@ -125,8 +124,8 @@ final class MultipleFileLoader implements StepBuilderInterface
                 name: null,
                 subNodes: [
                     'implements' => [
-                        new Node\Name\FullyQualified('Kiboko\Contract\Pipeline\LoaderInterface'),
-                        new Node\Name\FullyQualified('Kiboko\Contract\Pipeline\FlushableInterface'),
+                        new Node\Name\FullyQualified(\Kiboko\Contract\Pipeline\LoaderInterface::class),
+                        new Node\Name\FullyQualified(\Kiboko\Contract\Pipeline\FlushableInterface::class),
                     ],
                     'stmts' => [
                         new Node\Stmt\Property(
@@ -136,7 +135,7 @@ final class MultipleFileLoader implements StepBuilderInterface
                                     name: new Node\Name('loader')
                                 ),
                             ],
-                            type: new Node\Name\FullyQualified('Kiboko\Contract\Pipeline\LoaderInterface')
+                            type: new Node\Name\FullyQualified(\Kiboko\Contract\Pipeline\LoaderInterface::class)
                         ),
                         new Node\Stmt\ClassMethod(
                             name: new Node\Identifier(name: '__construct'),
@@ -158,8 +157,8 @@ final class MultipleFileLoader implements StepBuilderInterface
                                             expr: new Node\Expr\New_(
                                                 class: new Node\Name\FullyQualified(
                                                     $this->safeMode
-                                                        ? 'Kiboko\\Component\\Flow\\Spreadsheet\\CSV\\Safe\\Loader'
-                                                        : 'Kiboko\\Component\\Flow\\Spreadsheet\\CSV\\FingersCrossed\\Loader',
+                                                        ? \Kiboko\Component\Flow\Spreadsheet\CSV\Safe\Loader::class
+                                                        : \Kiboko\Component\Flow\Spreadsheet\CSV\FingersCrossed\Loader::class,
                                                 ),
                                                 args: $arguments
                                             ),
@@ -299,8 +298,8 @@ final class MultipleFileLoader implements StepBuilderInterface
                                             expr: new Node\Expr\New_(
                                                 class: new Node\Name\FullyQualified(
                                                     $this->safeMode
-                                                    ? 'Kiboko\\Component\\Flow\\Spreadsheet\\CSV\\Safe\\Loader'
-                                                    : 'Kiboko\\Component\\Flow\\Spreadsheet\\CSV\\FingersCrossed\\Loader',
+                                                    ? \Kiboko\Component\Flow\Spreadsheet\CSV\Safe\Loader::class
+                                                    : \Kiboko\Component\Flow\Spreadsheet\CSV\FingersCrossed\Loader::class,
                                                 ),
                                                 args: $arguments
                                             ),
@@ -334,7 +333,7 @@ final class MultipleFileLoader implements StepBuilderInterface
                             name: new Node\Identifier('flush'),
                             subNodes: [
                                 'flags' => Node\Stmt\Class_::MODIFIER_PUBLIC,
-                                'returnType' => new Node\Name\FullyQualified('Kiboko\Contract\Bucket\ResultBucketInterface'),
+                                'returnType' => new Node\Name\FullyQualified(\Kiboko\Contract\Bucket\ResultBucketInterface::class),
                                 'stmts' => [
                                     new Node\Stmt\Expression(
                                         new Node\Expr\MethodCall(
@@ -347,7 +346,7 @@ final class MultipleFileLoader implements StepBuilderInterface
                                     ),
                                     new Node\Stmt\Return_(
                                         new Node\Expr\New_(
-                                            new Node\Name\FullyQualified('Kiboko\Component\Bucket\EmptyResultBucket')
+                                            new Node\Name\FullyQualified(\Kiboko\Component\Bucket\EmptyResultBucket::class)
                                         ),
                                     ),
                                 ],
