@@ -11,8 +11,12 @@ final class MultipleFileLoader implements StepBuilderInterface
 {
     private ?Node\Expr $logger = null;
 
-    public function __construct(private readonly Node\Expr $filePath, private Node\Expr $sheetName, private Node\Expr $maxLines, private bool $safeMode = true)
-    {
+    public function __construct(
+        private readonly Node\Expr $filePath,
+        private Node\Expr $sheetName,
+        private Node\Expr $maxLines,
+        private bool $safeMode = true
+    ) {
     }
 
     public function withLogger(?Node\Expr $logger): self

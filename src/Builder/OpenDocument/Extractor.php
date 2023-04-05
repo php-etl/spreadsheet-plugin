@@ -11,8 +11,11 @@ final class Extractor implements StepBuilderInterface
 {
     private ?Node\Expr $logger = null;
 
-    public function __construct(private readonly ?Node\Expr $filePath, private readonly ?Node\Expr $sheetName, private readonly ?Node\Expr $skipLines)
-    {
+    public function __construct(
+        private readonly ?Node\Expr $filePath,
+        private readonly ?Node\Expr $sheetName,
+        private readonly ?Node\Expr $skipLines
+    ) {
     }
 
     public function withLogger(Node\Expr $logger): self

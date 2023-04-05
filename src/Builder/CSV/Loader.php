@@ -11,8 +11,11 @@ final class Loader implements StepBuilderInterface
 {
     private ?Node\Expr $logger = null;
 
-    public function __construct(private readonly Node\Expr $filePath, private readonly Node\Expr $delimiter, private readonly Node\Expr $enclosure)
-    {
+    public function __construct(
+        private readonly Node\Expr $filePath,
+        private readonly Node\Expr $delimiter,
+        private readonly Node\Expr $enclosur
+    ) {
     }
 
     public function withLogger(?Node\Expr $logger): self
