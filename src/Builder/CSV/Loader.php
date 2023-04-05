@@ -14,7 +14,7 @@ final class Loader implements StepBuilderInterface
     public function __construct(
         private readonly Node\Expr $filePath,
         private readonly Node\Expr $delimiter,
-        private readonly Node\Expr $enclosur
+        private readonly Node\Expr $enclosure,
     ) {
     }
 
