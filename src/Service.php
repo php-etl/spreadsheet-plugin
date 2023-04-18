@@ -12,7 +12,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 #[Configurator\Pipeline(
     name: 'spreadsheet',
     dependencies: [
-        'php-etl/spreadsheet-flow:"*"',
+        'php-etl/spreadsheet-flow:*',
     ],
     steps: [
         new Configurator\Pipeline\StepExtractor(),
