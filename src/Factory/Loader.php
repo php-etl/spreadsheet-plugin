@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Kiboko\Plugin\Spreadsheet\Factory;
 
+use Kiboko\Component\Packaging\Asset\InMemory;
+use Kiboko\Component\Packaging\File;
 use Kiboko\Contract\Configurator;
 use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Plugin\Spreadsheet;
@@ -19,8 +21,10 @@ final readonly class Loader implements Configurator\FactoryInterface
     private Processor $processor;
     private ConfigurationInterface $configuration;
 
-    public function __construct(private ExpressionLanguage $interpreter)
-    {
+    public function __construct(
+        private ExpressionLanguage $interpreter,
+        private string $generatedNamespace = 'GyroscopsGenerated',
+    ) {
         $this->processor = new Processor();
         $this->configuration = new Spreadsheet\Configuration\Loader();
     }
@@ -40,7 +44,7 @@ final readonly class Loader implements Configurator\FactoryInterface
         try {
             return $this->processor->processConfiguration($this->configuration, $config);
         } catch (Symfony\InvalidTypeException|Symfony\InvalidConfigurationException $exception) {
-            throw new Configurator\InvalidConfigurationException($exception->getMessage(), 0, $exception);
+            throw new InvalidConfigurationException($exception->getMessage(), 0, $exception);
         }
     }
 
@@ -51,7 +55,7 @@ final readonly class Loader implements Configurator\FactoryInterface
                 return true;
             }
         } catch (\Exception $exception) {
-            throw new Configurator\InvalidConfigurationException($exception->getMessage(), 0, $exception);
+            throw new InvalidConfigurationException($exception->getMessage(), 0, $exception);
         }
 
         return false;
@@ -104,6 +108,35 @@ final readonly class Loader implements Configurator\FactoryInterface
             throw new InvalidConfigurationException('Could not determine if the factory should build an excel, an open_document or a csv loader.');
         }
 
-        return new Repository\Loader($builder);
+        $repository = new Repository\Loader($builder);
+        $repository->addFiles(
+            new File('WriterPool.php', new InMemory(<<<PHP
+                <?php
+
+                namespace {$this->generatedNamespace};
+                final class WriterPool {
+                    private static array \$writers = [];
+
+                    public static function unique(string \$filePath): WriterInterface {
+                        \$writer = WriterEntityFactory::createXLSXWriter()->openToFile( \$filePath);
+
+                        register_shutdown_function(fn (WriterInterface \$writer) => \$writer->close(), \$writer);
+
+                        return \$writer;
+                    }
+
+                    public static function shared(string \$filePath): WriterInterface {
+                        if (isset(self::\$writers[\$filePath])) {
+                            return self::\$writers[\$filePath];
+                        }
+
+                        return self::\$writers[\$filePath] = self::unique(\$filePath);
+                    }
+                }
+                PHP
+            ))
+        );
+
+        return $repository;
     }
 }
