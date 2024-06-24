@@ -13,7 +13,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception as Symfony;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
-
+use PhpParser\Node;
 use function Kiboko\Component\SatelliteToolbox\Configuration\compileValueWhenExpression;
 
 final readonly class Loader implements Configurator\FactoryInterface
@@ -76,6 +76,39 @@ final readonly class Loader implements Configurator\FactoryInterface
                     compileValueWhenExpression($this->interpreter, $config['excel']['sheet'])
                 );
             }
+
+            $builder->withWriter(
+                $config['persistent'] ? new Node\Expr\StaticCall(
+                    class: new Node\Name\FullyQualified('GyroscopsGenerated\\WriterPool'),
+                    name: 'shared',
+                    args: [
+                        new Node\Arg(
+                            value: compileValueWhenExpression($this->interpreter, $config['file_path'], 'index'),
+                            name: new Node\Identifier('filePath'),
+                        ),
+                        new Node\Arg(
+                            value: compileValueWhenExpression($this->interpreter, $config['excel']['sheet']),
+                            name: new Node\Identifier('sheetName'),
+                        ),
+                    ]
+                ) : new Node\Expr\StaticCall(
+                    class: new Node\Name\FullyQualified('GyroscopsGenerated\\WriterPool'),
+                    name: 'unique',
+                    args: [
+                        new Node\Arg(
+                            value: compileValueWhenExpression($this->interpreter, $config['file_path']),
+                            name: new Node\Identifier('filePath'),
+                        ),
+                        new Node\Arg(
+                            value:compileValueWhenExpression($this->interpreter, $config['excel']['sheet']),
+                            name: new Node\Identifier('sheetName'),
+                        ),
+                    ]
+                ),
+            );
+
+            $repository = new Repository\Loader($builder);
+            $this->addWriterPoolFiles($repository);
         } elseif (\array_key_exists('open_document', $config)) {
             if (\array_key_exists('max_lines', $config['open_document'])) {
                 $builder = new Spreadsheet\Builder\OpenDocument\MultipleFileLoader(
@@ -89,6 +122,39 @@ final readonly class Loader implements Configurator\FactoryInterface
                     compileValueWhenExpression($this->interpreter, $config['open_document']['sheet'])
                 );
             }
+
+            $builder->withWriter(
+                $config['persistent'] ? new Node\Expr\StaticCall(
+                    class: new Node\Name\FullyQualified('GyroscopsGenerated\\WriterPool'),
+                    name: 'shared',
+                    args: [
+                        new Node\Arg(
+                            value: compileValueWhenExpression($this->interpreter, $config['file_path']),
+                            name: new Node\Identifier('filePath'),
+                        ),
+                        new Node\Arg(
+                            compileValueWhenExpression($this->interpreter, $config['open_document']['sheet']),
+                            name: new Node\Identifier('sheetName'),
+                        ),
+                    ]
+                ) : new Node\Expr\StaticCall(
+                    class: new Node\Name\FullyQualified('GyroscopsGenerated\\WriterPool'),
+                    name: 'unique',
+                    args: [
+                        new Node\Arg(
+                            value: compileValueWhenExpression($this->interpreter, $config['file_path']),
+                            name: new Node\Identifier('filePath'),
+                        ),
+                        new Node\Arg(
+                            compileValueWhenExpression($this->interpreter, $config['open_document']['sheet']),
+                            name: new Node\Identifier('sheetName'),
+                        ),
+                    ]
+                ),
+            );
+
+            $repository = new Repository\Loader($builder);
+            $this->addWriterPoolFiles($repository);
         } elseif (\array_key_exists('csv', $config)) {
             if (\array_key_exists('max_lines', $config['csv'])) {
                 $builder = new Spreadsheet\Builder\CSV\MultipleFileLoader(
@@ -104,39 +170,105 @@ final readonly class Loader implements Configurator\FactoryInterface
                     compileValueWhenExpression($this->interpreter, $config['csv']['enclosure'])
                 );
             }
+
+            $repository = new Repository\Loader($builder);
         } else {
             throw new InvalidConfigurationException('Could not determine if the factory should build an excel, an open_document or a csv loader.');
         }
 
-        $repository = new Repository\Loader($builder);
+        return $repository;
+    }
+
+    private function addWriterPoolFiles($repository): void
+    {
         $repository->addFiles(
             new File('WriterPool.php', new InMemory(<<<PHP
                 <?php
 
                 namespace {$this->generatedNamespace};
+                
+                use Box\\Spout\\Writer\\Common\\Creator\\WriterEntityFactory;
+                use Box\\Spout\\Writer\\WriterInterface;
+
                 final class WriterPool {
                     private static array \$writers = [];
 
-                    public static function unique(string \$filePath): WriterInterface {
-                        \$writer = WriterEntityFactory::createXLSXWriter()->openToFile( \$filePath);
-
+                    public static function unique(string \$filePath, string \$sheetName): WriterInterface {
+                        \$writer = WriterEntityFactory::createXLSXWriter()->openToFile(\$filePath);
+                
+                        SheetManager::createOrGetSheet(\$writer, \$filePath, \$sheetName);
+                
                         register_shutdown_function(fn (WriterInterface \$writer) => \$writer->close(), \$writer);
-
+                
                         return \$writer;
                     }
-
-                    public static function shared(string \$filePath): WriterInterface {
+                
+                    public static function shared(string \$filePath, string \$sheetName): WriterInterface {
                         if (isset(self::\$writers[\$filePath])) {
+                            // Ensure the sheet exists if the writer is already created
+                            SheetManager::createOrGetSheet(self::\$writers[\$filePath], \$filePath, \$sheetName);
                             return self::\$writers[\$filePath];
                         }
-
-                        return self::\$writers[\$filePath] = self::unique(\$filePath);
+                
+                        return self::\$writers[\$filePath] = self::unique(\$filePath, \$sheetName);
                     }
                 }
                 PHP
             ))
         );
 
-        return $repository;
+        $repository->addFiles(
+            new File('SheetManager.php', new InMemory(<<<PHP
+                <?php
+
+                namespace {$this->generatedNamespace};
+
+                use Box\\Spout\\Writer\\Common\\Entity\\Sheet;
+                use Box\\Spout\\Writer\\WriterInterface;
+
+                final class SheetManager {
+                    private static array \$sheets = [];
+
+                    public static function createOrGetSheet(WriterInterface \$writer, string \$filePath, string \$sheetName): void {
+                        \$sheets = \$writer->getSheets();
+                    
+                        if (empty(\$sheets)) {
+                            self::createNewSheet(\$writer, \$filePath, \$sheetName);
+                        } else {
+                            \$firstSheet = \$sheets[0];
+                            if (self::isDefaultSheet(\$sheets, \$firstSheet)) {
+                                self::renameDefaultSheet(\$firstSheet, \$filePath, \$sheetName);
+                            } else {
+                                self::setCurrentOrCreateNewSheet(\$writer, \$filePath, \$sheetName);
+                            }
+                        }
+                    }
+                    
+                    private static function createNewSheet(WriterInterface \$writer, string \$filePath, string \$sheetName): void {
+                        \$sheet = \$writer->addNewSheetAndMakeItCurrent()->setName(\$sheetName);
+                        self::\$sheets[\$filePath][\$sheetName] = \$sheet;
+                    }
+                    
+                    private static function isDefaultSheet(array \$sheets, Sheet \$firstSheet): bool {
+                        \$defaultSheetName = Sheet::DEFAULT_SHEET_NAME_PREFIX . '1';
+                        return count(\$sheets) === 1 && \$firstSheet->getIndex() === 0 && \$firstSheet->getName() === \$defaultSheetName;
+                    }
+                    
+                    private static function renameDefaultSheet(Sheet \$sheet, string \$filePath, string \$sheetName): void {
+                        \$sheet->setName(\$sheetName);
+                        self::\$sheets[\$filePath][\$sheetName] = \$sheet;
+                    }
+                    
+                    private static function setCurrentOrCreateNewSheet(WriterInterface \$writer, string \$filePath, string \$sheetName): void {
+                        if (!isset(self::\$sheets[\$filePath][\$sheetName])) {
+                            self::createNewSheet(\$writer, \$filePath, \$sheetName);
+                        } else {
+                            \$writer->setCurrentSheet(self::\$sheets[\$filePath][\$sheetName]);
+                        }
+                    }
+                }
+                PHP
+            ))
+        );
     }
 }
