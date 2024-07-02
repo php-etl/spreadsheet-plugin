@@ -9,11 +9,12 @@ use PhpParser\Node;
 
 final class Loader implements StepBuilderInterface
 {
+    private ?Node\Expr $persistent = null;
     private ?Node\Expr $logger = null;
 
     public function __construct(
         private readonly Node\Expr $filePath,
-        private Node\Expr $sheetName
+        private readonly Node\Expr $sheetName
     ) {
     }
 
@@ -34,9 +35,9 @@ final class Loader implements StepBuilderInterface
         return $this;
     }
 
-    public function withSheet(Node\Expr $sheet): self
+    public function withWriter(Node\Expr $persistent): self
     {
-        $this->sheetName = $sheet;
+        $this->persistent = $persistent;
 
         return $this;
     }
@@ -45,23 +46,8 @@ final class Loader implements StepBuilderInterface
     {
         $arguments = [
             new Node\Arg(
-                value: new Node\Expr\MethodCall(
-                    new Node\Expr\StaticCall(
-                        class: new Node\Name\FullyQualified(\Box\Spout\Writer\Common\Creator\WriterEntityFactory::class),
-                        name: 'createXLSXWriter'
-                    ),
-                    name: 'openToFile',
-                    args: [
-                        new Node\Arg(
-                            value: $this->filePath,
-                        ),
-                    ]
-                ),
+                value: $this->persistent,
                 name: new Node\Identifier('writer'),
-            ),
-            new Node\Arg(
-                value: $this->sheetName,
-                name: new Node\Identifier('sheetName'),
             ),
             new Node\Arg(
                 value: $this->logger ?? new Node\Expr\New_(new Node\Name\FullyQualified(\Psr\Log\NullLogger::class)),

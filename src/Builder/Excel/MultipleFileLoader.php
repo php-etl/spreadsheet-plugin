@@ -9,6 +9,7 @@ use PhpParser\Node;
 
 final class MultipleFileLoader implements StepBuilderInterface
 {
+    private ?Node\Expr $persistent = null;
     private ?Node\Expr $logger = null;
 
     public function __construct(
@@ -57,27 +58,19 @@ final class MultipleFileLoader implements StepBuilderInterface
         return $this;
     }
 
+    public function withWriter(Node\Expr $persistent): self
+    {
+        $this->persistent = $persistent;
+
+        return $this;
+    }
+
     public function getNode(): Node
     {
         $arguments = [
             new Node\Arg(
-                value: new Node\Expr\MethodCall(
-                    new Node\Expr\StaticCall(
-                        class: new Node\Name\FullyQualified(\Box\Spout\Writer\Common\Creator\WriterEntityFactory::class),
-                        name: 'createXLSXWriter'
-                    ),
-                    name: 'openToFile',
-                    args: [
-                        new Node\Arg(
-                            value: $this->filePath
-                        ),
-                    ]
-                ),
+                value: $this->persistent,
                 name: new Node\Identifier('writer'),
-            ),
-            new Node\Arg(
-                value: $this->sheetName,
-                name: new Node\Identifier('sheetName'),
             ),
             new Node\Arg(
                 value: $this->logger ?? new Node\Expr\New_(new Node\Name\FullyQualified(\Psr\Log\NullLogger::class)),
