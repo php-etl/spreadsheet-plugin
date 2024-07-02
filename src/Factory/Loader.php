@@ -9,11 +9,12 @@ use Kiboko\Component\Packaging\File;
 use Kiboko\Contract\Configurator;
 use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Plugin\Spreadsheet;
+use PhpParser\Node;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception as Symfony;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
-use PhpParser\Node;
+
 use function Kiboko\Component\SatelliteToolbox\Configuration\compileValueWhenExpression;
 
 final readonly class Loader implements Configurator\FactoryInterface
@@ -100,7 +101,7 @@ final readonly class Loader implements Configurator\FactoryInterface
                             name: new Node\Identifier('filePath'),
                         ),
                         new Node\Arg(
-                            value:compileValueWhenExpression($this->interpreter, $config['excel']['sheet']),
+                            value: compileValueWhenExpression($this->interpreter, $config['excel']['sheet']),
                             name: new Node\Identifier('sheetName'),
                         ),
                     ]
