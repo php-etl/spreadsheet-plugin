@@ -1,3 +1,4 @@
 parameters:
+    level: 8
     ignoreErrors:
     - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\).#'
