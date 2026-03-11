@@ -1,5 +1,8 @@
 {
     "name": "php-etl/spreadsheet-plugin",
+    "repositories": [
+        {"type": "path", "url": "../../phpunit-extension"}
+    ],
     "description": "Plugin for XLS Extractor and Loader",
     "type": "gyroscops-plugin",
     "license": "MIT",
@@ -22,12 +25,12 @@
     "require-dev": {
         "symfony/yaml": "^6.0",
         "phpunit/phpunit": "^10.0",
-        "php-etl/bucket-contracts": "0.2.*",
-        "php-etl/pipeline-contracts": "0.4.*",
+        "php-etl/bucket-contracts": "0.3.*",
+        "php-etl/pipeline-contracts": "0.5.*",
         "friendsofphp/php-cs-fixer": "^3.0",
-        "phpstan/phpstan": "^2.2",
-        "infection/infection": "^0.26.18",
-        "rector/rector": "^2.0",
+        "phpstan/phpstan": "^2.1",
+        "infection/infection": "^0.28",
+        "rector/rector": "^2.3",
         "php-etl/phpunit-extension": "*",
         "php-etl/spreadsheet-flow": "*"
     },
